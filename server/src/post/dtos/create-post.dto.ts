@@ -1,32 +1,21 @@
-import { IsString, IsBoolean, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsArray } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
   title: string;
 
   @IsString()
-  slug: string;
-
-  @IsString()
   content: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   excerpt?: string;
 
-  @IsOptional()
   @IsString()
-  coverImage?: string;
-
-  @IsBoolean()
-  published: boolean;
-
   @IsOptional()
-  @IsString()
   categoryId?: string;
 
-  @IsOptional()
   @IsArray()
-  @IsString({ each: true })
+  @IsOptional()
   tagIds?: string[];
 }

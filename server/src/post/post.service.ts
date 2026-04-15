@@ -7,13 +7,13 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createPostDto: CreatePostDto, authorId: string) {
+  async create(createPostDto: CreatePostDto, userId: string) {
     const { tagIds, ...postData } = createPostDto;
 
-    return this.prisma.post.create({
+    const post = await this.prisma.post.create({
       data: {
         ...postData,
-        authorId,
+        authorId: userId,
         tags: tagIds
           ? {
               connect: tagIds.map((id) => ({ id })),
@@ -21,11 +21,13 @@ export class PostService {
           : undefined,
       },
       include: {
-        author: true,
-        category: true,
-        tags: true,
+        author: { select: { id: true, username: true, email: true } },
+        category: { select: { id: true, name: true } },
+        tags: { select: { id: true, name: true } },
       },
     });
+
+    return post;
   }
 
   async findAll(params: {
@@ -35,16 +37,21 @@ export class PostService {
     tagId?: string;
     search?: string;
   }) {
-    const { page = 1, limit = 10, categoryId, tagId, search } = params;
+    const {
+      page = 1,
+      limit = 10,
+      categoryId,
+      tagId,
+      search,
+    } = params;
+
+    const skip = (page - 1) * limit;
 
     const where = {
-      published: true,
       ...(categoryId && { categoryId }),
       ...(tagId && {
         tags: {
-          some: {
-            id: tagId,
-          },
+          some: { id: tagId },
         },
       }),
       ...(search && {
@@ -56,50 +63,51 @@ export class PostService {
       }),
     };
 
-    const [total, posts] = await Promise.all([
-      this.prisma.post.count({ where }),
+    const [posts, total] = await Promise.all([
       this.prisma.post.findMany({
         where,
-        include: {
-          author: true,
-          category: true,
-          tags: true,
-        },
-        skip: (page - 1) * limit,
+        skip,
         take: limit,
-        orderBy: {
-          createdAt: 'desc',
+        orderBy: { createdAt: 'desc' },
+        include: {
+          author: { select: { id: true, username: true } },
+          category: { select: { id: true, name: true } },
+          tags: { select: { id: true, name: true } },
         },
       }),
+      this.prisma.post.count({ where }),
     ]);
 
     return {
-      total,
-      page,
-      limit,
       posts,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
     };
   }
 
   async findOne(id: string) {
+    // 增加浏览量
+    await this.prisma.post.update({
+      where: { id },
+      data: { views: { increment: 1 } },
+    });
+
     const post = await this.prisma.post.findUnique({
       where: { id },
       include: {
-        author: true,
-        category: true,
-        tags: true,
+        author: { select: { id: true, username: true, email: true } },
+        category: { select: { id: true, name: true } },
+        tags: { select: { id: true, name: true } },
         comments: {
           include: {
-            author: true,
-            replies: {
-              include: {
-                author: true,
-              },
-            },
+            author: { select: { id: true, username: true } },
+            parent: { select: { id: true, author: { select: { id: true, username: true } } } },
           },
-          orderBy: {
-            createdAt: 'desc',
-          },
+          orderBy: { createdAt: 'desc' },
         },
       },
     });
@@ -108,21 +116,18 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    // Increment view count
-    await this.prisma.post.update({
-      where: { id },
-      data: {
-        views: { increment: 1 },
-      },
-    });
-
     return post;
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
+    const existingPost = await this.prisma.post.findUnique({ where: { id } });
+    if (!existingPost) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+
     const { tagIds, ...postData } = updatePostDto;
 
-    return this.prisma.post.update({
+    const post = await this.prisma.post.update({
       where: { id },
       data: {
         ...postData,
@@ -133,15 +138,21 @@ export class PostService {
           : undefined,
       },
       include: {
-        author: true,
-        category: true,
-        tags: true,
+        author: { select: { id: true, username: true, email: true } },
+        category: { select: { id: true, name: true } },
+        tags: { select: { id: true, name: true } },
       },
     });
+
+    return post;
   }
 
   async remove(id: string) {
-    await this.findOne(id);
-    return this.prisma.post.delete({ where: { id } });
+    const existingPost = await this.prisma.post.findUnique({ where: { id } });
+    if (!existingPost) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+
+    await this.prisma.post.delete({ where: { id } });
   }
 }
