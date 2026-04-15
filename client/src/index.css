@@ -35,7 +35,7 @@ body {
   }
 
   .btn-outline {
-    @apply border border-border hover:bg-accent hover:text-accent-foreground;
+    @apply border border-border hover:bg-muted hover:text-muted-foreground;
   }
 
   .card {
