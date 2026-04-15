@@ -22,6 +22,26 @@
 
 ### 开发环境
 
+#### 方法一：使用启动脚本（推荐）
+
+1. 确保安装了 Docker 和 Docker Compose
+
+2. 确保安装了 Node.js 18+
+
+3. 安装依赖
+
+```bash
+cd server && npm install && cd ../client && npm install
+```
+
+4. 运行启动脚本
+
+```bash
+./start.sh
+```
+
+#### 方法二：手动启动
+
 1. 启动 PostgreSQL 数据库
 
 ```bash
