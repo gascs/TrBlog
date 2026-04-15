@@ -1,12 +1,13 @@
 # TrBlog
 
-一个现代化的个人博客系统，使用 React + NestJS + PostgreSQL 构建。
+一个现代化的个人博客系统，使用 React + NestJS + PostgreSQL 构建，提供完整的博客管理功能。
 
 ## 技术栈
 
 - **前端**: React 18 + TypeScript + Tailwind CSS + Shadcn UI + React Query
 - **后端**: Node.js + NestJS (TypeScript) + PostgreSQL + Prisma ORM
 - **认证**: JWT (Access Token)
+- **部署**: Docker + Docker Compose
 
 ## 项目结构
 
@@ -102,11 +103,60 @@ VITE_API_URL=http://localhost:3000/api
 
 ## 功能特性
 
-- ✅ 用户认证 (登录/注册)
-- ✅ 文章管理 (CRUD)
-- ✅ 分类管理
-- ✅ 标签管理
-- ✅ 评论系统 (支持回复)
-- ✅ 文章搜索
-- ✅ 响应式设计
-- ✅ 管理后台
+### 用户系统
+- ✅ 用户注册与登录
+- ✅ JWT 身份验证
+- ✅ 密码加密存储
+- ✅ 管理员权限控制
+
+### 文章管理
+- ✅ 文章的增删改查 (CRUD)
+- ✅ 文章分类管理
+- ✅ 文章标签管理
+- ✅ 文章搜索与筛选
+- ✅ 文章浏览量统计
+- ✅ Markdown 内容渲染
+
+### 评论系统
+- ✅ 评论的创建与删除
+- ✅ 评论回复功能
+- ✅ 评论层级显示
+
+### 前端界面
+- ✅ 响应式设计，支持桌面端和移动端
+- ✅ 现代化的 UI 设计
+- ✅ 加载状态和错误处理
+- ✅ 管理后台界面
+
+### 部署
+- ✅ Docker 容器化部署
+- ✅ 生产环境配置
+
+## 开发指南
+
+### 代码风格
+- 前端：使用 ESLint 和 Prettier 保持代码风格一致
+- 后端：使用 NestJS 的代码风格规范
+
+### 提交规范
+- 使用 conventional commits 规范
+- 提交信息格式：`type(scope): subject`
+
+### 测试
+- 前端：使用 Jest 和 React Testing Library
+- 后端：使用 Jest 和 SuperTest
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建一个新的分支
+3. 提交你的更改
+4. 发起 Pull Request
+
+## 许可证
+
+MIT License
+
+## 联系
+
+如果有任何问题或建议，欢迎联系我们。

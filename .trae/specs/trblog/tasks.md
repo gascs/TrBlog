@@ -29,7 +29,7 @@
   - `programmatic` TR-2.3: 数据库迁移可以成功执行
 - **Notes**: 使用 Prisma Migrate 管理数据库版本
 
-## [/] Task 3: 后端基础架构与认证模块
+## [x] Task 3: 后端基础架构与认证模块
 - **Priority**: P0
 - **Depends On**: Task 2
 - **Description**:
@@ -47,7 +47,7 @@
   - `programmatic` TR-3.5: RolesGuard 可以正确区分管理员和普通用户权限
 - **Notes**: 使用 NestJS 的 Passport 和 JWT 模块
 
-## [ ] Task 4: 后端文章 CRUD 接口
+## [x] Task 4: 后端文章 CRUD 接口
 - **Priority**: P0
 - **Depends On**: Task 3
 - **Description**:
@@ -67,7 +67,7 @@
   - `programmatic` TR-4.5: 文章与分类、标签的关联关系正确处理
 - **Notes**: 使用 DTO 进行数据验证
 
-## [ ] Task 5: 后端分类、标签、评论模块
+## [x] Task 5: 后端分类、标签、评论模块
 - **Priority**: P1
 - **Depends On**: Task 4
 - **Description**:
@@ -82,7 +82,7 @@
   - `programmatic` TR-5.4: 管理员可以删除评论
 - **Notes**: 评论支持自关联实现回复功能
 
-## [ ] Task 6: 前端基础布局与配置
+## [x] Task 6: 前端基础布局与配置
 - **Priority**: P0
 - **Depends On**: Task 1
 - **Description**:
@@ -97,7 +97,7 @@
   - `human-judgement` TR-6.3: 配色方案符合要求，界面美观
 - **Notes**: 使用 Tailwind CSS 进行样式开发
 
-## [ ] Task 7: 前端页面实现 - 首页、文章详情页
+## [x] Task 7: 前端页面实现 - 首页、文章详情页
 - **Priority**: P0
 - **Depends On**: Task 6
 - **Description**:
@@ -112,7 +112,7 @@
   - `programmatic` TR-7.4: 包含 Loading 状态和 Error 状态处理
 - **Notes**: 使用 React Query 的 useQuery 和 useMutation 管理数据状态
 
-## [ ] Task 8: 前端页面实现 - 登录页、管理后台
+## [x] Task 8: 前端页面实现 - 登录页、管理后台
 - **Priority**: P1
 - **Depends On**: Task 7
 - **Description**:
@@ -127,7 +127,7 @@
   - `programmatic` TR-8.3: 管理员可以在后台管理文章、分类、标签
 - **Notes**: 使用路由守卫保护管理员路由
 
-## [ ] Task 9: AI 辅助优化与联调
+## [x] Task 9: AI 辅助优化与联调
 - **Priority**: P1
 - **Depends On**: Task 8, Task 5
 - **Description**:
@@ -143,7 +143,7 @@
   - `programmatic` TR-9.4: 主要功能流程测试通过
 - **Notes**: 进行完整的端到端测试
 
-## [ ] Task 10: Docker 部署方案
+## [x] Task 10: Docker 部署方案
 - **Priority**: P2
 - **Depends On**: Task 9
 - **Description**:
