@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import api from '../services/api';
-import { Post, Comment } from '../types';
+import { Comment } from '../types';
 
 const PostDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -122,7 +122,7 @@ const PostDetailPage: React.FC = () => {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">标签</h2>
           <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
+            {post.tags.map((tag: { id: string; name: string }) => (
               <Link
                 key={tag.id}
                 to={`/tags/${tag.id}`}

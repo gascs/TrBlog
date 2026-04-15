@@ -19,7 +19,7 @@ export class PostService {
               connect: tagIds.map((id) => ({ id })),
             }
           : undefined,
-      },
+      } as any,
       include: {
         author: { select: { id: true, username: true, email: true } },
         category: { select: { id: true, name: true } },
@@ -56,9 +56,9 @@ export class PostService {
       }),
       ...(search && {
         OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { content: { contains: search, mode: 'insensitive' } },
-          { excerpt: { contains: search, mode: 'insensitive' } },
+          { title: { contains: search, mode: 'insensitive' as any } },
+          { content: { contains: search, mode: 'insensitive' as any } },
+          { excerpt: { contains: search, mode: 'insensitive' as any } },
         ],
       }),
     };
