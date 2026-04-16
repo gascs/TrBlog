@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# 彩色输出函数（必须放在最前面）
+echo_green() {
+    echo -e "\033[32m$1\033[0m"
+}
+
+echo_yellow() {
+    echo -e "\033[33m$1\033[0m"
+}
+
+echo_red() {
+    echo -e "\033[31m$1\033[0m"
+}
+
+echo_blue() {
+    echo -e "\033[34m$1\033[0m"
+}
+
+echo_purple() {
+    echo -e "\033[35m$1\033[0m"
+}
+
 # 检查是否需要使用sudo
 if [ "$(id -u)" != "0" ]; then
     SUDO="sudo"
@@ -11,7 +32,7 @@ fi
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 else
-    echo "警告: .env 文件未找到，使用默认配置"
+    echo_yellow "警告: .env 文件未找到，使用默认配置"
     export DB_TYPE=docker
     export DB_HOST=localhost
     export DB_PORT=5432
@@ -41,27 +62,6 @@ DB_NAME=trblog
 EOF
     echo_green "已自动创建 .env 文件"
 fi
-
-# 彩色输出函数
-echo_green() {
-    echo -e "\033[32m$1\033[0m"
-}
-
-echo_yellow() {
-    echo -e "\033[33m$1\033[0m"
-}
-
-echo_red() {
-    echo -e "\033[31m$1\033[0m"
-}
-
-echo_blue() {
-    echo -e "\033[34m$1\033[0m"
-}
-
-echo_purple() {
-    echo -e "\033[35m$1\033[0m"
-}
 
 # 检查系统依赖
 check_system_dependencies() {
