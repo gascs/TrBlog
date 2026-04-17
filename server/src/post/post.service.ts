@@ -90,26 +90,33 @@ export class PostService {
   }
 
   async findOne(id: string) {
-    // 增加浏览量
-    await this.prisma.post.update({
-      where: { id },
-      data: { views: { increment: 1 } },
-    });
+    // 使用事务确保浏览量增加和帖子查询的原子性
+    const post = await this.prisma.$transaction(async (prisma) => {
+      // 增加浏览量
+      await prisma.post.update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      });
 
-    const post = await this.prisma.post.findUnique({
-      where: { id },
-      include: {
-        author: { select: { id: true, username: true, email: true } },
-        category: { select: { id: true, name: true } },
-        tags: { select: { id: true, name: true } },
-        comments: {
-          include: {
-            author: { select: { id: true, username: true } },
-            parent: { select: { id: true, author: { select: { id: true, username: true } } } },
+      // 查询帖子详情
+      const postData = await prisma.post.findUnique({
+        where: { id },
+        include: {
+          author: { select: { id: true, username: true, email: true } },
+          category: { select: { id: true, name: true } },
+          tags: { select: { id: true, name: true } },
+          comments: {
+            include: {
+              author: { select: { id: true, username: true } },
+              parent: { select: { id: true, author: { select: { id: true, username: true } } } },
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 50, // 限制评论数量，提高性能
           },
-          orderBy: { createdAt: 'desc' },
         },
-      },
+      });
+
+      return postData;
     });
 
     if (!post) {

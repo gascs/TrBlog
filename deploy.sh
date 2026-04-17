@@ -21,6 +21,17 @@ echo_purple() {
     echo -e "\033[35m$1\033[0m"
 }
 
+# 清理函数
+cleanup() {
+    echo_blue "清理资源..."
+    # 清理临时文件
+    rm -f server/server.log 2>/dev/null
+    echo_green "清理完成"
+}
+
+# 退出时执行清理
+trap cleanup EXIT
+
 # 检查是否需要使用sudo
 if [ "$(id -u)" != "0" ]; then
     SUDO="sudo"
