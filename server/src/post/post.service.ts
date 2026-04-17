@@ -43,11 +43,7 @@ export class PostService {
 
     // 清除文章列表缓存
     try {
-      const redis = await this.redisService.getClient();
-      const keys = await redis.keys('posts:*');
-      if (keys.length > 0) {
-        await redis.del(...keys);
-      }
+      await this.redisService.delPattern('posts:*');
     } catch (error) {
       console.error('Failed to clear posts cache:', error);
     }
@@ -122,8 +118,8 @@ export class PostService {
       },
     };
 
-    // 缓存结果，设置30分钟过期
-    await this.redisService.set(cacheKey, JSON.stringify(result), 1800);
+    // 缓存结果，设置1小时过期
+    await this.redisService.set(cacheKey, JSON.stringify(result), this.redisService.getTTL('POSTS_LIST'));
 
     return result;
   }
@@ -180,8 +176,8 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    // 缓存结果，设置10分钟过期
-    await this.redisService.set(cacheKey, JSON.stringify(post), 600);
+    // 缓存结果，设置30分钟过期
+    await this.redisService.set(cacheKey, JSON.stringify(post), this.redisService.getTTL('POST_DETAIL'));
 
     return post;
   }
@@ -229,11 +225,7 @@ export class PostService {
     // 清除相关缓存
     try {
       await this.redisService.del(`post:${id}`);
-      const redis = await this.redisService.getClient();
-      const keys = await redis.keys('posts:*');
-      if (keys.length > 0) {
-        await redis.del(...keys);
-      }
+      await this.redisService.delPattern('posts:*');
     } catch (error) {
       console.error('Failed to clear cache:', error);
     }
@@ -252,11 +244,7 @@ export class PostService {
     // 清除相关缓存
     try {
       await this.redisService.del(`post:${id}`);
-      const redis = await this.redisService.getClient();
-      const keys = await redis.keys('posts:*');
-      if (keys.length > 0) {
-        await redis.del(...keys);
-      }
+      await this.redisService.delPattern('posts:*');
     } catch (error) {
       console.error('Failed to clear cache:', error);
     }

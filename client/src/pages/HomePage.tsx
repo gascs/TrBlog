@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Post } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
+import OptimizedImage from '../components/OptimizedImage';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN', {
@@ -32,7 +33,7 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
           >
-            <img
+            <OptimizedImage
               src={post.coverImage}
               alt={post.title}
               className="w-full h-full object-cover"
@@ -151,6 +152,38 @@ const HomePage: React.FC = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={siteTitle} />
         <meta name="twitter:description" content={siteDescription} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "TrBlog",
+            "url": "/",
+            "description": siteDescription,
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })}
+        </script>
+        {/* 文章列表结构化数据 */}
+        {data?.posts && data.posts.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "name": "最新文章",
+              "itemListElement": data.posts.map((post: Post, index: number) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "url": `/posts/${post.id}`,
+                "name": post.title,
+                "image": post.coverImage,
+                "description": post.excerpt
+              }))
+            })}
+          </script>
+        )}
       </Helmet>
       <motion.div
         initial={{ opacity: 0 }}

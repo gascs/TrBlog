@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, LogOut, Settings, Menu as MenuIcon } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import SearchBar from './SearchBar';
+import { User as UserType } from '../types';
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
@@ -11,7 +13,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -80,7 +82,8 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             </nav>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
+            <SearchBar />
             <ThemeToggle />
             {user ? (
               <div className="flex items-center space-x-4">
@@ -164,6 +167,9 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             className="md:hidden bg-white dark:bg-dark-background border-t border-gray-100 dark:border-dark-border"
           >
             <div className="container mx-auto px-4 py-6 space-y-4">
+              <div className="mb-6">
+                <SearchBar />
+              </div>
               <div className="flex justify-end mb-4">
                 <ThemeToggle />
               </div>

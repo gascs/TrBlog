@@ -9,6 +9,7 @@ import RouteTransition from './components/RouteTransition';
 // 页面懒加载
 const HomePage = lazy(() => import('./pages/HomePage'));
 const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
@@ -51,6 +52,16 @@ const App: React.FC = () => {
                 <Layout>
                   <RouteTransition>
                     <HomePage />
+                  </RouteTransition>
+                </Layout>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <Layout>
+                  <RouteTransition>
+                    <SearchPage />
                   </RouteTransition>
                 </Layout>
               }

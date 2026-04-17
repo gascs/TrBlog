@@ -11,6 +11,7 @@ import {
   User
 } from 'lucide-react';
 import api from '../../services/api';
+import { Post } from '../../types';
 
 const PostsPage: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -100,7 +101,7 @@ const PostsPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {data?.posts?.map((post: any) => (
+                  {data?.posts?.map((post: Post) => (
                     <tr key={post.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="max-w-xs">
