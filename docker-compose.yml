@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -31,7 +29,7 @@ services:
       timeout: 5s
       retries: 5
 
-  server:
+  backend:
     build: 
       context: ./server
       dockerfile: Dockerfile
@@ -59,7 +57,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - server
+      - backend
 
 volumes:
   postgres_data:

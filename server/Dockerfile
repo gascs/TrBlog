@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # 先复制package文件，利用Docker缓存
