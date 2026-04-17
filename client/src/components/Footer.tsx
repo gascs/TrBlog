@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Github, Twitter, Discord, Mail, MapPin, Phone } from 'lucide-react';
+import { Github, Twitter, MessageSquare, Mail, MapPin, Phone } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -25,8 +25,8 @@ const Footer: React.FC = () => {
               {[
                 { icon: <Github className="w-5 h-5" />, name: 'GitHub' },
                 { icon: <Twitter className="w-5 h-5" />, name: 'Twitter' },
-                { icon: <Discord className="w-5 h-5" />, name: 'Discord' }
-              ].map((social, index) => (
+                { icon: <MessageSquare className="w-5 h-5" />, name: 'Discord' }
+              ].map((social) => (
                 <motion.a
                   key={social.name}
                   href="#"

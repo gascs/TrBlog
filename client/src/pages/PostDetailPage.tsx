@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,7 +17,6 @@ const PostDetailPage: React.FC = () => {
   const [replyContent, setReplyContent] = useState('');
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const contentRef = useRef<HTMLDivElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const { data: post, isLoading, isError, error } = useQuery({

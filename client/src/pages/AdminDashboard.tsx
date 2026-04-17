@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Folder, Tag, Users, Layout, ArrowRight, BarChart3, Clock, Calendar } from 'lucide-react';
+import { FileText, Folder, Tag, Users, ArrowRight, BarChart3, Clock, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminDashboard: React.FC = () => {

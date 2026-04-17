@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { Category, Tag } from '../types';
-import { Skeleton, SkeletonText } from './Skeleton';
+import Skeleton from './Skeleton';
 
 const Sidebar: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
