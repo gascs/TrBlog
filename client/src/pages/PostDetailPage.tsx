@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import { Calendar, User, MessageSquare, ArrowLeft, Send, Trash2, Tag } from 'lucide-react';
+import { Calendar, User, MessageSquare, ArrowLeft, Send, Trash2, Tag, Heart, Share2, BookOpen, Eye } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Comment } from '../types';
@@ -15,6 +15,10 @@ const PostDetailPage: React.FC = () => {
   const [commentContent, setCommentContent] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState('');
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const { data: post, isLoading, isError, error } = useQuery({
     queryKey: ['post', id],
@@ -111,6 +115,40 @@ const PostDetailPage: React.FC = () => {
   const pageDescription = post?.excerpt || post?.content.slice(0, 150) || '阅读精彩文章';
   const currentUrl = window.location.href;
 
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: post?.title || '',
+        text: post?.excerpt || '',
+        url: currentUrl
+      });
+    } else {
+      navigator.clipboard.writeText(currentUrl);
+      alert('链接已复制到剪贴板！');
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
@@ -159,17 +197,33 @@ const PostDetailPage: React.FC = () => {
 
           <div className="mb-8">
             {post.category && (
-              <Link
-                to={`/categories/${post.category.id}`}
-                className="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold mb-4"
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
               >
-                {post.category.name}
-              </Link>
+                <Link
+                  to={`/categories/${post.category.id}`}
+                  className="inline-block px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold mb-4 hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
+                >
+                  {post.category.name}
+                </Link>
+              </motion.div>
             )}
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
+            >
               {post.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-6 text-gray-500">
+            </motion.h1>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 mb-6"
+            >
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5" />
                 <span>{post.author.username}</span>
@@ -186,7 +240,46 @@ const PostDetailPage: React.FC = () => {
                 <MessageSquare className="w-5 h-5" />
                 <span>{comments?.length || 0} 评论</span>
               </div>
-            </div>
+              <div className="flex items-center gap-2">
+                <Eye className="w-5 h-5" />
+                <span>{post.views} 浏览</span>
+              </div>
+            </motion.div>
+            
+            {/* 互动按钮 */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex items-center gap-4"
+            >
+              <motion.button
+                onClick={handleLike}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${liked ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
+                <span>{likeCount}</span>
+              </motion.button>
+              <motion.button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Share2 className="w-5 h-5" />
+                <span>分享</span>
+              </motion.button>
+              <motion.button
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <BookOpen className="w-5 h-5" />
+                <span>收藏</span>
+              </motion.button>
+            </motion.div>
           </div>
 
           {post.coverImage && (
@@ -362,6 +455,25 @@ const PostDetailPage: React.FC = () => {
         </div>
       </div>
     </motion.article>
+
+    {/* 滚动到顶部按钮 */}
+    <AnimatePresence>
+      {showScrollTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors z-50"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
+        </motion.button>
+      )}
+    </AnimatePresence>
     </div>
   );
 };

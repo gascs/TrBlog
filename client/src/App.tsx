@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from './components/Layout';
 import AdminLayout from './components/AdminLayout';
+import RouteTransition from './components/RouteTransition';
 
 // 页面懒加载
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -42,13 +43,15 @@ const App: React.FC = () => {
       <Router>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<RouteTransition><LoginPage /></RouteTransition>} />
+            <Route path="/register" element={<RouteTransition><RegisterPage /></RouteTransition>} />
             <Route
               path="/"
               element={
                 <Layout>
-                  <HomePage />
+                  <RouteTransition>
+                    <HomePage />
+                  </RouteTransition>
                 </Layout>
               }
             />
@@ -56,7 +59,9 @@ const App: React.FC = () => {
               path="/posts/:id"
               element={
                 <Layout>
-                  <PostDetailPage />
+                  <RouteTransition>
+                    <PostDetailPage />
+                  </RouteTransition>
                 </Layout>
               }
             />
@@ -65,7 +70,9 @@ const App: React.FC = () => {
               element={
                 <RequireAdmin>
                   <AdminLayout>
-                    <AdminDashboard />
+                    <RouteTransition>
+                      <AdminDashboard />
+                    </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
               }
@@ -75,7 +82,9 @@ const App: React.FC = () => {
               element={
                 <RequireAdmin>
                   <AdminLayout>
-                    <PostsPage />
+                    <RouteTransition>
+                      <PostsPage />
+                    </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
               }
@@ -85,7 +94,9 @@ const App: React.FC = () => {
               element={
                 <RequireAdmin>
                   <AdminLayout>
-                    <CategoriesPage />
+                    <RouteTransition>
+                      <CategoriesPage />
+                    </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
               }
@@ -95,7 +106,9 @@ const App: React.FC = () => {
               element={
                 <RequireAdmin>
                   <AdminLayout>
-                    <TagsPage />
+                    <RouteTransition>
+                      <TagsPage />
+                    </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
               }
@@ -105,12 +118,14 @@ const App: React.FC = () => {
               element={
                 <RequireAdmin>
                   <AdminLayout>
-                    <UsersPage />
+                    <RouteTransition>
+                      <UsersPage />
+                    </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
               }
             />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<RouteTransition><Navigate to="/" replace /></RouteTransition>} />
           </Routes>
         </Suspense>
       </Router>

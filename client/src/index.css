@@ -30,6 +30,9 @@
   --border: #334155;
   --ring: #3b82f6;
   --accent: #a78bfa;
+  --dark-background: #0f172a;
+  --dark-card: #1e293b;
+  --dark-border: #334155;
 }
 
 * {
@@ -78,19 +81,19 @@ body {
   }
 
   .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 dark:hover:shadow-blue-400/25;
+    @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 dark:hover:shadow-blue-400/25 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-secondary {
-    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg active:scale-95 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100;
+    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg active:scale-95 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-outline {
-    @apply border-2 border-gray-200 bg-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-800;
+    @apply border-2 border-gray-200 bg-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-800 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800;
+    @apply bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .card {
@@ -110,7 +113,7 @@ body {
   }
 
   .input {
-    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-200 dark:border-gray-600 dark:bg-dark-background dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light dark:focus:ring-primary-light/20;
+    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-200 dark:border-gray-600 dark:bg-dark-background dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light dark:focus:ring-primary-light/20 transform focus:-translate-y-0.5 focus:shadow-md transition-transform;
   }
 
   .label {
