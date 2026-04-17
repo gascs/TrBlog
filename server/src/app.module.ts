@@ -9,6 +9,7 @@ import { TagModule } from './tag/tag.module';
 import { CommentModule } from './comment/comment.module';
 import { RedisModule } from './redis/redis.module';
 import { HealthModule } from './health/health.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 import { RateLimitMiddleware } from './common/middleware/rate-limit.middleware';
 import { OriginCheckMiddleware } from './common/middleware/origin-check.middleware';
 
@@ -20,6 +21,7 @@ import { OriginCheckMiddleware } from './common/middleware/origin-check.middlewa
     PrismaModule,
     RedisModule,
     HealthModule,
+    SitemapModule,
     UserModule,
     AuthModule,
     PostModule,

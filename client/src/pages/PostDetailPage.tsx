@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Calendar, User, MessageSquare, ArrowLeft, Send, Trash2, Tag } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Comment } from '../types';
 import { SkeletonDetail } from '../components/Skeleton';
@@ -106,8 +107,41 @@ const PostDetailPage: React.FC = () => {
     );
   }
 
+  const pageTitle = post ? `${post.title} - TrBlog` : 'TrBlog';
+  const pageDescription = post?.excerpt || post?.content.slice(0, 150) || '阅读精彩文章';
+  const currentUrl = window.location.href;
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta name="keywords" content={post?.tags?.map((t: any) => t.name).join(',') || '博客,文章'} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={currentUrl} />
+        {post?.coverImage && <meta property="og:image" content={post.coverImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        {post?.coverImage && <meta name="twitter:image" content={post.coverImage} />}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post?.title,
+            "description": pageDescription,
+            "author": {
+              "@type": "Person",
+              "name": post?.author?.username
+            },
+            "datePublished": post?.createdAt,
+            "dateModified": post?.updatedAt,
+            "image": post?.coverImage
+          })}
+        </script>
+      </Helmet>
       <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
