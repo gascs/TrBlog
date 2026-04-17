@@ -1,13 +1,14 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight, MessageSquare, Eye } from 'lucide-react';
+import { Calendar, User, ArrowRight, MessageSquare, Eye, PenTool, Home, Settings } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
-import { Post } from '../types';
+import { Post, User as UserType } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
 import OptimizedImage from '../components/OptimizedImage';
+import AdminLink from '../components/AdminLink';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN', {
@@ -88,10 +89,18 @@ PostItem.displayName = 'PostItem';
 
 const HomePage: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [user, setUser] = useState<UserType | null>(null);
   const limit = 10;
   
   const siteTitle = 'TrBlog - 分享知识，连接思想';
   const siteDescription = '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['posts', page, limit],
@@ -206,9 +215,26 @@ const HomePage: React.FC = () => {
               <br />
               <span className="text-blue-600">连接思想</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
             </p>
+            <div className="flex flex-wrap gap-4">
+              <AdminLink user={user} to="/admin/posts" variant="button" icon={<PenTool className="w-5 h-5" />}>
+                立即开始写作
+              </AdminLink>
+              <motion.Link
+                to="/"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Home className="w-5 h-5" />
+                先去博客首页
+              </motion.Link>
+              <AdminLink user={user} to="/admin" variant="button" icon={<Settings className="w-5 h-5" />}>
+                进入管理后台
+              </AdminLink>
+            </div>
           </motion.div>
         </div>
       </motion.div>

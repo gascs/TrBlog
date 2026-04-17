@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, LogOut, Settings, Menu as MenuIcon } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
+import AdminLink from './AdminLink';
 import { User as UserType } from '../types';
 
 interface NavbarProps {
@@ -87,15 +88,9 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             <ThemeToggle />
             {user ? (
               <div className="flex items-center space-x-4">
-                {user.role === 'ADMIN' && (
-                  <Link
-                    to="/admin"
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors flex items-center gap-2"
-                  >
-                    <Settings className="w-4 h-4" />
-                    后台管理
-                  </Link>
-                )}
+                <AdminLink user={user} to="/admin" variant="nav" icon={<Settings className="w-4 h-4" />}>
+                  管理后台
+                </AdminLink>
                 <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 dark:bg-dark-muted rounded-full">
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     {user.username.charAt(0).toUpperCase()}
@@ -200,16 +195,15 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
               <div className="border-t border-gray-100 dark:border-dark-border pt-4 space-y-3">
                 {user ? (
                   <>
-                    {user.role === 'ADMIN' && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center gap-2 text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2"
-                      >
-                        <Settings className="w-5 h-5" />
-                        后台管理
-                      </Link>
-                    )}
+                    <AdminLink 
+                      user={user} 
+                      to="/admin" 
+                      variant="nav" 
+                      icon={<Settings className="w-5 h-5" />}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      管理后台
+                    </AdminLink>
                     <div className="flex items-center gap-3 py-2">
                       <User className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                       <span className="text-gray-700 dark:text-gray-300">{user.username}</span>
