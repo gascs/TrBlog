@@ -233,6 +233,11 @@ MIT License
 
 如果有任何问题或建议，欢迎联系我们。
 
+## 制作人
+
+- **Gascs** - [https://motut.net.cn](https://motut.net.cn)
+- **TRAE SOLO**
+
 ---
 
 <div align="center">
