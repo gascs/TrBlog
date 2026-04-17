@@ -7,7 +7,6 @@ import {
   Trash2, 
   Eye, 
   Search,
-  MoreHorizontal,
   Calendar,
   User
 } from 'lucide-react';
