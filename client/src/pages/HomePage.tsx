@@ -219,9 +219,15 @@ const HomePage: React.FC = () => {
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
             </p>
             <div className="flex flex-wrap gap-4">
-              <AdminLink user={user} to="/admin/posts" variant="button" icon={<PenTool className="w-5 h-5" />}>
+              <motion.Link
+                to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin/posts' : '/login'}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all hover:scale-105 font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <PenTool className="w-5 h-5" />
                 立即开始写作
-              </AdminLink>
+              </motion.Link>
               <motion.Link
                 to="/"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
@@ -231,9 +237,15 @@ const HomePage: React.FC = () => {
                 <Home className="w-5 h-5" />
                 先去博客首页
               </motion.Link>
-              <AdminLink user={user} to="/admin" variant="button" icon={<Settings className="w-5 h-5" />}>
+              <motion.Link
+                to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin' : '/login'}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all hover:scale-105 font-semibold"
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.5)' }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Settings className="w-5 h-5" />
                 进入管理后台
-              </AdminLink>
+              </motion.Link>
             </div>
           </motion.div>
         </div>
