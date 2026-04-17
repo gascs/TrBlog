@@ -221,6 +221,57 @@ REACT_APP_MOCK_MODE=false
 3. **提交你的更改**
 4. **发起 Pull Request**
 
+## 常见问题与解决方案
+
+### 1. 数据库连接配置
+
+**问题**：本地运行模式下需要确保PostgreSQL数据库已正确配置
+
+**解决方案**：
+- 确保本地PostgreSQL服务已启动
+- 确保数据库用户和密码正确
+- 确保数据库已创建
+
+### 2. Docker 权限问题
+
+**问题**：运行Docker命令可能需要sudo权限
+
+**解决方案**：
+- 将用户添加到docker组
+- 或使用部署脚本中的自动sudo检测
+
+### 3. 网络连接问题
+
+**问题**：拉取Docker镜像可能受网络影响
+
+**解决方案**：
+- 确保网络连接正常
+- 部署脚本会自动配置Docker镜像源
+- 当镜像拉取失败时，脚本会自动切换到本地编译模式
+- 或手动选择本地编译运行模式：`./deploy.sh 1`
+
+### 4. Docker镜像拉取失败
+
+**问题**：无法拉取Docker镜像（如 `node:18-alpine`）
+
+**解决方案**：
+- 部署脚本会自动检测并配置Docker镜像源
+- 当镜像拉取失败时，脚本会自动切换到本地编译模式
+- 或手动配置Docker镜像源：
+  ```bash
+  sudo nano /etc/docker/daemon.json
+  # 添加以下内容
+  {
+    "registry-mirrors": [
+      "https://docker.mirrors.ustc.edu.cn",
+      "https://hub-mirror.c.163.com",
+      "https://registry.docker-cn.com"
+    ]
+  }
+  # 重启Docker服务
+  sudo systemctl restart docker
+  ```
+
 ## 部署检查清单
 
 在部署到生产环境之前，请参考 [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) 进行全面检查。

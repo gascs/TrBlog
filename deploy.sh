@@ -430,6 +430,40 @@ docker_run() {
     else
         echo_yellow "警告: 网络连接可能存在问题"
         echo "将继续执行，但拉取镜像可能会失败"
+        
+        # 尝试配置Docker镜像源
+        echo "尝试配置Docker镜像源..."
+        if [ -f "/etc/docker/daemon.json" ]; then
+            echo "Docker配置文件已存在，检查镜像源配置"
+            if grep -q "registry-mirrors" /etc/docker/daemon.json; then
+                echo_green "Docker镜像源已配置"
+            else
+                echo "添加Docker镜像源配置..."
+                sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.bak
+                sudo jq '. += {"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn", "https://hub-mirror.c.163.com", "https://registry.docker-cn.com"]}' /etc/docker/daemon.json > /tmp/daemon.json
+                sudo mv /tmp/daemon.json /etc/docker/daemon.json
+                echo "重启Docker服务..."
+                sudo systemctl restart docker
+                sleep 5
+                echo_green "Docker镜像源配置完成"
+            fi
+        else
+            echo "创建Docker配置文件并添加镜像源..."
+            sudo mkdir -p /etc/docker
+            sudo cat > /etc/docker/daemon.json << EOF
+{
+  "registry-mirrors": [
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://hub-mirror.c.163.com",
+    "https://registry.docker-cn.com"
+  ]
+}
+EOF
+            echo "重启Docker服务..."
+            sudo systemctl restart docker
+            sleep 5
+            echo_green "Docker镜像源配置完成"
+        fi
     fi
     
     # 检查Docker Compose文件
@@ -494,6 +528,15 @@ EOF
     if [ $? -ne 0 ]; then
         echo_red "错误: 启动容器失败"
         echo "提示: 检查Docker日志以了解详情"
+        
+        # 检查是否是镜像拉取失败
+        if docker compose logs | grep -q "failed to resolve source metadata" || docker compose logs | grep -q "EOF" || docker compose logs | grep -q "connection refused"; then
+            echo_yellow "检测到镜像拉取失败，可能是网络问题"
+            echo "正在切换到本地编译运行模式..."
+            $SUDO docker compose down
+            local_run
+            return 0
+        fi
         return 1
     fi
     
