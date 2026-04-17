@@ -7,6 +7,9 @@ import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
 import { CommentModule } from './comment/comment.module';
+import { RedisModule } from './redis/redis.module';
+import { RateLimitMiddleware } from './common/middleware/rate-limit.middleware';
+import { OriginCheckMiddleware } from './common/middleware/origin-check.middleware';
 
 @Module({
   imports: [
@@ -14,6 +17,7 @@ import { CommentModule } from './comment/comment.module';
       isGlobal: true,
     }),
     PrismaModule,
+    RedisModule,
     UserModule,
     AuthModule,
     PostModule,
@@ -22,6 +26,9 @@ import { CommentModule } from './comment/comment.module';
     CommentModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    RateLimitMiddleware,
+    OriginCheckMiddleware,
+  ],
 })
 export class AppModule {}
