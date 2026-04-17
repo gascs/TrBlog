@@ -84,7 +84,7 @@ const AdminDashboard: React.FC = () => {
                 { label: '分类数量', value: '0' },
                 { label: '标签数量', value: '0' },
                 { label: '用户数量', value: '0' }
-              ].map((stat, index) => (
+              ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-4xl font-bold mb-2">{stat.value}</div>
                   <div className="text-white/80">{stat.label}</div>

@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。分享知识，连接思想。
             </p>
             <div className="flex space-x-4">
-              {['GitHub', 'Twitter', 'Discord'].map((social, index) => (
+              {['GitHub', 'Twitter', 'Discord'].map((social) => (
                 <a
                   key={social}
                   href="#"

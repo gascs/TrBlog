@@ -1,15 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dtos/create-comment.dto';
+import { XssProtectionService } from '../common/services/xss-protection.service';
 
 @Injectable()
 export class CommentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService, 
+    private xssProtectionService: XssProtectionService
+  ) {}
 
   async create(createCommentDto: CreateCommentDto, authorId: string) {
+    // 过滤用户输入，防止XSS攻击
+    const sanitizedCommentData = {
+      ...createCommentDto,
+      content: this.xssProtectionService.sanitizeString(createCommentDto.content),
+    };
+
     return this.prisma.comment.create({
       data: {
-        ...createCommentDto,
+        ...sanitizedCommentData,
         authorId,
       },
       include: {
