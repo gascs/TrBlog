@@ -10,7 +10,8 @@ import {
   Menu, 
   X,
   LogOut,
-  User
+  User,
+  Eye
 } from 'lucide-react';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -111,6 +112,14 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex-1 lg:hidden" />
           
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => window.open('/', '_blank')}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              title="前台预览"
+            >
+              <Eye className="w-4 h-4" />
+              <span className="hidden sm:inline">前台预览</span>
+            </button>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-indigo-500 rounded-full flex items-center justify-center text-white font-semibold">
                 <User className="w-4 h-4" />
