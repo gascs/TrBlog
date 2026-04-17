@@ -111,6 +111,17 @@ check_system_dependencies() {
         fi
     fi
     
+    # 检查本地PostgreSQL（如果使用本地模式）
+    if [ "$DB_TYPE" == "local" ]; then
+        if command -v psql > /dev/null 2>&1; then
+            echo_green "PostgreSQL 客户端已安装"
+        else
+            echo_yellow "警告: PostgreSQL 未安装"
+            echo "提示: 本地模式需要安装 PostgreSQL"
+            echo "建议: 安装 PostgreSQL 或切换到 Docker 模式"
+        fi
+    fi
+    
     # 检查curl
     if command -v curl > /dev/null 2>&1; then
         echo_green "curl 已安装"
