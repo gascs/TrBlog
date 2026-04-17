@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, MessageSquare, Eye } from 'lucide-react';
 import api from '../services/api';
 import { Post } from '../types';
+import { SkeletonPostCard } from '../components/Skeleton';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN', {
@@ -107,19 +108,9 @@ const HomePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto py-20">
-          <div className="animate-pulse space-y-8">
+          <div className="space-y-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8 border-b border-gray-100">
-                <div className="md:col-span-4">
-                  <div className="aspect-[4/3] bg-gray-200 rounded-xl" />
-                </div>
-                <div className="md:col-span-8 space-y-4">
-                  <div className="h-4 bg-gray-200 rounded w-32" />
-                  <div className="h-8 bg-gray-200 rounded w-3/4" />
-                  <div className="h-6 bg-gray-200 rounded w-full" />
-                  <div className="h-6 bg-gray-200 rounded w-2/3" />
-                </div>
-              </div>
+              <SkeletonPostCard key={i} />
             ))}
           </div>
         </div>

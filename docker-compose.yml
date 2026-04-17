@@ -18,6 +18,19 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7-alpine
+    container_name: trblog-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   server:
     build: 
       context: ./server
@@ -28,8 +41,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       DATABASE_URL: "postgresql://trblog:trblog123@postgres:5432/trblog?schema=public"
+      REDIS_URL: "redis://redis:6379"
       JWT_SECRET: "your-super-secret-jwt-key-change-this-in-production"
       JWT_EXPIRES_IN: "7d"
       PORT: 3000
@@ -48,3 +64,5 @@ services:
 volumes:
   postgres_data:
     name: trblog-postgres-data
+  redis_data:
+    name: trblog-redis-data
