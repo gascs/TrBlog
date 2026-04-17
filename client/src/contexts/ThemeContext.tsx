@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark' | 'system' | 'colorful';
 
 interface ThemeContextType {
   theme: Theme;
@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('theme');
-    if (saved && ['light', 'dark', 'system'].includes(saved)) {
+    if (saved && ['light', 'dark', 'system', 'colorful'].includes(saved)) {
       return saved as Theme;
     }
     return 'system';
@@ -22,7 +22,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [isDark, setIsDark] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') return true;
-    if (saved === 'light') return false;
+    if (saved === 'light' || saved === 'colorful') return false;
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
@@ -53,14 +53,16 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
+    root.classList.remove('light', 'dark', 'colorful');
     
-    if (isDark) {
+    if (theme === 'colorful') {
+      root.classList.add('colorful');
+    } else if (isDark) {
       root.classList.add('dark');
     } else {
       root.classList.add('light');
     }
-  }, [isDark]);
+  }, [theme, isDark]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, isDark }}>

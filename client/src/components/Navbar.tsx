@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           <div className="flex items-center">
             <Link
               to="/"
-              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors"
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 colorful:text-gradient transition-colors"
             >
               TrBlog
             </Link>
