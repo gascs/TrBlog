@@ -42,7 +42,15 @@ export class PostService {
     });
 
     // 清除文章列表缓存
-    await this.redisService.del('posts:*').catch(console.error);
+    try {
+      const redis = await this.redisService.getClient();
+      const keys = await redis.keys('posts:*');
+      if (keys.length > 0) {
+        await redis.del(...keys);
+      }
+    } catch (error) {
+      console.error('Failed to clear posts cache:', error);
+    }
 
     return post;
   }
@@ -219,8 +227,16 @@ export class PostService {
     });
 
     // 清除相关缓存
-    await this.redisService.del(`post:${id}`).catch(console.error);
-    await this.redisService.del('posts:*').catch(console.error);
+    try {
+      await this.redisService.del(`post:${id}`);
+      const redis = await this.redisService.getClient();
+      const keys = await redis.keys('posts:*');
+      if (keys.length > 0) {
+        await redis.del(...keys);
+      }
+    } catch (error) {
+      console.error('Failed to clear cache:', error);
+    }
 
     return post;
   }
@@ -234,7 +250,15 @@ export class PostService {
     await this.prisma.post.delete({ where: { id } });
 
     // 清除相关缓存
-    await this.redisService.del(`post:${id}`).catch(console.error);
-    await this.redisService.del('posts:*').catch(console.error);
+    try {
+      await this.redisService.del(`post:${id}`);
+      const redis = await this.redisService.getClient();
+      const keys = await redis.keys('posts:*');
+      if (keys.length > 0) {
+        await redis.del(...keys);
+      }
+    } catch (error) {
+      console.error('Failed to clear cache:', error);
+    }
   }
 }

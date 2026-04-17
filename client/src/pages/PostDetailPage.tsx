@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { Calendar, User, MessageSquare, ArrowLeft, Send, Trash2, Tag } from 'lucide-react';
 import api from '../services/api';
 import { Comment } from '../types';
+import { SkeletonDetail } from '../components/Skeleton';
 
 const PostDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -82,12 +83,7 @@ const PostDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto py-20">
-          <div className="max-w-4xl mx-auto animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-24 mb-4" />
-            <div className="h-12 bg-gray-200 rounded w-3/4 mb-4" />
-            <div className="h-6 bg-gray-200 rounded w-1/2 mb-8" />
-            <div className="h-96 bg-gray-200 rounded-xl mb-8" />
-          </div>
+          <SkeletonDetail />
         </div>
       </div>
     );
