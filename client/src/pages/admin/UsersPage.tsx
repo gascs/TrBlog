@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Search, Edit, Trash2, Shield, User } from 'lucide-react';
+import { Search, Edit, Trash2, Shield, User as UserIcon } from 'lucide-react';
 import api from '../../services/api';
+import { User } from '../../types';
 
 const UsersPage: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -30,7 +31,7 @@ const UsersPage: React.FC = () => {
     }
   };
 
-  const filteredUsers = data?.filter((user: any) =>
+  const filteredUsers = data?.filter((user: User) =>
     user.username.toLowerCase().includes(search.toLowerCase()) ||
     user.email.toLowerCase().includes(search.toLowerCase())
   );
@@ -86,7 +87,7 @@ const UsersPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {filteredUsers?.map((user: any) => (
+                  {filteredUsers?.map((user: User) => (
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
@@ -107,7 +108,7 @@ const UsersPage: React.FC = () => {
                             ? 'bg-purple-100 text-purple-800'
                             : 'bg-gray-100 text-gray-800'
                         }`}>
-                          {user.role === 'ADMIN' ? <Shield className="w-3 h-3" /> : <User className="w-3 h-3" />}
+                          {user.role === 'ADMIN' ? <Shield className="w-3 h-3" /> : <UserIcon className="w-3 h-3" />}
                           {user.role === 'ADMIN' ? '管理员' : '用户'}
                         </span>
                       </td>

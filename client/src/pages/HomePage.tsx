@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, MessageSquare, Eye } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Post } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
+import OptimizedImage from '../components/OptimizedImage';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN', {
@@ -31,7 +33,7 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
           >
-            <img
+            <OptimizedImage
               src={post.coverImage}
               alt={post.title}
               className="w-full h-full object-cover"
@@ -87,6 +89,9 @@ PostItem.displayName = 'PostItem';
 const HomePage: React.FC = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
+  
+  const siteTitle = 'TrBlog - 分享知识，连接思想';
+  const siteDescription = '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['posts', page, limit],
@@ -137,6 +142,49 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Helmet>
+        <title>{siteTitle}</title>
+        <meta name="description" content={siteDescription} />
+        <meta name="keywords" content="博客,技术,文章,知识分享,TrBlog" />
+        <meta property="og:title" content={siteTitle} />
+        <meta property="og:description" content={siteDescription} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={siteTitle} />
+        <meta name="twitter:description" content={siteDescription} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "TrBlog",
+            "url": "/",
+            "description": siteDescription,
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })}
+        </script>
+        {/* 文章列表结构化数据 */}
+        {data?.posts && data.posts.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "name": "最新文章",
+              "itemListElement": data.posts.map((post: Post, index: number) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "url": `/posts/${post.id}`,
+                "name": post.title,
+                "image": post.coverImage,
+                "description": post.excerpt
+              }))
+            })}
+          </script>
+        )}
+      </Helmet>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

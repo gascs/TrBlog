@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Menu as MenuIcon } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import SearchBar from './SearchBar';
+import { User as UserType } from '../types';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onToggleSidebar?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -48,33 +54,36 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <Link
               to="/"
-              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors"
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 colorful:text-gradient transition-colors"
             >
               TrBlog
             </Link>
             <nav className="hidden md:flex items-center ml-12 space-x-8">
-              <Link
-                to="/"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
-              >
-                首页
-              </Link>
-              <Link
-                to="/categories"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
-              >
-                分类
-              </Link>
-              <Link
-                to="/tags"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
-              >
-                标签
-              </Link>
+              {[
+                { name: '首页', path: '/' },
+                { name: '分类', path: '/categories' },
+                { name: '标签', path: '/tags' }
+              ].map((item, index) => (
+                <motion.div
+                  key={item.path}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <Link
+                    to={item.path}
+                    className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light font-medium transition-all relative group"
+                  >
+                    {item.name}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-primary-light transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                </motion.div>
+              ))}
             </nav>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
+            <SearchBar />
             <ThemeToggle />
             {user ? (
               <div className="flex items-center space-x-4">
@@ -103,28 +112,48 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link
-                  to="/login"
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
                 >
-                  登录
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 font-medium transition-all hover:shadow-lg"
+                  <Link
+                    to="/login"
+                    className="px-6 py-2.5 bg-transparent border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-muted font-medium transition-all hover:shadow-md"
+                  >
+                    登录
+                  </Link>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
                 >
-                  注册
-                </Link>
+                  <Link
+                    to="/register"
+                    className="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark font-medium transition-all hover:shadow-lg hover:scale-105"
+                  >
+                    注册
+                  </Link>
+                </motion.div>
               </div>
             )}
           </div>
 
-          <button
-            className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              onClick={() => onToggleSidebar?.()}
+            >
+              <MenuIcon className="w-6 h-6" />
+            </button>
+            <button
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -138,6 +167,9 @@ const Navbar: React.FC = () => {
             className="md:hidden bg-white dark:bg-dark-background border-t border-gray-100 dark:border-dark-border"
           >
             <div className="container mx-auto px-4 py-6 space-y-4">
+              <div className="mb-6">
+                <SearchBar />
+              </div>
               <div className="flex justify-end mb-4">
                 <ThemeToggle />
               </div>

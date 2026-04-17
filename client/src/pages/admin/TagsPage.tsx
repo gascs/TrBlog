@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Plus, Edit, Trash2, Search } from 'lucide-react';
 import api from '../../services/api';
+import { Tag } from '../../types';
 
 const TagsPage: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -17,7 +18,7 @@ const TagsPage: React.FC = () => {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: { name: string; slug: string }) => {
       const response = await api.post('/tags', data);
       return response.data;
     },
@@ -54,7 +55,7 @@ const TagsPage: React.FC = () => {
     }
   };
 
-  const filteredTags = tags?.filter((tag: any) =>
+  const filteredTags = tags?.filter((tag: Tag) =>
     tag.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -95,7 +96,7 @@ const TagsPage: React.FC = () => {
         ) : filteredTags?.length > 0 ? (
           <div className="p-6">
             <div className="flex flex-wrap gap-3">
-              {filteredTags.map((tag: any) => (
+              {filteredTags.map((tag: Tag) => (
                 <div key={tag.id} className="group flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full hover:border-gray-300 hover:bg-gray-100 transition-all">
                   <span className="text-sm font-medium text-gray-700">{tag.name}</span>
                   <span className="text-xs text-gray-400">/{tag.slug}</span>

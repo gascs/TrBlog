@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Plus, Edit, Trash2, Search } from 'lucide-react';
 import api from '../../services/api';
+import { Category } from '../../types';
 
 const CategoriesPage: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -17,7 +18,7 @@ const CategoriesPage: React.FC = () => {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Omit<Category, 'id' | 'createdAt' | 'updatedAt' | '_count'>) => {
       const response = await api.post('/categories', data);
       return response.data;
     },
@@ -54,7 +55,7 @@ const CategoriesPage: React.FC = () => {
     }
   };
 
-  const filteredCategories = categories?.filter((cat: any) =>
+  const filteredCategories = categories?.filter((cat: Category) =>
     cat.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -97,7 +98,7 @@ const CategoriesPage: React.FC = () => {
             </div>
           ))
         ) : filteredCategories?.length > 0 ? (
-          filteredCategories.map((category: any) => (
+          filteredCategories.map((category: Category) => (
             <div key={category.id} className="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 hover:shadow-md transition-all">
               <div className="flex items-start justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>

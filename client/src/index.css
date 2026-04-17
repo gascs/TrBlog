@@ -30,6 +30,26 @@
   --border: #334155;
   --ring: #3b82f6;
   --accent: #a78bfa;
+  --dark-background: #0f172a;
+  --dark-card: #1e293b;
+  --dark-border: #334155;
+}
+
+.colorful {
+  --primary: #8b5cf6;
+  --primary-light: #a78bfa;
+  --primary-dark: #7c3aed;
+  --background: #fef7ff;
+  --foreground: #1f1f1f;
+  --muted: #f3e8ff;
+  --muted-foreground: #6b7280;
+  --card: #ffffff;
+  --card-foreground: #1f1f1f;
+  --border: #e9d5ff;
+  --ring: #8b5cf6;
+  --accent: #ec4899;
+  --gradient-primary: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --gradient-secondary: linear-gradient(135deg, #6366f1, #8b5cf6);
 }
 
 * {
@@ -55,6 +75,10 @@ body {
     @apply bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100;
   }
 
+  .colorful ::selection {
+    @apply bg-purple-100 text-purple-900;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -63,8 +87,30 @@ body {
     @apply bg-gray-100 dark:bg-gray-800;
   }
 
+  .colorful ::-webkit-scrollbar-track {
+    @apply bg-purple-50;
+  }
+
   ::-webkit-scrollbar-thumb {
     @apply bg-gray-300 dark:bg-gray-600 rounded-full hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors;
+  }
+
+  .colorful ::-webkit-scrollbar-thumb {
+    @apply bg-purple-300 hover:bg-purple-400 rounded-full transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+  
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-accent;
+  }
+  
+  .bg-gradient-secondary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-500;
   }
 }
 
@@ -78,23 +124,43 @@ body {
   }
 
   .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 dark:hover:shadow-blue-400/25;
+    @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 dark:hover:shadow-blue-400/25 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
+  }
+
+  .colorful .btn-primary {
+    @apply bg-gradient-to-r from-primary to-accent hover:shadow-lg hover:shadow-purple-500/25 active:scale-95 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-secondary {
-    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg active:scale-95 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100;
+    @apply bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg active:scale-95 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
+  }
+
+  .colorful .btn-secondary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:shadow-lg active:scale-95 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-outline {
-    @apply border-2 border-gray-200 bg-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-800;
+    @apply border-2 border-gray-200 bg-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-800 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
+  }
+
+  .colorful .btn-outline {
+    @apply border-2 border-primary/30 bg-transparent text-primary hover:border-primary hover:bg-primary/10 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800;
+    @apply bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
+  }
+
+  .colorful .btn-ghost {
+    @apply bg-transparent text-primary hover:bg-primary/10 transform hover:-translate-y-0.5 active:translate-y-0 transition-transform;
   }
 
   .card {
     @apply bg-card rounded-2xl border border-border p-6 shadow-sm hover:shadow-md transition-shadow dark:bg-dark-card dark:border-dark-border;
+  }
+
+  .colorful .card {
+    @apply bg-card rounded-2xl border border-border p-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all;
   }
 
   .badge {
@@ -105,12 +171,24 @@ body {
     @apply bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400;
   }
 
+  .colorful .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
   .badge-secondary {
     @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300;
   }
 
+  .colorful .badge-secondary {
+    @apply bg-purple-100 text-purple-600;
+  }
+
   .input {
-    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-200 dark:border-gray-600 dark:bg-dark-background dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light dark:focus:ring-primary-light/20;
+    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-200 dark:border-gray-600 dark:bg-dark-background dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light dark:focus:ring-primary-light/20 transform focus:-translate-y-0.5 focus:shadow-md transition-transform;
+  }
+
+  .colorful .input {
+    @apply w-full rounded-lg border border-primary/20 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-200 transform focus:-translate-y-0.5 focus:shadow-md transition-transform;
   }
 
   .label {
