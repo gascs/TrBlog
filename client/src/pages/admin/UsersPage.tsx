@@ -5,11 +5,10 @@ import api from '../../services/api';
 
 const UsersPage: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
   const limit = 10;
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['admin-users', page, limit, search],
+    queryKey: ['admin-users', limit, search],
     queryFn: async () => {
       const response = await api.get('/users');
       return response.data;

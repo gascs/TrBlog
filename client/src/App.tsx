@@ -28,12 +28,7 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
 
-  const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-    if (!user) {
-      return <Navigate to="/login" replace />;
-    }
-    return children;
-  };
+
 
   const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
     if (!user || user.role !== 'ADMIN') {
