@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class SetupMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,8 +15,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
-            return redirect()->route('home')->with('error', '您没有权限访问此页面。');
+        // Check if setup is complete
+        if (file_exists(storage_path('app/setup_complete'))) {
+            return redirect()->route('home');
         }
 
         return $next($request);

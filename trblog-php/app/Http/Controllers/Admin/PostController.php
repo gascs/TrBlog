@@ -37,15 +37,22 @@ class PostController extends Controller
      */
     public function store(PostRequest $request): RedirectResponse
     {
-        $post = Post::create($request->validated() + [
+        $data = $request->validated() + [
             'user_id' => auth()->id(),
-        ]);
+        ];
+
+        // 如果状态为已发布，设置发布时间
+        if ($data['status'] === 'published' && !isset($data['published_at'])) {
+            $data['published_at'] = now();
+        }
+
+        $post = Post::create($data);
 
         if ($request->has('tags')) {
             $post->tags()->sync($request->tags);
         }
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
+        return redirect()->route('admin.posts.index')->with('success', '文章创建成功');
     }
 
     /**
@@ -64,13 +71,20 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post): RedirectResponse
     {
-        $post->update($request->validated());
+        $data = $request->validated();
+
+        // 如果状态从草稿变为已发布，设置发布时间
+        if ($data['status'] === 'published' && $post->status !== 'published' && !isset($data['published_at'])) {
+            $data['published_at'] = now();
+        }
+
+        $post->update($data);
 
         if ($request->has('tags')) {
             $post->tags()->sync($request->tags);
         }
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.posts.index')->with('success', '文章更新成功');
     }
 
     /**
@@ -80,6 +94,6 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('admin.posts.index')->with('success', '文章删除成功');
     }
 }

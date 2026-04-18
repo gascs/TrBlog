@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -22,8 +23,10 @@ use Illuminate\Support\Facades\Route;
 |*/
 
 // Setup routes
-Route::get('/setup', [SetupController::class, 'index'])->name('setup');
-Route::post('/setup', [SetupController::class, 'store'])->name('setup.store');
+Route::middleware('setup')->group(function () {
+    Route::get('/setup', [SetupController::class, 'index'])->name('setup');
+    Route::post('/setup', [SetupController::class, 'store'])->name('setup.store');
+});
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -38,6 +41,12 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('post.show');
 Route::get('/categories/{category}', [PostController::class, 'byCategory'])->name('post.byCategory');
 Route::get('/tags/{tag}', [PostController::class, 'byTag'])->name('post.byTag');
 Route::get('/search', [PostController::class, 'search'])->name('post.search');
+
+// Comment routes
+Route::middleware('auth')->group(function () {
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
