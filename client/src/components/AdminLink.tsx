@@ -44,7 +44,7 @@ const AdminLink: React.FC<AdminLinkProps> = ({
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2 }}
     >
-      <Link to={props.to as string} className={getClassName()} {...props}>
+      <Link className={getClassName()} {...props}>
         {icon && icon}
         {children}
       </Link>

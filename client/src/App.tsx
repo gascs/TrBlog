@@ -12,6 +12,7 @@ const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const SetupPage = lazy(() => import('./pages/SetupPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
@@ -46,6 +47,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/login" element={<RouteTransition><LoginPage /></RouteTransition>} />
             <Route path="/register" element={<RouteTransition><RegisterPage /></RouteTransition>} />
+            <Route path="/setup" element={<RouteTransition><SetupPage /></RouteTransition>} />
             <Route
               path="/"
               element={

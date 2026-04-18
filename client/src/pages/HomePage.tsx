@@ -1,6 +1,6 @@
 import React, { useState, memo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, MessageSquare, Eye, PenTool, Home, Settings } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
@@ -8,7 +8,6 @@ import api from '../services/api';
 import { Post, User as UserType } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
 import OptimizedImage from '../components/OptimizedImage';
-import AdminLink from '../components/AdminLink';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('zh-CN', {
@@ -88,6 +87,7 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
 PostItem.displayName = 'PostItem';
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [user, setUser] = useState<UserType | null>(null);
   const limit = 10;
@@ -96,11 +96,21 @@ const HomePage: React.FC = () => {
   const siteDescription = '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
 
   useEffect(() => {
+    // 检查是否首次访问
+    const hasVisited = localStorage.getItem('hasVisited');
+    if (!hasVisited) {
+      // 标记为已访问
+      localStorage.setItem('hasVisited', 'true');
+      // 重定向到设置页面
+      navigate('/setup');
+      return;
+    }
+
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []);
+  }, [navigate]);
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['posts', page, limit],
@@ -198,54 +208,102 @@ const HomePage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-b from-white to-gray-50 border-b border-gray-100"
+        className="bg-gradient-to-br from-blue-50 to-gray-50 border-b border-gray-100 relative overflow-hidden"
       >
-        <div className="container mx-auto py-20 md:py-32">
+        {/* 装饰元素 */}
+        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path fill="#3b82f6" d="M47.5,-79.1C61.3,-72.2,73.3,-58.3,79.8,-42.5C86.3,-26.7,87.2,-9.1,84.1,7.1C81,23.3,73.9,38.3,64,51.4C54,64.5,41.2,75.6,26.9,82.1C12.7,88.6,-3,88.5,-18.1,85.8C-33.1,83.1,-48.1,77.7,-59.8,68.4C-71.5,59,-79.9,45.8,-83.5,31.4C-87.2,17,-86,1.6,-82.4,-12.7C-78.8,-27,-72.8,-40.6,-64.2,-51.9C-55.7,-63.3,-44.5,-72.3,-32.1,-78.1C-19.8,-83.9,-6.3,-86.6,6.8,-86.3C19.8,-86.1,31.5,-82.9,47.5,-79.1Z" transform="translate(100 100)" />
+          </svg>
+        </div>
+        
+        <div className="container mx-auto py-20 md:py-32 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="max-w-3xl"
           >
-            <span className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold mb-6">
+            <motion.span 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold mb-6"
+            >
               欢迎来到 TrBlog
-            </span>
+            </motion.span>
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              分享知识，
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                分享知识，
+              </motion.span>
               <br />
-              <span className="text-blue-600">连接思想</span>
+              <motion.span 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-blue-600"
+              >
+                连接思想
+              </motion.span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8"
+            >
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
-            </p>
+            </motion.p>
             <div className="flex flex-wrap gap-4">
-              <motion.Link
-                to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin/posts' : '/login'}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all hover:scale-105 font-semibold"
-                whileHover={{ scale: 1.05 }}
+              <motion.div
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)' }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
               >
-                <PenTool className="w-5 h-5" />
-                立即开始写作
-              </motion.Link>
-              <motion.Link
-                to="/"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
-                whileHover={{ scale: 1.05 }}
+                <Link
+                  to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin/posts' : '/login'}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all hover:scale-105 font-semibold"
+                >
+                  <PenTool className="w-5 h-5" />
+                  立即开始写作
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.9 }}
               >
-                <Home className="w-5 h-5" />
-                先去博客首页
-              </motion.Link>
-              <motion.Link
-                to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin' : '/login'}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all hover:scale-105 font-semibold"
+                <Link
+                  to="/"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
+                >
+                  <Home className="w-5 h-5" />
+                  先去博客首页
+                </Link>
+              </motion.div>
+              <motion.div
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.5)' }}
                 whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.0 }}
               >
-                <Settings className="w-5 h-5" />
-                进入管理后台
-              </motion.Link>
+                <Link
+                  to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin' : '/login'}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all hover:scale-105 font-semibold"
+                >
+                  <Settings className="w-5 h-5" />
+                  进入管理后台
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>
