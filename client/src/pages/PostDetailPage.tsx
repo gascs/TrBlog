@@ -82,6 +82,7 @@ const PostDetailPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [activeHeading, setActiveHeading] = useState<string>('');
   const [showToc, setShowToc] = useState(true);
+  const [showFloatingTitle, setShowFloatingTitle] = useState(false);
   const headingsRef = useRef<{ [key: string]: HTMLElement | null }>({});
 
   const { data: post, isLoading, isError, error } = useQuery({
@@ -159,6 +160,9 @@ const PostDetailPage: React.FC = () => {
       }
       
       setActiveHeading(currentHeading);
+
+      // 控制悬浮标题显示
+      setShowFloatingTitle(window.scrollY > 300);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -377,6 +381,40 @@ const PostDetailPage: React.FC = () => {
         animate={{ width: `${scrollProgress}%` }}
         transition={{ duration: 0.1 }}
       />
+      
+      {/* 悬浮标题 */}
+      <AnimatePresence>
+        {showFloatingTitle && post && (
+          <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm z-40 border-b border-gray-200 dark:border-gray-800"
+          >
+            <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+              <motion.h1 
+                className="text-lg md:text-xl font-bold text-gray-900 dark:text-white truncate max-w-3xl"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
+                {post.title}
+              </motion.h1>
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                onClick={scrollToTop}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                <ChevronUp className="w-4 h-4" />
+                <span className="text-sm font-medium">回到顶部</span>
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <Helmet>
         <title>{pageTitle}</title>

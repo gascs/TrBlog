@@ -82,7 +82,12 @@ const Sidebar: React.FC = () => {
         transition={{ duration: 0.5 }}
       >
         {/* 搜索框 */}
-        <div className="mb-6">
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           <div className="relative">
             <input
               type="text"
@@ -104,10 +109,15 @@ const Sidebar: React.FC = () => {
               />
             </svg>
           </div>
-        </div>
+        </motion.div>
 
         {/* 分类 */}
-        <div className="mb-6">
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
           <h2 className="text-md md:text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
             <svg
               className="w-4 h-4 mr-2 text-primary"
@@ -132,23 +142,28 @@ const Sidebar: React.FC = () => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ x: 5 }}
               >
                 <Link
                   to={`/categories/${category.id}`}
                   className="flex items-center justify-between text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-muted transition-all group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform">{category.name}</span>
-                  <span className="text-xs font-medium bg-gray-100 dark:bg-dark-border text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-medium bg-gray-100 dark:bg-dark-border text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full group-hover:bg-primary group-hover:text-white transition-all">
                     {category._count?.posts || 0}
                   </span>
                 </Link>
               </motion.li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* 标签 */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
           <h2 className="text-md md:text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
             <svg
               className="w-4 h-4 mr-2 text-primary"
@@ -173,6 +188,7 @@ const Sidebar: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
               >
                 <Link
                   to={`/tags/${tag.id}`}
@@ -183,7 +199,7 @@ const Sidebar: React.FC = () => {
               </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </aside>
   );

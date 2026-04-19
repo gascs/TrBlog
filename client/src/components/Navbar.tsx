@@ -139,14 +139,16 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             <button
               className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               onClick={() => onToggleSidebar?.()}
+              aria-label="打开侧边栏"
             >
               <MenuIcon className="w-6 h-6" />
             </button>
             <button
               className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="打开菜单"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? <X className="w-6 h-6" /> : <User className="w-6 h-6" />}
             </button>
           </div>
         </div>
