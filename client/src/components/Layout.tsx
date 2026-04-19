@@ -84,7 +84,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </AnimatePresence>
         
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 md:p-10 transition-all duration-300">
+        <main className="flex-1 bg-white dark:bg-gray-900 p-4 sm:p-6 lg:p-8 md:p-10 transition-all duration-300">
           <div className="mx-auto max-w-5xl">
             {children}
           </div>

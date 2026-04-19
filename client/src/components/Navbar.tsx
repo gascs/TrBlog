@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           <div className="flex items-center gap-6">
             <button
               className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-              onClick={() => onToggleSidebar?.()}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="打开菜单"
             >
               <MenuIcon className="w-6 h-6" />
@@ -67,13 +67,6 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
               TrBlog
             </Link>
             <nav className="hidden md:flex items-center ml-16 space-x-8">
-              <button
-                className="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
-                onClick={() => onToggleSidebar?.()}
-              >
-                <MenuIcon className="w-5 h-5 mr-2" />
-                菜单
-              </button>
               {[
                 { name: '首页', path: '/' },
                 { name: '分类', path: '/categories' },

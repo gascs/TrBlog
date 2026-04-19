@@ -17,15 +17,13 @@ const TagsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-        <div className="container mx-auto px-4">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-8" />
-            <div className="flex flex-wrap gap-3">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                <div key={i} className="h-12 bg-gray-200 dark:bg-gray-700 rounded-full w-24" />
-              ))}
-            </div>
+      <div className="py-8">
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-8" />
+          <div className="flex flex-wrap gap-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+              <div key={i} className="h-12 bg-gray-200 dark:bg-gray-700 rounded-full w-24" />
+            ))}
           </div>
         </div>
       </div>

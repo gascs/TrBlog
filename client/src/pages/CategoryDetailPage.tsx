@@ -39,22 +39,20 @@ const CategoryDetailPage: React.FC = () => {
 
   if (categoryLoading || postsLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-        <div className="container mx-auto px-4">
-          <div className="animate-pulse space-y-6">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-lg" />
-              <div className="h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
-            </div>
-            <div className="space-y-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                  <div className="h-6 w-3/4 bg-gray-200 dark:bg-gray-700 rounded mb-3" />
-                  <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                  <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-700 rounded" />
-                </div>
-              ))}
-            </div>
+      <div className="py-8">
+        <div className="animate-pulse space-y-6">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+            <div className="h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+          </div>
+          <div className="space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <div className="h-6 w-3/4 bg-gray-200 dark:bg-gray-700 rounded mb-3" />
+                <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+                <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-700 rounded" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
