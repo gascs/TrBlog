@@ -14,6 +14,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -36,6 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
     localStorage.removeItem('user');
     setUser(null);
     setIsMenuOpen(false);
+    setIsUserMenuOpen(false);
     navigate('/');
   };
 
@@ -146,10 +148,78 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             <button
               className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="打开菜单"
+              aria-label={isMenuOpen ? "关闭菜单" : "打开菜单"}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <User className="w-6 h-6" />}
+              {isMenuOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
+            <div className="relative">
+              <button
+                className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                aria-label="用户菜单"
+              >
+                <User className="w-6 h-6" />
+              </button>
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 z-50"
+                  >
+                    <div className="py-2">
+                      {user ? (
+                        <>
+                          <AdminLink 
+                            user={user} 
+                            to="/admin" 
+                            variant="nav" 
+                            icon={<Settings className="w-4 h-4" />}
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            管理后台
+                          </AdminLink>
+                          <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-800">
+                            <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                                {user.username.charAt(0).toUpperCase()}
+                              </div>
+                              <span className="text-sm font-medium">{user.username}</span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-2 px-4 w-full text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            退出登录
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            to="/login"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                          >
+                            登录
+                          </Link>
+                          <Link
+                            to="/register"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                          >
+                            注册
+                          </Link>
+                        </>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>
