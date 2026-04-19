@@ -47,7 +47,7 @@
         
         <!-- 文章内容 -->
         <div class="prose max-w-none mb-8">
-            {!! $post->content !!}
+            {{ $post->content }}
         </div>
         
         <!-- 评论区 -->

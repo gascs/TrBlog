@@ -15,6 +15,21 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Get the rate limiters for the request.
+     *
+     * @return array
+     */
+    public function rateLimit(): array
+    {
+        return [
+            'login' => [
+                'max' => 5,
+                'decay' => 60,
+            ],
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>

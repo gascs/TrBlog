@@ -23,7 +23,7 @@ class CommentController extends Controller
         Comment::create([
             'user_id' => auth()->id(),
             'post_id' => $request->post_id,
-            'content' => $request->content,
+            'content' => htmlspecialchars($request->content, ENT_QUOTES, 'UTF-8'),
         ]);
 
         return back()->with('success', '评论发布成功');
