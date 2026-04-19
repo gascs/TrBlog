@@ -38,7 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 transition={{ duration: 0.3 }}
                 className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-background shadow-2xl z-40"
               >
-                <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
+                <div className="h-20 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">菜单</h2>
                   <button
                     onClick={() => setIsSidebarOpen(false)}
