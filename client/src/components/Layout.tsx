@@ -56,10 +56,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Floating sidebar toggle button - Desktop */}
         <motion.button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 -translate-y-1/2 left-4 z-20 hidden md:flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+          className="fixed top-1/2 -translate-y-1/2 right-4 z-20 hidden md:flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           whileHover={{ scale: 1.1, rotate: 90 }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
         >
