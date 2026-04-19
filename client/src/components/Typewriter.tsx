@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface TypewriterProps {
   text: string;
@@ -14,14 +14,14 @@ interface TypewriterProps {
 
 const Typewriter: React.FC<TypewriterProps> = ({
   text,
-  speed = 30, // 进一步加快速度
+  speed = 40, // 调整速度，使其更流畅
   delay = 0,
   className = '',
   cursorClassName = 'inline-block w-2 h-6 bg-current ml-1 animate-pulse',
   showCursor = true,
   typeVariations = true,
   backspaceEffect = false,
-  wordDelay = 200
+  wordDelay = 150
 }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,25 +34,25 @@ const Typewriter: React.FC<TypewriterProps> = ({
   const backspaceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 随机速度变化，增加打字机的真实感
-  const getRandomSpeed = () => {
+  const getRandomSpeed = useCallback(() => {
     if (!typeVariations) return speed;
     // 更自然的速度变化，不同字符类型有不同速度
     const char = text[currentIndex];
     if (char === ' ' || char === '.' || char === ',' || char === '!' || char === '?') {
-      return speed * 2; // 标点符号和空格稍慢
+      return speed * 1.5; // 标点符号和空格稍慢
     } else if (char === '\n' || char === '\n') {
-      return speed * 3; // 换行更慢
+      return speed * 2; // 换行更慢
     } else {
-      return speed + Math.random() * 20 - 10; // 普通字符随机速度
+      return speed + Math.random() * 15 - 7.5; // 普通字符随机速度，范围更小
     }
-  };
+  }, [typeVariations, speed, text, currentIndex]);
 
   // 检查是否是单词结尾
-  const isWordEnd = (index: number) => {
+  const isWordEnd = useCallback((index: number) => {
     if (index >= text.length - 1) return false;
     const nextChar = text[index + 1];
     return nextChar === ' ' || nextChar === '.' || nextChar === ',' || nextChar === '!' || nextChar === '?';
-  };
+  }, [text]);
 
   useEffect(() => {
     // 开始延迟
@@ -70,7 +70,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
         const timeout = setTimeout(() => {
           setDisplayedText(prev => prev.slice(0, -1));
           setBackspaceCount(prev => prev - 1);
-        }, speed * 0.5); // 退格速度更快
+        }, speed * 0.4); // 退格速度更快
         backspaceTimeoutRef.current = timeout;
         return () => {
           if (backspaceTimeoutRef.current) {
@@ -92,16 +92,16 @@ const Typewriter: React.FC<TypewriterProps> = ({
           setTimeout(() => setIsPaused(false), wordDelay);
         }
         
-        // 随机暂停，增加真实感
-        else if (typeVariations && Math.random() > 0.97) {
+        // 随机暂停，增加真实感但减少频率
+        else if (typeVariations && Math.random() > 0.98) {
           setIsPaused(true);
-          setTimeout(() => setIsPaused(false), 100 + Math.random() * 150);
+          setTimeout(() => setIsPaused(false), 80 + Math.random() * 100); // 更短的暂停
         }
         
-        // 随机退格效果，增加真实感
-        else if (backspaceEffect && typeVariations && Math.random() > 0.98 && currentIndex > 5) {
+        // 随机退格效果，减少频率以避免卡顿
+        else if (backspaceEffect && typeVariations && Math.random() > 0.99 && currentIndex > 10) {
           setIsBackspacing(true);
-          setBackspaceCount(Math.floor(Math.random() * 3) + 1); // 退格1-3个字符
+          setBackspaceCount(Math.floor(Math.random() * 2) + 1); // 退格1-2个字符，减少退格次数
         }
       }, randomSpeed);
 
@@ -114,7 +114,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
     } else if (currentIndex >= text.length) {
       setIsDone(true);
     }
-  }, [currentIndex, text, speed, delay, isPaused, isBackspacing, backspaceCount, hasStarted, typeVariations, backspaceEffect, wordDelay]);
+  }, [currentIndex, text, speed, delay, isPaused, isBackspacing, backspaceCount, hasStarted, typeVariations, backspaceEffect, wordDelay, getRandomSpeed, isWordEnd]);
 
   // 清理函数
   useEffect(() => {

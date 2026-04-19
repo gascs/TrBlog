@@ -240,11 +240,11 @@ const HomePage: React.FC = () => {
                 {typewriterEnabled ? (
                   <Typewriter 
                     text={siteConfig.title} 
-                    speed={30} 
+                    speed={40} 
                     delay={300}
-                    backspaceEffect={true}
+                    backspaceEffect={false} // 暂时关闭退格效果以避免卡顿
                     typeVariations={true}
-                    wordDelay={150}
+                    wordDelay={120}
                     className="inline-block"
                   />
                 ) : (
@@ -256,11 +256,11 @@ const HomePage: React.FC = () => {
                 {typewriterEnabled ? (
                   <Typewriter 
                     text={siteConfig.description} 
-                    speed={25} 
-                    delay={1500}
-                    backspaceEffect={true}
+                    speed={35} 
+                    delay={1200}
+                    backspaceEffect={false} // 暂时关闭退格效果以避免卡顿
                     typeVariations={true}
-                    wordDelay={100}
+                    wordDelay={80}
                     className="inline-block"
                   />
                 ) : (
