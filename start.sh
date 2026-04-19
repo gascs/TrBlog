@@ -305,10 +305,9 @@ else
                 if [ -t 0 ]; then
                     echo "可选操作:"
                     echo "1. 尝试安装 MySQL（需要 sudo 权限）"
-                    echo "2. 切换到 Docker 模式"
-                    echo "3. 切换到 SQLite 数据库"
-                    echo "4. 退出"
-                    read -p "请选择操作 (1-4): " -n 1 -r
+                    echo "2. 切换到 SQLite 数据库"
+                    echo "3. 退出"
+                    read -p "请选择操作 (1-3): " -n 1 -r
                     echo
 
                     case $REPLY in
@@ -373,16 +372,11 @@ EOF
                             fi
                             ;;
                         2)
-                            echo "切换到 Docker 模式..."
-                            export DEPLOY_MODE=docker
-                            exec ./start.sh
-                            ;;
-                        3)
                             echo "切换到 SQLite 数据库..."
                             export DB_ENGINE=sqlite
                             export DB_PORT=0
                             ;;
-                        4)
+                        3)
                             echo "退出脚本"
                             exit 1
                             ;;
@@ -423,7 +417,7 @@ EOF
             if [ -t 0 ]; then
                 echo "可选操作:"
                 echo "1. 继续尝试启动（可能会失败）"
-                echo "2. 切换到 Docker 模式"
+                echo "2. 切换到 SQLite 数据库"
                 echo "3. 退出"
                 read -p "请选择操作 (1-3): " -n 1 -r
                 echo
@@ -433,9 +427,9 @@ EOF
                         echo "继续尝试启动..."
                         ;;
                     2)
-                        echo "切换到 Docker 模式..."
-                        export DEPLOY_MODE=docker
-                        exec ./start.sh
+                        echo "切换到 SQLite 数据库..."
+                        export DB_ENGINE=sqlite
+                        export DB_PORT=0
                         ;;
                     3)
                         echo "退出脚本"
@@ -470,6 +464,7 @@ EOF
     exit 0
 fi
 
+# 只有在 Docker 模式下才执行以下代码
 if [ "$DEPLOY_MODE" == "docker" ]; then
     # 运行数据库迁移
     echo "正在运行数据库迁移..."
