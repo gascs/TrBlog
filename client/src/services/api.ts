@@ -129,11 +129,22 @@ const mockApi = {
             const post = mockData.posts.find(p => p.id === id);
             resolve({ data: post, status: 200, statusText: 'OK' });
           } else {
+            let filteredPosts = [...mockData.posts];
+            // 支持按分类筛选
+            if (config?.params?.categoryId) {
+              filteredPosts = filteredPosts.filter(p => p.categoryId === config.params.categoryId);
+            }
+            // 支持按标签筛选
+            if (config?.params?.tagId) {
+              filteredPosts = filteredPosts.filter(p => 
+                p.tags.some((tag: any) => tag.id === config.params.tagId)
+              );
+            }
             resolve({ 
               data: {
-                posts: mockData.posts,
+                posts: filteredPosts,
                 pagination: {
-                  total: mockData.posts.length,
+                  total: filteredPosts.length,
                   page: 1,
                   limit: 10,
                   totalPages: 1
@@ -144,9 +155,33 @@ const mockApi = {
             });
           }
         } else if (url.includes('/categories')) {
-          resolve({ data: mockData.categories, status: 200, statusText: 'OK' });
+          if (url.includes('/categories/')) {
+            const id = url.split('/').pop();
+            const category = mockData.categories.find(c => c.id === id);
+            // 添加该分类下的文章
+            const categoryWithPosts = {
+              ...category,
+              posts: mockData.posts.filter(p => p.categoryId === id)
+            };
+            resolve({ data: categoryWithPosts, status: 200, statusText: 'OK' });
+          } else {
+            resolve({ data: mockData.categories, status: 200, statusText: 'OK' });
+          }
         } else if (url.includes('/tags')) {
-          resolve({ data: mockData.tags, status: 200, statusText: 'OK' });
+          if (url.includes('/tags/')) {
+            const id = url.split('/').pop();
+            const tag = mockData.tags.find(t => t.id === id);
+            // 添加该标签下的文章
+            const tagWithPosts = {
+              ...tag,
+              posts: mockData.posts.filter(p => 
+                p.tags.some((pt: any) => pt.id === id)
+              )
+            };
+            resolve({ data: tagWithPosts, status: 200, statusText: 'OK' });
+          } else {
+            resolve({ data: mockData.tags, status: 200, statusText: 'OK' });
+          }
         } else if (url.includes('/users')) {
           resolve({ data: [mockData.user], status: 200, statusText: 'OK' });
         } else if (url.includes('/settings')) {

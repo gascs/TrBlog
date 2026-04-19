@@ -16,11 +16,15 @@ const SetupPage = lazy(() => import('./pages/SetupPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const OpenSourcePage = lazy(() => import('./pages/OpenSourcePage'));
 const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'));
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'));
+const CategoryDetailPage = lazy(() => import('./pages/CategoryDetailPage'));
+const TagsPage = lazy(() => import('./pages/TagsPage'));
+const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
 const EditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
-const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
-const TagsPage = lazy(() => import('./pages/admin/TagsPage'));
+const AdminCategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
+const AdminTagsPage = lazy(() => import('./pages/admin/TagsPage'));
 const UsersPage = lazy(() => import('./pages/admin/UsersPage'));
 const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
 const MigrationPage = lazy(() => import('./pages/admin/MigrationPage'));
@@ -86,6 +90,46 @@ const App: React.FC = () => {
               }
             />
             <Route
+              path="/categories"
+              element={
+                <Layout>
+                  <RouteTransition>
+                    <CategoriesPage />
+                  </RouteTransition>
+                </Layout>
+              }
+            />
+            <Route
+              path="/categories/:id"
+              element={
+                <Layout>
+                  <RouteTransition>
+                    <CategoryDetailPage />
+                  </RouteTransition>
+                </Layout>
+              }
+            />
+            <Route
+              path="/tags"
+              element={
+                <Layout>
+                  <RouteTransition>
+                    <TagsPage />
+                  </RouteTransition>
+                </Layout>
+              }
+            />
+            <Route
+              path="/tags/:id"
+              element={
+                <Layout>
+                  <RouteTransition>
+                    <TagDetailPage />
+                  </RouteTransition>
+                </Layout>
+              }
+            />
+            <Route
               path="/admin"
               element={
                 <RequireAdmin>
@@ -139,7 +183,7 @@ const App: React.FC = () => {
                 <RequireAdmin>
                   <AdminLayout>
                     <RouteTransition>
-                      <CategoriesPage />
+                      <AdminCategoriesPage />
                     </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
@@ -151,7 +195,7 @@ const App: React.FC = () => {
                 <RequireAdmin>
                   <AdminLayout>
                     <RouteTransition>
-                      <TagsPage />
+                      <AdminTagsPage />
                     </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
