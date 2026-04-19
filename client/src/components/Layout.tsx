@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
@@ -13,8 +13,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // 判断是否是首页
   const isHomePage = location.pathname === '/';
@@ -25,36 +24,41 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Navbar onToggleSidebar={() => setIsSidebarOpen(true)} />
       <div className="flex flex-1 relative">
         {/* Sidebar - Desktop */}
-        <div className="hidden md:block">
-          <AnimatePresence mode="wait">
-            {!isSidebarCollapsed && (
+        <AnimatePresence mode="wait">
+          {isSidebarOpen && (
+            <div className="hidden md:block">
+              <div 
+                className="fixed inset-0 bg-black/20 z-30" 
+                onClick={() => setIsSidebarOpen(false)}
+              />
               <motion.div
-                initial={{ width: 0, opacity: 0, overflow: 'hidden' }}
-                animate={{ width: sidebarWidth, opacity: 1, overflow: 'visible' }}
-                exit={{ width: 0, opacity: 0, overflow: 'hidden' }}
+                initial={{ x: -sidebarWidth, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -sidebarWidth, opacity: 0 }}
                 transition={{ duration: 0.3 }}
+                className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-background shadow-2xl z-40"
               >
-                <div style={{ width: sidebarWidth }}>
-                  <Sidebar />
+                <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">菜单</h2>
+                  <button
+                    onClick={() => setIsSidebarOpen(false)}
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
+                <Sidebar />
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-        
-        {/* Collapse/Expand Button */}
-        <button
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          className="fixed top-1/2 -translate-y-1/2 z-30 hidden md:flex items-center justify-center w-8 h-8 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-full shadow-md hover:bg-gray-50 dark:hover:bg-dark-muted transition-all"
-          style={{ 
-            left: isSidebarCollapsed ? '16px' : `${sidebarWidth - 16}px`
-          }}
-        >
-          {isSidebarCollapsed ? (
-            <ChevronsRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          ) : (
-            <ChevronsLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            </div>
           )}
+        </AnimatePresence>
+        
+        {/* Floating sidebar toggle button - Desktop */}
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed top-1/2 -translate-y-1/2 left-4 z-20 hidden md:flex items-center justify-center w-10 h-10 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-full shadow-md hover:bg-gray-50 dark:hover:bg-dark-muted transition-all"
+        >
+          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
         
         {/* Sidebar - Mobile */}
@@ -72,6 +76,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 transition={{ type: 'tween', duration: 0.3 }}
                 className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-background shadow-2xl z-50"
               >
+                <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">菜单</h2>
+                  <button
+                    onClick={() => setIsSidebarOpen(false)}
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
                 <Sidebar />
               </motion.div>
             </div>
