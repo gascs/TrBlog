@@ -3,12 +3,15 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 const MOCK_MODE = import.meta.env.REACT_APP_MOCK_MODE === 'true';
 
+console.log('🔧 环境配置:', { API_URL, MOCK_MODE });
+
 // 模拟数据
 const mockData = {
   posts: [
     {
       id: '1',
       title: '欢迎使用 TrBlog',
+      slug: 'welcome-to-trblog',
       content: '# 欢迎使用 TrBlog\n\n这是一个基于 React + NestJS 的博客系统。\n\n## 功能特性\n\n- ✅ 文章管理\n- ✅ 评论系统\n- ✅ 用户认证\n- ✅ 分类和标签\n- ✅ 响应式设计\n\n## 技术栈\n\n- **前端**: React 18 + TypeScript + Tailwind CSS\n- **后端**: NestJS + PostgreSQL + Prisma\n- **部署**: Docker + Docker Compose\n\n感谢使用！',
       excerpt: '这是一个基于 React + NestJS 的博客系统，包含文章管理、评论系统、用户认证等功能。',
       coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20blog%20website%20header%20with%20code%20and%20technology&image_size=landscape_16_9',
@@ -19,15 +22,19 @@ const mockData = {
       author: {
         id: '1',
         username: 'admin',
-        email: 'admin@example.com'
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        createdAt: '2026-04-01T00:00:00Z',
+        updatedAt: '2026-04-01T00:00:00Z'
       },
       category: {
         id: '1',
-        name: '技术'
+        name: '技术',
+        slug: 'technology'
       },
       tags: [
-        { id: '1', name: 'React' },
-        { id: '2', name: 'NestJS' }
+        { id: '1', name: 'React', slug: 'react' },
+        { id: '2', name: 'NestJS', slug: 'nestjs' }
       ],
       comments: [],
       createdAt: '2026-04-17T00:00:00Z',
@@ -36,6 +43,7 @@ const mockData = {
     {
       id: '2',
       title: 'TypeScript 入门指南',
+      slug: 'typescript-getting-started',
       content: '# TypeScript 入门指南\n\nTypeScript 是 JavaScript 的超集，添加了类型系统。\n\n## 基本类型\n\n- number\n- string\n- boolean\n- array\n- object\n- null\n- undefined\n\n## 接口\n\n```typescript\ninterface User {\n  id: string;\n  name: string;\n  age: number;\n}\n```\n\n## 泛型\n\n```typescript\nfunction identity<T>(arg: T): T {\n  return arg;\n}\n```',
       excerpt: 'TypeScript 是 JavaScript 的超集，添加了类型系统，使代码更加健壮。',
       coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=typescript%20code%20on%20dark%20background&image_size=landscape_16_9',
@@ -46,15 +54,19 @@ const mockData = {
       author: {
         id: '1',
         username: 'admin',
-        email: 'admin@example.com'
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        createdAt: '2026-04-01T00:00:00Z',
+        updatedAt: '2026-04-01T00:00:00Z'
       },
       category: {
         id: '1',
-        name: '技术'
+        name: '技术',
+        slug: 'technology'
       },
       tags: [
-        { id: '3', name: 'TypeScript' },
-        { id: '4', name: '前端' }
+        { id: '3', name: 'TypeScript', slug: 'typescript' },
+        { id: '4', name: '前端', slug: 'frontend' }
       ],
       comments: [],
       createdAt: '2026-04-16T00:00:00Z',
@@ -62,25 +74,81 @@ const mockData = {
     }
   ],
   categories: [
-    { id: '1', name: '技术' },
-    { id: '2', name: '生活' },
-    { id: '3', name: '学习' }
+    { id: '1', name: '技术', slug: 'technology', _count: { posts: 2 } },
+    { id: '2', name: '生活', slug: 'life', _count: { posts: 0 } },
+    { id: '3', name: '学习', slug: 'study', _count: { posts: 0 } }
   ],
   tags: [
-    { id: '1', name: 'React' },
-    { id: '2', name: 'NestJS' },
-    { id: '3', name: 'TypeScript' },
-    { id: '4', name: '前端' }
+    { id: '1', name: 'React', slug: 'react', _count: { posts: 1 } },
+    { id: '2', name: 'NestJS', slug: 'nestjs', _count: { posts: 1 } },
+    { id: '3', name: 'TypeScript', slug: 'typescript', _count: { posts: 1 } },
+    { id: '4', name: '前端', slug: 'frontend', _count: { posts: 1 } }
   ],
   user: {
     id: '1',
     username: 'admin',
     email: 'admin@example.com',
-    role: 'ADMIN'
+    role: 'ADMIN',
+    createdAt: '2026-04-01T00:00:00Z',
+    updatedAt: '2026-04-01T00:00:00Z'
   }
 };
 
-const api = axios.create({
+// 模拟 API 实现
+const mockApi = {
+  get: (url: string, config?: any) => {
+    console.log('📡 模拟请求 GET:', url, config);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (url.includes('/posts')) {
+          if (url.includes('/posts/')) {
+            const id = url.split('/').pop();
+            const post = mockData.posts.find(p => p.id === id);
+            resolve({ data: post });
+          } else {
+            resolve({ 
+              data: {
+                posts: mockData.posts,
+                pagination: {
+                  total: mockData.posts.length,
+                  page: 1,
+                  limit: 10,
+                  totalPages: 1
+                }
+              }
+            });
+          }
+        } else if (url.includes('/categories')) {
+          resolve({ data: mockData.categories });
+        } else if (url.includes('/tags')) {
+          resolve({ data: mockData.tags });
+        } else {
+          resolve({ data: null });
+        }
+      }, 300);
+    });
+  },
+  post: (url: string, data?: any) => {
+    console.log('📡 模拟请求 POST:', url, data);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (url.includes('/auth/login')) {
+          resolve({ 
+            data: {
+              access_token: 'mock-token-123',
+              user: mockData.user
+            }
+          });
+        } else {
+          resolve({ data: null });
+        }
+      }, 300);
+    });
+  }
+};
+
+// 创建真实的 axios 实例
+const realApi = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -90,67 +158,10 @@ const api = axios.create({
   withCredentials: false, // 不发送cookies
 });
 
-// 模拟模式拦截器
-if (MOCK_MODE) {
-  console.log('🚀 进入模拟模式，使用模拟数据');
-  
-  // 拦截所有请求，返回模拟数据
-  api.interceptors.request.use((config) => {
-    // 模拟延迟
-    return new Promise(resolve => {
-      setTimeout(() => resolve(config), 300);
-    });
-  });
-  
-  api.interceptors.response.use(null, (error) => {
-    // 模拟响应
-    const url = error.config.url;
-    
-    // 处理不同的请求
-    if (url.includes('/posts') && error.config.method === 'get') {
-      if (url.includes('/posts/')) {
-        // 获取单个文章
-        const id = url.split('/').pop();
-        const post = mockData.posts.find(p => p.id === id);
-        return Promise.resolve({ data: post });
-      } else {
-        // 获取文章列表
-        return Promise.resolve({ 
-          data: {
-            posts: mockData.posts,
-            pagination: {
-              total: mockData.posts.length,
-              page: 1,
-              limit: 10,
-              totalPages: 1
-            }
-          }
-        });
-      }
-    }
-    
-    if (url.includes('/categories') && error.config.method === 'get') {
-      return Promise.resolve({ data: mockData.categories });
-    }
-    
-    if (url.includes('/tags') && error.config.method === 'get') {
-      return Promise.resolve({ data: mockData.tags });
-    }
-    
-    if (url.includes('/auth/login') && error.config.method === 'post') {
-      // 模拟登录
-      return Promise.resolve({ 
-        data: {
-          access_token: 'mock-token-123',
-          user: mockData.user
-        }
-      });
-    }
-    
-    // 默认返回错误
-    return Promise.reject(error);
-  });
-} else {
+// 根据模式选择 API
+const api = MOCK_MODE ? mockApi : realApi;
+
+if (!MOCK_MODE) {
   // 正常模式的拦截器
   // Add interceptor to add token to requests
   api.interceptors.request.use(

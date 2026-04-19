@@ -96,14 +96,19 @@ const HomePage: React.FC = () => {
   const siteDescription = '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
 
   useEffect(() => {
-    // 检查是否首次访问
-    const hasVisited = localStorage.getItem('hasVisited');
-    if (!hasVisited) {
-      // 标记为已访问
-      localStorage.setItem('hasVisited', 'true');
-      // 重定向到设置页面
-      navigate('/setup');
-      return;
+    // 模拟模式下跳过首次访问检查
+    const isMockMode = import.meta.env.REACT_APP_MOCK_MODE === 'true';
+    
+    if (!isMockMode) {
+      // 检查是否首次访问
+      const hasVisited = localStorage.getItem('hasVisited');
+      if (!hasVisited) {
+        // 标记为已访问
+        localStorage.setItem('hasVisited', 'true');
+        // 重定向到设置页面
+        navigate('/setup');
+        return;
+      }
     }
 
     const storedUser = localStorage.getItem('user');
