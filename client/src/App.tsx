@@ -29,11 +29,9 @@ const Loading = () => (
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
-
-
-
   const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
+    // 每次都从 localStorage 读取最新的用户信息
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user || user.role !== 'ADMIN') {
       return <Navigate to="/" replace />;
     }
