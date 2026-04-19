@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Save, Settings, Globe, Mail, Phone, MapPin, Info, AlertCircle, Check } from 'lucide-react';
+import { Save, Settings, Globe, Mail, Phone, MapPin, Info, AlertCircle, Check, Palette } from 'lucide-react';
 import api from '../../services/api';
 
 interface SiteSettings {
@@ -24,6 +24,10 @@ interface SiteSettings {
   analyticsCode: string;
   metaKeywords: string;
   metaDescription: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroBackground: string;
+  heroDecor: boolean;
 }
 
 const SiteSettingsPage: React.FC = () => {
@@ -42,7 +46,11 @@ const SiteSettingsPage: React.FC = () => {
     footerText: '© 2026 TrBlog. All rights reserved.',
     analyticsCode: '',
     metaKeywords: '',
-    metaDescription: ''
+    metaDescription: '',
+    heroTitle: '分享知识，连接思想',
+    heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
+    heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
+    heroDecor: true
   });
 
   // 获取网站设置
@@ -76,8 +84,8 @@ const SiteSettingsPage: React.FC = () => {
     saveMutation.mutate(settings);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
     
     // 处理嵌套字段
     if (name.startsWith('socialLinks.')) {
@@ -88,6 +96,11 @@ const SiteSettingsPage: React.FC = () => {
           ...prev.socialLinks,
           [socialKey]: value
         }
+      }));
+    } else if (type === 'checkbox') {
+      setSettings(prev => ({
+        ...prev,
+        [name]: checked
       }));
     } else {
       setSettings(prev => ({
@@ -295,6 +308,66 @@ const SiteSettingsPage: React.FC = () => {
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 placeholder="输入Twitter链接"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* 首页个性化设置 */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Palette className="w-5 h-5 text-blue-600" />
+            首页个性化
+          </h3>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">首页主标题</label>
+              <input
+                type="text"
+                name="heroTitle"
+                value={settings.heroTitle}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                placeholder="输入首页主标题"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">首页副标题</label>
+              <textarea
+                name="heroSubtitle"
+                value={settings.heroSubtitle}
+                onChange={handleChange}
+                className="w-full px-4 py-2 h-20 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
+                placeholder="输入首页副标题"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">背景样式</label>
+              <select
+                name="heroBackground"
+                value={settings.heroBackground}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              >
+                <option value="gradient-to-br from-blue-50 to-indigo-50">蓝紫渐变</option>
+                <option value="gradient-to-br from-green-50 to-emerald-50">绿青渐变</option>
+                <option value="gradient-to-br from-pink-50 to-rose-50">粉红渐变</option>
+                <option value="gradient-to-br from-yellow-50 to-amber-50">金黄渐变</option>
+                <option value="gradient-to-br from-purple-50 to-violet-50">紫罗渐变</option>
+                <option value="gradient-to-br from-gray-50 to-slate-50">灰色渐变</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="heroDecor"
+                name="heroDecor"
+                checked={settings.heroDecor}
+                onChange={handleChange}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="heroDecor" className="text-sm font-medium text-gray-700">
+                显示装饰性背景元素
+              </label>
             </div>
           </div>
         </div>
