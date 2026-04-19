@@ -146,15 +146,66 @@ const mockApi = {
             status: 200,
             statusText: 'OK'
           });
+        } else if (url.includes('/posts')) {
+          console.log('📝 模拟创建文章');
+          const newPost = {
+            id: Date.now().toString(),
+            ...data,
+            authorId: '1',
+            author: mockData.user,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            views: 0,
+            comments: []
+          };
+          mockData.posts.unshift(newPost);
+          resolve({ data: newPost, status: 200, statusText: 'OK' });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
         }
       }, 300);
     });
   },
-  // 添加其他 axios 方法的占位符
-  put: () => Promise.resolve({ data: null, status: 200, statusText: 'OK' }),
-  delete: () => Promise.resolve({ data: null, status: 200, statusText: 'OK' }),
+  put: (url: string, data?: any, config?: any) => {
+    console.log('📡 模拟请求 PUT:', url, data, config);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (url.includes('/posts/')) {
+          console.log('📝 模拟更新文章');
+          const id = url.split('/').pop();
+          const index = mockData.posts.findIndex(post => post.id === id);
+          if (index !== -1) {
+            mockData.posts[index] = {
+              ...mockData.posts[index],
+              ...data,
+              updatedAt: new Date().toISOString()
+            };
+            resolve({ data: mockData.posts[index], status: 200, statusText: 'OK' });
+          } else {
+            resolve({ data: null, status: 404, statusText: 'Not Found' });
+          }
+        } else {
+          resolve({ data: null, status: 200, statusText: 'OK' });
+        }
+      }, 300);
+    });
+  },
+  delete: (url: string, config?: any) => {
+    console.log('📡 模拟请求 DELETE:', url, config);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (url.includes('/posts/')) {
+          console.log('🗑️ 模拟删除文章');
+          const id = url.split('/').pop();
+          const index = mockData.posts.findIndex(post => post.id === id);
+          if (index !== -1) {
+            mockData.posts.splice(index, 1);
+          }
+        }
+        resolve({ data: null, status: 200, statusText: 'OK' });
+      }, 300);
+    });
+  },
   patch: () => Promise.resolve({ data: null, status: 200, statusText: 'OK' }),
   // 拦截器占位符（不需要实际功能）
   interceptors: {

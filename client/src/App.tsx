@@ -15,6 +15,7 @@ const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
+const EditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
 const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
 const TagsPage = lazy(() => import('./pages/admin/TagsPage'));
 const UsersPage = lazy(() => import('./pages/admin/UsersPage'));
@@ -95,6 +96,30 @@ const App: React.FC = () => {
                   <AdminLayout>
                     <RouteTransition>
                       <PostsPage />
+                    </RouteTransition>
+                  </AdminLayout>
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/posts/create"
+              element={
+                <RequireAdmin>
+                  <AdminLayout>
+                    <RouteTransition>
+                      <EditPostPage />
+                    </RouteTransition>
+                  </AdminLayout>
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/posts/edit/:id"
+              element={
+                <RequireAdmin>
+                  <AdminLayout>
+                    <RouteTransition>
+                      <EditPostPage />
                     </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>

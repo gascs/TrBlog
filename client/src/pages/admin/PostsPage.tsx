@@ -50,10 +50,10 @@ const PostsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">文章管理</h1>
           <p className="text-gray-600">管理您的所有文章</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <Link to="/admin/posts/create" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
           <Plus className="w-4 h-4" />
           新建文章
-        </button>
+        </Link>
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 p-4">
@@ -144,9 +144,9 @@ const PostsPage: React.FC = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </Link>
-                          <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                          <Link to={`/admin/posts/edit/${post.id}`} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                             <Edit className="w-4 h-4" />
-                          </button>
+                          </Link>
                           <button
                             onClick={() => handleDelete(post.id)}
                             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
