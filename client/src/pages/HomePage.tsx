@@ -240,7 +240,11 @@ const HomePage: React.FC = () => {
                 {typewriterEnabled ? (
                   <Typewriter 
                     text={siteConfig.title} 
-                    speed={150} 
+                    speed={30} 
+                    delay={300}
+                    backspaceEffect={true}
+                    typeVariations={true}
+                    wordDelay={150}
                     className="inline-block"
                   />
                 ) : (
@@ -252,8 +256,11 @@ const HomePage: React.FC = () => {
                 {typewriterEnabled ? (
                   <Typewriter 
                     text={siteConfig.description} 
-                    speed={80} 
-                    delay={1000} 
+                    speed={25} 
+                    delay={1500}
+                    backspaceEffect={true}
+                    typeVariations={true}
+                    wordDelay={100}
                     className="inline-block"
                   />
                 ) : (
