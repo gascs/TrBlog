@@ -41,6 +41,9 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('post.show');
 Route::get('/categories/{category}', [PostController::class, 'byCategory'])->name('post.byCategory');
 Route::get('/tags/{tag}', [PostController::class, 'byTag'])->name('post.byTag');
 Route::get('/search', [PostController::class, 'search'])->name('post.search');
+Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
+Route::get('/open-source', [HomeController::class, 'openSource'])->name('open-source');
+Route::get('/disclaimer', [HomeController::class, 'disclaimer'])->name('disclaimer');
 
 // Comment routes
 Route::middleware('auth')->group(function () {

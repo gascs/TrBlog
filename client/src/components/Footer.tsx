@@ -200,15 +200,15 @@ const Footer: React.FC = () => {
             </AdminLink>
           </div>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-500 hover:text-primary text-sm transition-colors">
+            <Link to="/privacy" className="text-gray-500 hover:text-primary text-sm transition-colors">
               隐私政策
-            </a>
-            <a href="#" className="text-gray-500 hover:text-primary text-sm transition-colors">
-              使用条款
-            </a>
-            <a href="#" className="text-gray-500 hover:text-primary text-sm transition-colors">
-              网站地图
-            </a>
+            </Link>
+            <Link to="/open-source" className="text-gray-500 hover:text-primary text-sm transition-colors">
+              开源声明
+            </Link>
+            <Link to="/disclaimer" className="text-gray-500 hover:text-primary text-sm transition-colors">
+              免责声明
+            </Link>
           </div>
         </motion.div>
       </div>

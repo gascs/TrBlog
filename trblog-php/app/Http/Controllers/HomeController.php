@@ -19,4 +19,28 @@ class HomeController extends Controller
 
         return view('home', compact('posts'));
     }
+
+    /**
+     * Show the privacy policy page.
+     */
+    public function privacy(): View
+    {
+        return view('privacy');
+    }
+
+    /**
+     * Show the open source page.
+     */
+    public function openSource()
+    {
+        return view('open-source');
+    }
+
+    /**
+     * Show the disclaimer page.
+     */
+    public function disclaimer()
+    {
+        return view('disclaimer');
+    }
 }

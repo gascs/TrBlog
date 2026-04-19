@@ -13,6 +13,9 @@ const SearchPage = lazy(() => import('./pages/SearchPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const SetupPage = lazy(() => import('./pages/SetupPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const OpenSourcePage = lazy(() => import('./pages/OpenSourcePage'));
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
 const EditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
@@ -49,6 +52,9 @@ const App: React.FC = () => {
             <Route path="/login" element={<RouteTransition><LoginPage /></RouteTransition>} />
             <Route path="/register" element={<RouteTransition><RegisterPage /></RouteTransition>} />
             <Route path="/setup" element={<RouteTransition><SetupPage /></RouteTransition>} />
+            <Route path="/privacy" element={<RouteTransition><PrivacyPolicyPage /></RouteTransition>} />
+            <Route path="/open-source" element={<RouteTransition><OpenSourcePage /></RouteTransition>} />
+            <Route path="/disclaimer" element={<RouteTransition><DisclaimerPage /></RouteTransition>} />
             <Route
               path="/"
               element={
