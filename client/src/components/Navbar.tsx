@@ -56,12 +56,14 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center gap-6">
-
+          <div className="flex items-center gap-4">
             <Link
               to="/"
-              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors"
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors flex items-center gap-2"
             >
+              <span className="inline-block w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
+                T
+              </span>
               TrBlog
             </Link>
             <nav className="hidden md:flex items-center ml-16 space-x-8">
@@ -78,10 +80,10 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                 >
                   <Link
                     to={item.path}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all relative group px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all relative group px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
                   >
                     {item.name}
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left" />
+                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left" />
                   </Link>
                 </motion.div>
               ))}
@@ -93,18 +95,24 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
             <ThemeToggle />
             {user ? (
               <div className="flex items-center space-x-3">
-                <AdminLink user={user} to="/admin" variant="nav" icon={<Settings className="w-4 h-4" />}>
+                <AdminLink 
+                  user={user} 
+                  to="/admin" 
+                  variant="nav" 
+                  icon={<Settings className="w-4 h-4" />}
+                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+                >
                   管理后台
                 </AdminLink>
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all cursor-pointer shadow-sm">
+                  <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-gray-700 dark:text-gray-300 font-medium hidden sm:inline">{user.username}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
+                  className="flex items-center gap-2 px-4 py-3 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all shadow-sm"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">退出</span>
@@ -119,7 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                 >
                   <Link
                     to="/login"
-                    className="px-4 py-2 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all hover:shadow-sm"
+                    className="px-5 py-3 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all hover:shadow-md"
                   >
                     登录
                   </Link>
@@ -131,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                 >
                   <Link
                     to="/register"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all hover:shadow-md"
+                    className="px-5 py-3 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
                   >
                     注册
                   </Link>
@@ -140,9 +148,9 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
             )}
           </div>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-3 md:hidden">
             <button
-              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+              className="p-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all shadow-sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "关闭菜单" : "打开菜单"}
             >
@@ -150,7 +158,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
             </button>
             <div className="relative">
               <button
-                className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                className="p-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all shadow-sm"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 aria-label="用户菜单"
               >
