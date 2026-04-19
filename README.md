@@ -6,6 +6,21 @@
   <p>使用 React + NestJS + PostgreSQL 构建的完整博客管理平台</p>
   
   <div style="margin: 20px 0;">
+    <a href="https://github.com/gascs/TrBlog/stargazers" style="margin: 0 5px; text-decoration: none;">
+      <img src="https://img.shields.io/github/stars/gascs/TrBlog?style=flat-square" alt="GitHub stars" />
+    </a>
+    <a href="https://github.com/gascs/TrBlog/network/members" style="margin: 0 5px; text-decoration: none;">
+      <img src="https://img.shields.io/github/forks/gascs/TrBlog?style=flat-square" alt="GitHub forks" />
+    </a>
+    <a href="https://github.com/gascs/TrBlog/blob/main/LICENSE" style="margin: 0 5px; text-decoration: none;">
+      <img src="https://img.shields.io/github/license/gascs/TrBlog?style=flat-square" alt="License" />
+    </a>
+    <a href="https://github.com/gascs/TrBlog/issues" style="margin: 0 5px; text-decoration: none;">
+      <img src="https://img.shields.io/github/issues/gascs/TrBlog?style=flat-square" alt="GitHub issues" />
+    </a>
+  </div>
+
+  <div style="margin: 20px 0;">
     <a href="#技术栈" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">技术栈</a>
     <a href="#项目结构" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">项目结构</a>
     <a href="#快速开始" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">快速开始</a>
