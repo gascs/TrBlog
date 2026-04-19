@@ -162,7 +162,7 @@ const PostItem: React.FC<{ post: Post; index: number }> = ({ post, index }) => (
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [typewriterEnabled, setTypewriterEnabled] = useState(false); // 默认关闭
+  const [typewriterEnabled, setTypewriterEnabled] = useState(true); // 默认开启
   const limit = 10;
 
   useEffect(() => {
