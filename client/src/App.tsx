@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from './components/Layout';
+import AdminLayout from './components/AdminLayout';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));
@@ -19,6 +20,7 @@ const TagsPage = lazy(() => import('./pages/TagsPage'));
 const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 const Loading = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
@@ -51,6 +53,10 @@ const App: React.FC = () => {
             <Route path="/open-source" element={<Layout><OpenSourcePage /></Layout>} />
             <Route path="/disclaimer" element={<Layout><DisclaimerPage /></Layout>} />
             <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+            
             <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>
         </Suspense>
