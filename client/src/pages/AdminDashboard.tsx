@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   FileText, 
@@ -6,7 +6,6 @@ import {
   Tag, 
   Users, 
   ArrowRight, 
-  BarChart3, 
   Clock, 
   Calendar,
   TrendingUp,
@@ -20,7 +19,6 @@ import {
   Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
 
 // 模拟访问记录数据
 const mockVisitLogs = [
@@ -42,14 +40,14 @@ const deviceStats = [
 ];
 
 const AdminDashboard: React.FC = () => {
-  const [stats, setStats] = useState({
+  const stats = {
     totalViews: 12345,
     todayViews: 89,
     totalPosts: 12,
     totalCategories: 5,
     totalTags: 18,
     totalUsers: 3,
-  });
+  };
 
   const features = [
     {

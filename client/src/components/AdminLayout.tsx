@@ -21,7 +21,6 @@ import BackToTop from './BackToTop';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
