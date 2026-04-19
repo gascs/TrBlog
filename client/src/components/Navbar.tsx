@@ -9,9 +9,11 @@ import { User as UserType } from '../types';
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
+  onCloseSidebar?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
+const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onCloseSidebar }) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -57,10 +59,10 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           <div className="flex items-center gap-6">
             <button
               className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="打开菜单"
+              onClick={() => isSidebarOpen ? onCloseSidebar?.() : setIsMenuOpen(!isMenuOpen)}
+              aria-label={isSidebarOpen ? "关闭侧边栏" : "打开菜单"}
             >
-              <MenuIcon className="w-6 h-6" />
+              {isSidebarOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
             <Link
               to="/"

@@ -21,7 +21,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
-      <Navbar onToggleSidebar={() => setIsSidebarOpen(true)} />
+      <Navbar 
+        onToggleSidebar={() => setIsSidebarOpen(true)}
+        isSidebarOpen={isSidebarOpen}
+        onCloseSidebar={() => setIsSidebarOpen(false)}
+      />
       <div className="flex flex-1 relative">
         {/* Sidebar - Desktop */}
         <AnimatePresence mode="wait">
