@@ -198,7 +198,11 @@ const HomePage: React.FC = () => {
 
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('解析用户数据失败:', error);
+      }
     }
   }, [navigate]);
 
