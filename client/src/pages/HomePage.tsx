@@ -274,28 +274,20 @@ const HomePage: React.FC = () => {
         className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8"
       >
         {/* 装饰元素 */}
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-20">
+        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             <path fill="#3b82f6" d="M47.5,-79.1C61.3,-72.2,73.3,-58.3,79.8,-42.5C86.3,-26.7,87.2,-9.1,84.1,7.1C81,23.3,73.9,38.3,64,51.4C54,64.5,41.2,75.6,26.9,82.1C12.7,88.6,-3,88.5,-18.1,85.8C-33.1,83.1,-48.1,77.7,-59.8,68.4C-71.5,59,-79.9,45.8,-83.5,31.4C-87.2,17,-86,1.6,-82.4,-12.7C-78.8,-27,-72.8,-40.6,-64.2,-51.9C-55.7,-63.3,-44.5,-72.3,-32.1,-78.1C-19.8,-83.9,-6.3,-86.6,6.8,-86.3C19.8,-86.1,31.5,-82.9,47.5,-79.1Z" transform="translate(100 100)" />
           </svg>
         </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
+        <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="max-w-3xl"
           >
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6"
-            >
-              欢迎来到 TrBlog
-            </motion.span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               <motion.span 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -317,7 +309,7 @@ const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-10 max-w-2xl"
+              className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl"
             >
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
             </motion.p>
@@ -331,10 +323,10 @@ const HomePage: React.FC = () => {
               >
                 <Link
                   to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin/posts' : '/login'}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold"
                 >
-                  <PenTool className="w-5 h-5" />
-                  立即开始写作
+                  <PenTool className="w-4 h-4" />
+                  开始写作
                 </Link>
               </motion.div>
               <motion.div
@@ -346,9 +338,9 @@ const HomePage: React.FC = () => {
               >
                 <Link
                   to="/"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
                 >
-                  <Home className="w-5 h-5" />
+                  <Home className="w-4 h-4" />
                   浏览文章
                 </Link>
               </motion.div>
@@ -361,9 +353,9 @@ const HomePage: React.FC = () => {
               >
                 <Link
                   to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin' : '/login'}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-semibold"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-semibold"
                 >
-                  <Settings className="w-5 h-5" />
+                  <Settings className="w-4 h-4" />
                   管理后台
                 </Link>
               </motion.div>
