@@ -52,7 +52,14 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center">
+          <div className="flex items-center gap-6">
+            <button
+              className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+              onClick={() => onToggleSidebar?.()}
+              aria-label="打开菜单"
+            >
+              <MenuIcon className="w-6 h-6" />
+            </button>
             <Link
               to="/"
               className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors"
@@ -60,6 +67,13 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
               TrBlog
             </Link>
             <nav className="hidden md:flex items-center ml-16 space-x-8">
+              <button
+                className="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all"
+                onClick={() => onToggleSidebar?.()}
+              >
+                <MenuIcon className="w-5 h-5 mr-2" />
+                菜单
+              </button>
               {[
                 { name: '首页', path: '/' },
                 { name: '分类', path: '/categories' },
@@ -136,13 +150,6 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
-            <button
-              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-              onClick={() => onToggleSidebar?.()}
-              aria-label="打开侧边栏"
-            >
-              <MenuIcon className="w-6 h-6" />
-            </button>
             <button
               className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
               onClick={() => setIsMenuOpen(!isMenuOpen)}

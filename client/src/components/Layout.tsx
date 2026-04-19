@@ -53,19 +53,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           )}
         </AnimatePresence>
         
-        {/* Floating sidebar toggle button - Desktop */}
-        <motion.button
-          onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 -translate-y-1/2 right-8 z-20 hidden md:flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
-          whileHover={{ scale: 1.1, y: -5 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, type: "spring", stiffness: 300 }}
-        >
-          <Menu className="w-6 h-6" />
-        </motion.button>
-        
         {/* Sidebar - Mobile */}
         <AnimatePresence>
           {isSidebarOpen && (
@@ -97,8 +84,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </AnimatePresence>
         
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 transition-all duration-300">
-          <div className={`mx-auto ${isHomePage ? 'max-w-6xl' : 'max-w-5xl'}`}>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 md:p-10 transition-all duration-300">
+          <div className="mx-auto max-w-5xl">
             {children}
           </div>
         </main>
