@@ -7,6 +7,25 @@ console.log('🚀 切换到模拟模式以访问后台');
 
 // 模拟数据
 const mockData = {
+  settings: {
+    id: '1',
+    siteName: 'TrBlog',
+    siteDescription: '一个现代化的博客系统',
+    siteUrl: 'http://localhost:5173',
+    logoUrl: '',
+    faviconUrl: '',
+    adminEmail: 'admin@trblog.com',
+    contactEmail: 'contact@trblog.com',
+    phone: '',
+    address: '浙江省温州市',
+    socialLinks: {
+      github: 'https://github.com'
+    },
+    footerText: '© 2026 TrBlog. All rights reserved.',
+    analyticsCode: '',
+    metaKeywords: '博客,技术,React,NestJS',
+    metaDescription: '一个基于 React + NestJS 的现代化博客系统'
+  },
   posts: [
     {
       id: '1',
@@ -126,6 +145,8 @@ const mockApi = {
           resolve({ data: mockData.tags, status: 200, statusText: 'OK' });
         } else if (url.includes('/users')) {
           resolve({ data: [mockData.user], status: 200, statusText: 'OK' });
+        } else if (url.includes('/settings')) {
+          resolve({ data: mockData.settings, status: 200, statusText: 'OK' });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
         }
@@ -184,6 +205,13 @@ const mockApi = {
           } else {
             resolve({ data: null, status: 404, statusText: 'Not Found' });
           }
+        } else if (url.includes('/settings')) {
+          console.log('⚙️ 模拟更新网站设置');
+          mockData.settings = {
+            ...mockData.settings,
+            ...data
+          };
+          resolve({ data: mockData.settings, status: 200, statusText: 'OK' });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
         }
