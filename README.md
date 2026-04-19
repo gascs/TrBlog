@@ -18,294 +18,175 @@
     <a href="https://github.com/gascs/TrBlog/issues" style="margin: 0 5px; text-decoration: none;">
       <img src="https://img.shields.io/github/issues/gascs/TrBlog?style=flat-square" alt="GitHub issues" />
     </a>
+    <a href="https://github.com/gascs/TrBlog/commits/main" style="margin: 0 5px; text-decoration: none;">
+      <img src="https://img.shields.io/github/last-commit/gascs/TrBlog?style=flat-square" alt="GitHub last commit" />
+    </a>
   </div>
 
   <div style="margin: 20px 0;">
-    <a href="#技术栈" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">技术栈</a>
-    <a href="#项目结构" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">项目结构</a>
-    <a href="#快速开始" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">快速开始</a>
-    <a href="#功能特性" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">功能特性</a>
-    <a href="#部署" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">部署</a>
+    <a href="#🚀-快速开始" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">快速开始</a>
+    <a href="#✨-功能特性" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">功能特性</a>
+    <a href="#🛠️-技术栈" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">技术栈</a>
+    <a href="#📖-文档" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">文档</a>
+    <a href="#🤝-贡献" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">贡献</a>
   </div>
 </div>
 
-## 技术栈
+---
 
-| 类别 | 技术 | 版本 |
+## 🚀 快速开始
+
+### 使用部署脚本（推荐）
+
+```bash
+# 克隆仓库
+git clone https://github.com/gascs/TrBlog.git
+cd TrBlog
+
+# 运行部署脚本
+chmod +x start.sh
+./start.sh
+```
+
+脚本会引导您选择：
+- 部署方式（Docker 或 PHP）
+- 数据库类型（PostgreSQL, MySQL, SQLite）
+- 数据库配置（本地或外部）
+
+详细说明请查看 [部署指南](DEPLOYMENT.md)。
+
+## ✨ 功能特性
+
+### 🎯 核心功能
+- **文章管理** - 创建、编辑、删除文章，支持 Markdown
+- **分类系统** - 文章分类管理
+- **标签功能** - 文章标签管理
+- **用户系统** - 注册、登录、权限控制
+- **评论系统** - 文章评论功能
+- **搜索功能** - 全文搜索
+
+### 🎨 界面与体验
+- **响应式设计** - 完美适配桌面端和移动端
+- **深色/浅色模式** - 支持主题切换和跟随系统
+- **现代化 UI** - 使用 Tailwind CSS 构建
+- **平滑动画** - 使用 Framer Motion 实现
+- **阅读进度** - 文章阅读进度条
+
+### 🔧 部署与配置
+- **双部署方式** - Docker 容器化 或 PHP 传统部署
+- **多种数据库** - PostgreSQL, MySQL, SQLite
+- **灵活配置** - 本地数据库或外部数据库
+- **一键部署** - 使用 start.sh 脚本快速部署
+
+### 📜 合规与法律
+- **隐私政策** - 完整的隐私声明
+- **开源声明** - 使用的开源技术说明
+- **免责声明** - 使用条款和责任限制
+
+## 🛠️ 技术栈
+
+### 前端技术
+| 技术 | 版本 | 用途 |
 |------|------|------|
-| **前端** | React | 18+ |
-| | TypeScript | 5+ |
-| | Tailwind CSS | 3+ |
-| | React Query | 5+ |
-| | Framer Motion | 12+ |
-| | React Router | 6+ |
-| **后端** | NestJS | 10+ |
-| | PostgreSQL | 15+ |
-| | Prisma ORM | 5+ |
-| | Redis | 7+ |
-| **认证** | JWT | - |
-| **部署** | Docker | - |
-| | Docker Compose | - |
+| React | 18+ | UI 框架 |
+| TypeScript | 5+ | 类型安全 |
+| Tailwind CSS | 3+ | 样式框架 |
+| Vite | 5+ | 构建工具 |
+| React Query | 5+ | 数据管理 |
+| React Router | 6+ | 路由管理 |
+| Framer Motion | 12+ | 动画库 |
+| React Markdown | - | Markdown 渲染 |
 
-## 项目结构
+### 后端技术（Docker 版本）
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| NestJS | 10+ | 后端框架 |
+| TypeScript | 5+ | 类型安全 |
+| Prisma | 5+ | ORM 工具 |
+| PostgreSQL | 15+ | 数据库（默认） |
+| MySQL | 8+ | 可选数据库 |
+| SQLite | - | 轻量数据库 |
+| Redis | 7+ | 缓存 |
+
+### PHP 版本技术
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| Laravel | 10+ | PHP 框架 |
+| PHP | 8.0+ | 后端语言 |
+| MySQL | 8+ | 数据库（默认） |
+| SQLite | - | 轻量数据库 |
+| PostgreSQL | 15+ | 可选数据库 |
+
+## 📁 项目结构
 
 ```
-├── client/          # 前端项目
-│   ├── src/         # 前端源码
-│   ├── public/      # 静态资源
-│   └── package.json # 前端依赖
-├── server/          # 后端项目
-│   ├── src/         # 后端源码
-│   ├── prisma/      # Prisma 配置
-│   └── package.json # 后端依赖
-├── docker-compose.yml        # 开发环境配置
-└── docker-compose.prod.yml   # 生产环境配置
+TrBlog/
+├── client/              # 前端应用（React + TypeScript）
+│   ├── src/
+│   │   ├── components/  # 可复用组件
+│   │   ├── contexts/    # React 上下文
+│   │   ├── pages/       # 页面组件
+│   │   ├── services/    # API 服务
+│   │   └── types/       # TypeScript 类型
+│   └── package.json
+├── server/              # 后端应用（NestJS）
+│   ├── src/
+│   │   ├── controllers/ # 控制器
+│   │   ├── services/    # 业务逻辑
+│   │   └── models/      # 数据模型
+│   ├── prisma/          # Prisma 配置
+│   └── package.json
+├── trblog-php/          # PHP 版本（Laravel）
+│   ├── app/             # 应用代码
+│   ├── resources/       # 视图和资源
+│   └── routes/          # 路由配置
+├── docs/                # 文档目录
+│   └── README.md        # 文档索引
+├── docker-compose.yml   # Docker 配置
+├── start.sh             # 一键部署脚本
+├── README.md            # 项目说明（本文件）
+├── DEPLOYMENT.md        # 部署指南
+├── DEVELOPMENT.md       # 开发文档
+└── CONTRIBUTING.md      # 贡献指南
 ```
 
-## 快速开始
+## 📖 文档
 
-### 开发环境
+- [部署指南](DEPLOYMENT.md) - 详细的部署说明
+- [开发文档](DEVELOPMENT.md) - 开发者指南和架构说明
+- [贡献指南](CONTRIBUTING.md) - 如何贡献代码
+- [部署检查清单](DEPLOYMENT_CHECKLIST.md) - 部署前检查
+- [文档索引](docs/README.md) - 完整的文档目录
 
-#### 方法一：使用启动脚本（推荐）
+## 🤝 贡献
 
-1. **确保安装了 Docker 和 Docker Compose**
-2. **确保安装了 Node.js 18+**
-3. **安装依赖**
-   ```bash
-   cd server && npm install && cd ../client && npm install
-   ```
-4. **运行启动脚本**
-   ```bash
-   ./start.sh
-   ```
+我们欢迎任何形式的贡献！请查看 [贡献指南](CONTRIBUTING.md) 了解详情。
 
-#### 方法二：手动启动
+### 提交贡献的流程：
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'feat: Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
 
-1. **启动 PostgreSQL 数据库**
-   ```bash
-   docker compose up -d
-   ```
+## 📜 许可证
 
-2. **安装后端依赖**
-   ```bash
-   cd server
-   npm install
-   ```
+本项目采用 MIT 许可证。查看 [LICENSE](LICENSE) 文件了解详情。
 
-3. **生成 Prisma 客户端**
-   ```bash
-   npx prisma generate
-   ```
+## 👥 开发者
 
-4. **运行数据库迁移**
-   ```bash
-   npx prisma migrate dev
-   ```
+- **Trae**
+- **Gascs**
 
-5. **启动后端服务器**
-   ```bash
-   npm run start:dev
-   ```
+## 💬 联系我们
 
-6. **安装前端依赖**
-   ```bash
-   cd ../client
-   npm install
-   ```
-
-7. **启动前端开发服务器**
-   ```bash
-   npm run dev
-   ```
-
-### 生产环境
-
-1. **构建并启动所有服务**
-   ```bash
-   docker compose -f docker-compose.prod.yml up -d --build
-   ```
-
-2. **访问博客**
-   打开浏览器，访问 `http://localhost`
-
-## 环境变量
-
-### 后端环境变量 (server/.env)
-
-```env
-# Database
-DATABASE_URL="postgresql://trblog:trblog123@localhost:5432/trblog?schema=public"
-
-# Redis
-REDIS_URL="redis://localhost:6379"
-
-# JWT
-JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
-JWT_EXPIRES_IN="7d"
-
-# Server
-PORT=3000
-NODE_ENV="development"
-
-# Frontend URL (for sitemap)
-FRONTEND_URL="http://localhost:3000"
-```
-
-### 前端环境变量 (client/.env)
-
-```env
-# API URL
-VITE_API_URL=http://localhost:3000/api
-
-# CDN URL (optional)
-VITE_CDN_URL=
-
-# Environment
-NODE_ENV=development
-
-# Mock mode (for development)
-REACT_APP_MOCK_MODE=false
-```
-
-## 功能特性
-
-### 🎯 用户系统
-- ✅ 用户注册与登录
-- ✅ JWT 身份验证
-- ✅ 密码加密存储
-- ✅ 管理员权限控制
-- ✅ 用户个人中心
-
-### 📝 文章管理
-- ✅ 文章的增删改查 (CRUD)
-- ✅ 文章分类管理
-- ✅ 文章标签管理
-- ✅ 文章全文搜索
-- ✅ 文章浏览量统计
-- ✅ Markdown 内容渲染
-- ✅ 文章评论系统
-
-### 💬 评论系统
-- ✅ 评论的创建与删除
-- ✅ 评论回复功能
-- ✅ 评论层级显示
-
-### 🎨 前端界面
-- ✅ 响应式设计，支持桌面端和移动端
-- ✅ 现代化的 UI 设计
-- ✅ 加载状态和错误处理
-- ✅ 管理后台界面
-- ✅ 深色模式和彩色主题
-- ✅ 平滑的动画效果
-
-### 🚀 性能优化
-- ✅ 代码分割与懒加载
-- ✅ 图片优化 (WebP 格式)
-- ✅ Redis 缓存策略
-- ✅ 静态资源压缩
-
-### 🔍 SEO 优化
-- ✅ 站点地图生成
-- ✅ 结构化数据标记
-- ✅ 元标签优化
-- ✅ 友好的 URL 结构
-
-### 📦 部署
-- ✅ Docker 容器化部署
-- ✅ 生产环境配置
-- ✅ 健康检查端点
-
-## 开发指南
-
-### 代码风格
-- **前端**: 使用 ESLint 和 Prettier 保持代码风格一致
-- **后端**: 使用 NestJS 的代码风格规范
-
-### 提交规范
-- 使用 conventional commits 规范
-- 提交信息格式：`type(scope): subject`
-
-### 测试
-- **前端**: 使用 Jest 和 React Testing Library
-- **后端**: 使用 Jest 和 SuperTest
-
-## 贡献指南
-
-1. **Fork 本仓库**
-2. **创建一个新的分支**
-3. **提交你的更改**
-4. **发起 Pull Request**
-
-## 常见问题与解决方案
-
-### 1. 数据库连接配置
-
-**问题**：本地运行模式下需要确保PostgreSQL数据库已正确配置
-
-**解决方案**：
-- 确保本地PostgreSQL服务已启动
-- 确保数据库用户和密码正确
-- 确保数据库已创建
-
-### 2. Docker 权限问题
-
-**问题**：运行Docker命令可能需要sudo权限
-
-**解决方案**：
-- 将用户添加到docker组
-- 或使用部署脚本中的自动sudo检测
-
-### 3. 网络连接问题
-
-**问题**：拉取Docker镜像可能受网络影响
-
-**解决方案**：
-- 确保网络连接正常
-- 部署脚本会自动配置Docker镜像源
-- 当镜像拉取失败时，脚本会自动切换到本地编译模式
-- 或手动选择本地编译运行模式：`./deploy.sh 1`
-
-### 4. Docker镜像拉取失败
-
-**问题**：无法拉取Docker镜像（如 `node:18-alpine`）
-
-**解决方案**：
-- 部署脚本会自动检测并配置Docker镜像源
-- 当镜像拉取失败时，脚本会自动切换到本地编译模式
-- 或手动配置Docker镜像源：
-  ```bash
-  sudo nano /etc/docker/daemon.json
-  # 添加以下内容
-  {
-    "registry-mirrors": [
-      "https://docker.mirrors.ustc.edu.cn",
-      "https://hub-mirror.c.163.com",
-      "https://registry.docker-cn.com"
-    ]
-  }
-  # 重启Docker服务
-  sudo systemctl restart docker
-  ```
-
-## 部署检查清单
-
-在部署到生产环境之前，请参考 [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) 进行全面检查。
-
-## 许可证
-
-MIT License
-
-## 联系
-
-如果有任何问题或建议，欢迎联系我们。
-
-## 制作人
-
-- **Gascs** - [https://motut.net.cn](https://motut.net.cn)
-- **TRAE SOLO**
+如有问题或建议，欢迎通过以下方式联系：
+- 📧 Email: 项目 Issues
+- 🔗 GitHub: https://github.com/gascs/TrBlog
 
 ---
 
 <div align="center">
+  <p>如果这个项目对您有帮助，请考虑给我们一个 ⭐️</p>
   <p>Made with ❤️ by TrBlog Team</p>
 </div>
