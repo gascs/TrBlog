@@ -181,6 +181,18 @@ const mockApi = {
           };
           mockData.posts.unshift(newPost);
           resolve({ data: newPost, status: 200, statusText: 'OK' });
+        } else if (url.includes('/migration/import')) {
+          console.log('🚚 模拟博客迁移');
+          resolve({ 
+            data: {
+              posts: 10,
+              categories: 3,
+              tags: 5,
+              users: 1
+            },
+            status: 200,
+            statusText: 'OK'
+          });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
         }

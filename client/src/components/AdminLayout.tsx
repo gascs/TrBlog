@@ -12,7 +12,8 @@ import {
   LogOut,
   User,
   Eye,
-  Settings
+  Settings,
+  Database
 } from 'lucide-react';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -26,6 +27,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { path: '/admin/tags', icon: Tag, label: '标签管理' },
     { path: '/admin/users', icon: Users, label: '用户管理' },
     { path: '/admin/settings', icon: Settings, label: '网站管理' },
+    { path: '/admin/migration', icon: Database, label: '博客迁移' },
   ];
 
   return (

@@ -20,6 +20,7 @@ const CategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
 const TagsPage = lazy(() => import('./pages/admin/TagsPage'));
 const UsersPage = lazy(() => import('./pages/admin/UsersPage'));
 const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
+const MigrationPage = lazy(() => import('./pages/admin/MigrationPage'));
 
 // 加载状态组件
 const Loading = () => (
@@ -169,6 +170,18 @@ const App: React.FC = () => {
                   <AdminLayout>
                     <RouteTransition>
                       <SiteSettingsPage />
+                    </RouteTransition>
+                  </AdminLayout>
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/migration"
+              element={
+                <RequireAdmin>
+                  <AdminLayout>
+                    <RouteTransition>
+                      <MigrationPage />
                     </RouteTransition>
                   </AdminLayout>
                 </RequireAdmin>
