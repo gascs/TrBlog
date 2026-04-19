@@ -173,6 +173,21 @@ const HomePage: React.FC = () => {
     }
   }, [navigate]);
 
+  // 获取网站设置
+  const { data: settingsData } = useQuery({
+    queryKey: ['site-settings'],
+    queryFn: async () => {
+      try {
+        const response = await api.get('/settings');
+        return response.data;
+      } catch (err) {
+        return null;
+      }
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+
   const { data, isLoading } = useQuery({
     queryKey: ['posts', page, limit],
     queryFn: async () => {
@@ -226,7 +241,7 @@ const HomePage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-16 mb-12"
+        className={`${settingsData?.heroBackground || 'bg-white dark:bg-gray-900'} border-b border-gray-200 dark:border-gray-800 py-16 mb-12`}
       >
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
@@ -239,7 +254,7 @@ const HomePage: React.FC = () => {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
                 {typewriterEnabled ? (
                   <Typewriter 
-                    text={siteConfig.title} 
+                    text={settingsData?.heroTitle || siteConfig.title} 
                     speed={40} 
                     delay={300}
                     backspaceEffect={false} // 暂时关闭退格效果以避免卡顿
@@ -248,14 +263,14 @@ const HomePage: React.FC = () => {
                     className="inline-block"
                   />
                 ) : (
-                  <span>{siteConfig.title}</span>
+                  <span>{settingsData?.heroTitle || siteConfig.title}</span>
                 )}
               </h1>
               
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-4 max-w-2xl mx-auto leading-relaxed">
                 {typewriterEnabled ? (
                   <Typewriter 
-                    text={siteConfig.description} 
+                    text={settingsData?.heroSubtitle || siteConfig.description} 
                     speed={35} 
                     delay={1200}
                     backspaceEffect={false} // 暂时关闭退格效果以避免卡顿
@@ -264,7 +279,7 @@ const HomePage: React.FC = () => {
                     className="inline-block"
                   />
                 ) : (
-                  <span>{siteConfig.description}</span>
+                  <span>{settingsData?.heroSubtitle || siteConfig.description}</span>
                 )}
               </p>
               
