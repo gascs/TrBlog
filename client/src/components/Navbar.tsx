@@ -57,13 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center gap-6">
-            <button
-              className="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-              onClick={() => isSidebarOpen ? onCloseSidebar?.() : setIsMenuOpen(!isMenuOpen)}
-              aria-label={isSidebarOpen ? "关闭侧边栏" : "打开菜单"}
-            >
-              {isSidebarOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
-            </button>
+
             <Link
               to="/"
               className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors"
