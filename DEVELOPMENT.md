@@ -1,6 +1,9 @@
 # TrBlog 开发文档
 
-本文档为开发者提供 TrBlog 项目的架构说明、开发指南和扩展方法。
+<div align="center">
+  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=software%20development%20illustration%20with%20modern%20code%20editor%20and%20database%20schema&image_size=landscape_16_9" alt="TrBlog 开发文档" width="600" />
+  <p>本文档为开发者提供 TrBlog 项目的架构说明、开发指南和扩展方法</p>
+</div>
 
 ## 📋 目录
 - [项目结构](#项目结构)
@@ -12,18 +15,19 @@
 - [数据库设计](#数据库设计)
 - [扩展与定制](#扩展与定制)
 - [测试指南](#测试指南)
+- [部署到生产环境](#部署到生产环境)
 
 ---
 
 ## 项目结构
 
-### 总览
+### 📁 总览
 
 TrBlog 是一个双版本的个人博客系统：
 1. **Docker 版本** - 现代化全栈方案（React + NestJS）
 2. **PHP 版本** - 传统 PHP 方案（Laravel）
 
-### 目录结构
+### 📂 目录结构
 
 ```
 TrBlog/
@@ -63,6 +67,7 @@ TrBlog/
 │   └── public/                # 公共目录
 ├── docs/                      # 文档目录
 │   ├── README.md              # 文档索引
+│   ├── THEME_PLUGIN_GUIDE.md  # 主题与插件开发指南
 │   └── archive/               # 归档文档
 ├── docker-compose.yml         # Docker 配置
 ├── start.sh                   # 部署脚本
@@ -73,7 +78,7 @@ TrBlog/
 
 ## 技术架构
 
-### 前端架构
+### 🎨 前端架构
 
 ```
 ┌─────────────────────────────────────┐
@@ -103,7 +108,7 @@ TrBlog/
 └─────────────────────────────────────┘
 ```
 
-### 后端架构（Docker 版本）
+### 🚀 后端架构（Docker 版本）
 
 ```
 ┌─────────────────────────────────────┐
@@ -130,7 +135,7 @@ TrBlog/
 └─────────────────────────────────────┘
 ```
 
-### PHP 版本架构
+### 🐘 PHP 版本架构
 
 ```
 ┌─────────────────────────────────────┐
@@ -160,21 +165,21 @@ TrBlog/
 
 ## 开发环境设置
 
-### 前置要求
+### ✅ 前置要求
 
-- Node.js 18+
-- npm 9+
-- Docker & Docker Compose (可选，用于 Docker 版本)
-- PHP 8.0+ & Composer (可选，用于 PHP 版本)
+- **Node.js 18+** - JavaScript 运行时
+- **npm 9+** - 包管理器
+- **Docker & Docker Compose** (可选，用于 Docker 版本)
+- **PHP 8.0+ & Composer** (可选，用于 PHP 版本)
 
-### 克隆仓库
+### 📥 克隆仓库
 
 ```bash
 git clone https://github.com/gascs/TrBlog.git
 cd TrBlog
 ```
 
-### 安装依赖
+### 📦 安装依赖
 
 #### Docker 版本
 
@@ -195,7 +200,7 @@ cd trblog-php
 composer install
 ```
 
-### 配置环境变量
+### ⚙️ 配置环境变量
 
 ```bash
 # Docker 版本
@@ -212,36 +217,36 @@ cp trblog-php/.env.example trblog-php/.env
 
 ## 前端开发
 
-### 项目结构详解
+### 📁 项目结构详解
 
 ```
 client/src/
-├── components/
-│   ├── Layout.tsx           # 主布局组件
-│   ├── Navbar.tsx           # 导航栏组件
-│   ├── Sidebar.tsx          # 侧边栏组件
-│   ├── Footer.tsx           # 页脚组件
-│   ├── ThemeToggle.tsx      # 主题切换组件
-│   └── ...                  # 其他组件
-├── contexts/
-│   └── ThemeContext.tsx     # 主题上下文
-├── pages/
-│   ├── HomePage.tsx         # 首页
-│   ├── PostDetailPage.tsx   # 文章详情页
+├── components/         # 可复用组件
+│   ├── Layout.tsx      # 主布局组件
+│   ├── Navbar.tsx      # 导航栏组件
+│   ├── Sidebar.tsx     # 侧边栏组件
+│   ├── Footer.tsx      # 页脚组件
+│   ├── ThemeToggle.tsx # 主题切换组件
+│   └── ...             # 其他组件
+├── contexts/           # React 上下文
+│   └── ThemeContext.tsx # 主题上下文
+├── pages/              # 页面组件
+│   ├── HomePage.tsx    # 首页
+│   ├── PostDetailPage.tsx # 文章详情页
 │   ├── PrivacyPolicyPage.tsx # 隐私政策
-│   └── ...                  # 其他页面
-├── services/
-│   └── api.ts               # API 服务
-├── types/
-│   └── index.ts             # TypeScript 类型
-└── App.tsx                  # 应用入口
+│   └── ...             # 其他页面
+├── services/           # API 服务
+│   └── api.ts          # API 服务
+├── types/              # TypeScript 类型
+│   └── index.ts        # TypeScript 类型
+└── App.tsx             # 应用入口
 ```
 
-### 添加新页面
+### 🌟 添加新页面
 
-1. 创建页面组件
-2. 在 `App.tsx` 中添加路由
-3. 在导航中添加链接（可选）
+1. **创建页面组件**
+2. **在 `App.tsx` 中添加路由**
+3. **在导航中添加链接**（可选）
 
 ```tsx
 // client/src/pages/NewPage.tsx
@@ -254,58 +259,61 @@ const NewPage: React.FC = () => {
 export default NewPage;
 ```
 
-### 主题开发
+### 🎨 主题开发
 
 主题系统位于 `client/src/contexts/ThemeContext.tsx`，支持：
-- light - 浅色模式
-- dark - 深色模式
-- system - 跟随系统
-- colorful - 彩色模式
+- **light** - 浅色模式
+- **dark** - 深色模式
+- **system** - 跟随系统
+- **colorful** - 彩色模式
 
-添加新主题：
+**添加新主题：**
 
-1. 在 `ThemeContext.tsx` 中添加新主题类型
-2. 在 `ThemeToggle.tsx` 中添加新主题选项
-3. 在样式中添加对应主题的 CSS 类
+1. **在 `ThemeContext.tsx` 中添加新主题类型**
+2. **在 `ThemeToggle.tsx` 中添加新主题选项**
+3. **在样式中添加对应主题的 CSS 类**
 
-### 样式指南
+详细开发指南请查看 [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md)。
 
-- 使用 Tailwind CSS 进行样式开发
-- 遵循移动优先的设计理念
-- 支持响应式布局
+### 🎯 样式指南
+
+- **使用 Tailwind CSS** 进行样式开发
+- **遵循移动优先**的设计理念
+- **支持响应式布局**
+- **保持组件样式一致性**
 
 ---
 
 ## 后端开发（Docker 版本）
 
-### 项目结构详解
+### 📁 项目结构详解
 
 ```
 server/src/
-├── controllers/
-│   ├── PostController.ts      # 文章控制器
-│   ├── UserController.ts      # 用户控制器
+├── controllers/         # 控制器
+│   ├── PostController.ts  # 文章控制器
+│   ├── UserController.ts  # 用户控制器
 │   └── ...
-├── services/
-│   ├── PostService.ts         # 文章服务
-│   ├── AuthService.ts         # 认证服务
+├── services/            # 业务逻辑
+│   ├── PostService.ts     # 文章服务
+│   ├── AuthService.ts     # 认证服务
 │   └── ...
-├── models/
-│   └── types.ts               # 数据类型
-├── prisma/
-│   └── schema.prisma          # Prisma 模型
-├── main.ts                    # 入口文件
-└── app.module.ts              # 应用模块
+├── models/              # 数据模型
+│   └── types.ts           # 数据类型
+├── prisma/              # Prisma 配置
+│   └── schema.prisma      # Prisma 模型
+├── main.ts              # 入口文件
+└── app.module.ts        # 应用模块
 ```
 
-### 添加新 API 端点
+### 🌟 添加新 API 端点
 
-1. 创建服务（如果需要）
-2. 创建控制器
-3. 在模块中注册
-4. 添加路由
+1. **创建服务**（如果需要）
+2. **创建控制器**
+3. **在模块中注册**
+4. **添加路由**
 
-### 数据库模型变更
+### 🗄️ 数据库模型变更
 
 修改 `server/prisma/schema.prisma` 后运行：
 
@@ -314,7 +322,7 @@ cd server
 npx prisma migrate dev
 ```
 
-### 生成 Prisma 客户端
+### 🔧 生成 Prisma 客户端
 
 ```bash
 npx prisma generate
@@ -324,25 +332,25 @@ npx prisma generate
 
 ## 后端开发（PHP 版本）
 
-### 项目结构详解
+### 📁 项目结构详解
 
 ```
 trblog-php/app/
-├── Http/
-│   ├── Controllers/
-│   │   ├── PostController.php     # 文章控制器
-│   │   ├── HomeController.php     # 主页控制器
+├── Http/                # HTTP 相关
+│   ├── Controllers/      # 控制器
+│   │   ├── PostController.php  # 文章控制器
+│   │   ├── HomeController.php  # 主页控制器
 │   │   └── ...
-│   ├── Middleware/                # 中间件
-│   └── Requests/                  # 表单请求验证
-├── Models/
-│   ├── Post.php                   # 文章模型
-│   ├── User.php                   # 用户模型
+│   ├── Middleware/       # 中间件
+│   └── Requests/         # 表单请求验证
+├── Models/              # 数据模型
+│   ├── Post.php            # 文章模型
+│   ├── User.php            # 用户模型
 │   └── ...
-└── Providers/                      # 服务提供者
+└── Providers/            # 服务提供者
 ```
 
-### 创建新模型和迁移
+### 🌟 创建新模型和迁移
 
 ```bash
 # 创建模型和迁移
@@ -352,7 +360,7 @@ php artisan make:model ModelName -m
 php artisan migrate
 ```
 
-### 添加新控制器
+### 🔧 添加新控制器
 
 ```bash
 php artisan make:controller NewController
@@ -362,7 +370,7 @@ php artisan make:controller NewController
 
 ## 数据库设计
 
-### 主要数据表
+### 🗄️ 主要数据表
 
 #### posts（文章表）
 | 字段 | 类型 | 说明 |
@@ -423,53 +431,66 @@ php artisan make:controller NewController
 
 ## 扩展与定制
 
-### 添加新功能
+### 🌟 添加新功能
 
-1. 确定功能位置（前端/后端）
-2. 创建相应组件/服务
-3. 更新路由配置
-4. 测试功能
+1. **确定功能位置**（前端/后端）
+2. **创建相应组件/服务**
+3. **更新路由配置**
+4. **测试功能**
 
-### 集成第三方服务
+### 🔌 集成第三方服务
 
-1. 添加相应依赖
-2. 创建服务包装类
-3. 在环境变量中配置 API 密钥
-4. 集成到现有功能中
+1. **添加相应依赖**
+2. **创建服务包装类**
+3. **在环境变量中配置 API 密钥**
+4. **集成到现有功能中**
 
-### 性能优化建议
+### ⚡ 性能优化建议
 
-1. 前端
-   - 使用 React.memo 避免不必要的重渲染
-   - 使用 useMemo 和 useCallback 优化性能
-   - 图片懒加载
-   - 代码分割
+#### 前端优化
+- ✅ 使用 React.memo 避免不必要的重渲染
+- ✅ 使用 useMemo 和 useCallback 优化性能
+- ✅ 图片懒加载
+- ✅ 代码分割
+- ✅ 减少不必要的 HTTP 请求
 
-2. 后端
-   - 使用数据库索引
-   - 配置 Redis 缓存
-   - 优化 API 查询
-   - 使用分页
+#### 后端优化
+- ✅ 使用数据库索引
+- ✅ 配置 Redis 缓存
+- ✅ 优化 API 查询
+- ✅ 使用分页
+- ✅ 合理使用数据库事务
+
+### 🧩 插件开发
+
+TrBlog 支持插件系统，您可以通过以下步骤开发插件：
+
+1. **创建插件目录结构**
+2. **实现插件入口**
+3. **注册插件**
+4. **测试插件功能**
+
+详细开发指南请查看 [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md)。
 
 ---
 
 ## 测试指南
 
-### 前端测试
+### 🧪 前端测试
 
 ```bash
 cd client
 npm test
 ```
 
-### 后端测试（Docker 版本）
+### 🧪 后端测试（Docker 版本）
 
 ```bash
 cd server
 npm test
 ```
 
-### PHP 版本测试
+### 🧪 PHP 版本测试
 
 ```bash
 cd trblog-php
@@ -484,14 +505,36 @@ php artisan test
 - [部署指南](DEPLOYMENT.md)
 - [部署检查清单](DEPLOYMENT_CHECKLIST.md)
 
-## 相关文档
+### 🚀 部署流程
+
+1. **构建应用**
+2. **配置环境变量**
+3. **部署到服务器**
+4. **运行数据库迁移**
+5. **启动服务**
+6. **监控运行状态**
+
+---
+
+## 📚 相关文档
 
 - [项目 README](README.md)
 - [贡献指南](CONTRIBUTING.md)
+- [部署指南](DEPLOYMENT.md)
+- [部署检查清单](DEPLOYMENT_CHECKLIST.md)
+- [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md)
 
-## 寻求帮助
+## 🤝 寻求帮助
 
 如果您有问题或需要帮助：
-1. 查看文档
-2. 搜索现有 Issues
-3. 创建新的 Issue
+1. **查看文档** - 详细的使用和开发指南
+2. **搜索现有 Issues** - 可能已经有人遇到并解决了类似问题
+3. **创建新的 Issue** - 描述您的问题和环境
+
+---
+
+<div align="center">
+  <p>👨‍💻 祝您开发愉快！</p>
+  <p>Made with ❤️ by TrBlog Team</p>
+  <p>Last updated: 2026-04-19</p>
+</div>

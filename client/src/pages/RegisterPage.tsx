@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import api from '../services/api';
-import { RegisterForm, LoginResponse } from '../types';
+import { RegisterForm } from '../types';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState<RegisterForm>({
@@ -17,7 +17,7 @@ const RegisterPage: React.FC = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterForm) => {
-      const response = await api.post<LoginResponse>('/auth/register', data);
+      const response = await api.post('/auth/register', data) as any;
       return response.data;
     },
     onSuccess: (data) => {

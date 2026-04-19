@@ -5,30 +5,30 @@
   <h2>现代化个人博客系统</h2>
   <p>使用 React + NestJS + PostgreSQL 构建的完整博客管理平台</p>
   
-  <div style="margin: 20px 0;">
-    <a href="https://github.com/gascs/TrBlog/stargazers" style="margin: 0 5px; text-decoration: none;">
+  <div style="margin: 20px 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
+    <a href="https://github.com/gascs/TrBlog/stargazers" style="text-decoration: none;">
       <img src="https://img.shields.io/github/stars/gascs/TrBlog?style=flat-square" alt="GitHub stars" />
     </a>
-    <a href="https://github.com/gascs/TrBlog/network/members" style="margin: 0 5px; text-decoration: none;">
+    <a href="https://github.com/gascs/TrBlog/network/members" style="text-decoration: none;">
       <img src="https://img.shields.io/github/forks/gascs/TrBlog?style=flat-square" alt="GitHub forks" />
     </a>
-    <a href="https://github.com/gascs/TrBlog/blob/main/LICENSE" style="margin: 0 5px; text-decoration: none;">
+    <a href="https://github.com/gascs/TrBlog/blob/main/LICENSE" style="text-decoration: none;">
       <img src="https://img.shields.io/github/license/gascs/TrBlog?style=flat-square" alt="License" />
     </a>
-    <a href="https://github.com/gascs/TrBlog/issues" style="margin: 0 5px; text-decoration: none;">
+    <a href="https://github.com/gascs/TrBlog/issues" style="text-decoration: none;">
       <img src="https://img.shields.io/github/issues/gascs/TrBlog?style=flat-square" alt="GitHub issues" />
     </a>
-    <a href="https://github.com/gascs/TrBlog/commits/main" style="margin: 0 5px; text-decoration: none;">
+    <a href="https://github.com/gascs/TrBlog/commits/main" style="text-decoration: none;">
       <img src="https://img.shields.io/github/last-commit/gascs/TrBlog?style=flat-square" alt="GitHub last commit" />
     </a>
   </div>
 
-  <div style="margin: 20px 0;">
-    <a href="#🚀-快速开始" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">快速开始</a>
-    <a href="#✨-功能特性" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">功能特性</a>
-    <a href="#🛠️-技术栈" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">技术栈</a>
-    <a href="#📖-文档" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">文档</a>
-    <a href="#🤝-贡献" style="margin: 0 10px; text-decoration: none; color: #3b82f6;">贡献</a>
+  <div style="margin: 20px 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+    <a href="#🚀-快速开始" style="text-decoration: none; color: #3b82f6; font-weight: 500;">快速开始</a>
+    <a href="#✨-功能特性" style="text-decoration: none; color: #3b82f6; font-weight: 500;">功能特性</a>
+    <a href="#🛠️-技术栈" style="text-decoration: none; color: #3b82f6; font-weight: 500;">技术栈</a>
+    <a href="#📖-文档" style="text-decoration: none; color: #3b82f6; font-weight: 500;">文档</a>
+    <a href="#🤝-贡献" style="text-decoration: none; color: #3b82f6; font-weight: 500;">贡献</a>
   </div>
 </div>
 
@@ -55,6 +55,34 @@ chmod +x start.sh
 
 详细说明请查看 [部署指南](DEPLOYMENT.md)。
 
+### 手动部署
+
+#### 前端
+```bash
+cd client
+npm install
+npm run build
+# 部署 build 目录到静态服务器
+```
+
+#### 后端（Docker 版本）
+```bash
+cd server
+npm install
+npm run build
+# 配置 .env 文件
+npm run start:prod
+```
+
+#### PHP 版本
+```bash
+cd trblog-php
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan serve
+```
+
 ## ✨ 功能特性
 
 ### 🎯 核心功能
@@ -71,12 +99,15 @@ chmod +x start.sh
 - **现代化 UI** - 使用 Tailwind CSS 构建
 - **平滑动画** - 使用 Framer Motion 实现
 - **阅读进度** - 文章阅读进度条
+- **主题系统** - 支持自定义主题开发
+- **插件系统** - 支持功能扩展
 
 ### 🔧 部署与配置
 - **双部署方式** - Docker 容器化 或 PHP 传统部署
 - **多种数据库** - PostgreSQL, MySQL, SQLite
 - **灵活配置** - 本地数据库或外部数据库
 - **一键部署** - 使用 start.sh 脚本快速部署
+- **自动环境检测** - 自动检测并安装所需依赖
 
 ### 📜 合规与法律
 - **隐私政策** - 完整的隐私声明
@@ -141,7 +172,8 @@ TrBlog/
 │   ├── resources/       # 视图和资源
 │   └── routes/          # 路由配置
 ├── docs/                # 文档目录
-│   └── README.md        # 文档索引
+│   ├── README.md        # 文档索引
+│   └── THEME_PLUGIN_GUIDE.md # 主题与插件开发指南
 ├── docker-compose.yml   # Docker 配置
 ├── start.sh             # 一键部署脚本
 ├── README.md            # 项目说明（本文件）
@@ -156,7 +188,26 @@ TrBlog/
 - [开发文档](DEVELOPMENT.md) - 开发者指南和架构说明
 - [贡献指南](CONTRIBUTING.md) - 如何贡献代码
 - [部署检查清单](DEPLOYMENT_CHECKLIST.md) - 部署前检查
+- [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md) - 如何开发自定义主题和插件
 - [文档索引](docs/README.md) - 完整的文档目录
+
+## 🎨 主题与插件
+
+TrBlog 支持自定义主题和插件开发，让您可以根据自己的需求扩展系统功能：
+
+### 主题开发
+- 支持创建自定义主题
+- 内置浅色/深色/彩色模式
+- 基于 CSS 变量的主题系统
+- 主题切换和持久化
+
+### 插件开发
+- 模块化插件架构
+- 钩子系统与核心功能交互
+- 插件配置和管理
+- 示例插件：语法高亮、SEO 优化等
+
+详细开发指南请查看 [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md)。
 
 ## 🤝 贡献
 
@@ -168,6 +219,13 @@ TrBlog/
 3. 提交更改 (`git commit -m 'feat: Add some AmazingFeature'`)
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 开启 Pull Request
+
+### 贡献类型
+- 修复 bug
+- 新增功能
+- 改进文档
+- 优化性能
+- 安全增强
 
 ## 📜 许可证
 
@@ -189,4 +247,5 @@ TrBlog/
 <div align="center">
   <p>如果这个项目对您有帮助，请考虑给我们一个 ⭐️</p>
   <p>Made with ❤️ by TrBlog Team</p>
+  <p>Last updated: 2026-04-19</p>
 </div>

@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
         const [categoriesResponse, tagsResponse] = await Promise.all([
           api.get('/categories'),
           api.get('/tags'),
-        ]);
+        ]) as [any, any];
         console.log('✅ 获取成功:', { categoriesResponse, tagsResponse });
         setCategories(categoriesResponse.data || fallbackCategories);
         setTags(tagsResponse.data || fallbackTags);

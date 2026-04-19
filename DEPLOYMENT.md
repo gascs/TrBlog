@@ -1,6 +1,9 @@
 # TrBlog 部署指南
 
-本指南将帮助您在各种环境中部署 TrBlog 博客系统。
+<div align="center">
+  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=server%20deployment%20illustration%20with%20modern%20design&image_size=landscape_16_9" alt="TrBlog 部署指南" width="600" />
+  <p>本指南将帮助您在各种环境中部署 TrBlog 博客系统</p>
+</div>
 
 ## 📋 目录
 - [前置条件](#前置条件)
@@ -10,6 +13,7 @@
 - [数据库配置](#数据库配置)
 - [环境变量](#环境变量)
 - [常见问题](#常见问题)
+- [下一步](#下一步)
 
 ---
 
@@ -17,21 +21,21 @@
 
 根据您选择的部署方式，请确保已安装相应的依赖：
 
-### Docker 部署要求
-- Docker 20.10+
-- Docker Compose 2.0+
-- 至少 2GB 可用内存
-- 5GB 可用磁盘空间
+### 🐳 Docker 部署要求
+- **Docker 20.10+** - 容器化平台
+- **Docker Compose 2.0+** - 容器编排工具
+- **至少 2GB 可用内存** - 确保服务正常运行
+- **5GB 可用磁盘空间** - 存储镜像和数据
 
-### PHP 部署要求
-- PHP 8.0+
-- Composer 2.0+
-- MySQL 5.7+ / PostgreSQL 12+ / SQLite
-- Apache/Nginx （可选，生产环境推荐）
+### 🐘 PHP 部署要求
+- **PHP 8.0+** - 后端语言
+- **Composer 2.0+** - PHP 依赖管理
+- **数据库** - MySQL 5.7+ / PostgreSQL 12+ / SQLite
+- **Web 服务器** - Apache/Nginx（生产环境推荐）
 
 ---
 
-## 快速部署
+## 🚀 快速部署
 
 我们提供了简单易用的 `start.sh` 脚本来帮助您快速部署：
 
@@ -48,19 +52,40 @@ chmod +x start.sh
 ```
 
 脚本会引导您完成以下选择：
-1. 部署方式（Docker 或 PHP）
-2. 数据库类型（PostgreSQL、MySQL、SQLite）
-3. 数据库模式（本地或外部）
+1. **部署方式** - Docker 或 PHP
+2. **数据库类型** - PostgreSQL、MySQL、SQLite
+3. **数据库模式** - 本地或外部
+
+### 📁 部署流程
+
+```mermaid
+flowchart TD
+    A[运行 start.sh] --> B{选择部署方式}
+    B -->|Docker| C{选择数据库}
+    B -->|PHP| D{选择数据库}
+    C --> E{选择数据库位置}
+    D --> F{选择数据库位置}
+    E -->|本地| G[启动 Docker 容器]
+    E -->|外部| H[配置外部数据库]
+    F -->|本地| I[配置本地数据库]
+    F -->|外部| J[配置外部数据库]
+    G --> K[运行数据库迁移]
+    H --> K
+    I --> L[启动 PHP 服务器]
+    J --> L
+    K --> M[启动前后端服务]
+    L --> N[访问应用]
+    M --> N
+```
 
 ---
 
-## Docker 部署
+## 🐳 Docker 部署
 
 ### 配置步骤
 
 1. **选择部署方式**
-
-   运行 `./start.sh` 并选择 `1. Docker 模式`
+   - 运行 `./start.sh` 并选择 `1. Docker 模式`
 
 2. **选择数据库**
    - 选项 1：PostgreSQL（推荐，功能最完整）
@@ -72,13 +97,13 @@ chmod +x start.sh
    - 选项 2：外部数据库（已有数据库服务）
 
 4. **等待部署完成**
-
+   
    脚本会自动完成以下操作：
-   - 拉取/构建 Docker 镜像
-   - 启动数据库容器（如果选择本地）
-   - 运行数据库迁移
-   - 启动后端服务
-   - 启动前端开发服务器
+   - ✅ 拉取/构建 Docker 镜像
+   - ✅ 启动数据库容器（如果选择本地）
+   - ✅ 运行数据库迁移
+   - ✅ 启动后端服务
+   - ✅ 启动前端开发服务器
 
 ### 手动 Docker 部署
 
@@ -114,12 +139,13 @@ npm run dev
 ### 访问应用
 
 部署完成后，您可以通过以下地址访问：
-- 前端：http://localhost:3000
-- 后端 API：http://localhost:3001
+- 🌐 前端：http://localhost:3000
+- 🔧 后端 API：http://localhost:3001
+- 🛠️ 管理后台：http://localhost:3000/admin
 
 ---
 
-## PHP 部署
+## 🐘 PHP 部署
 
 ### 快速部署
 
@@ -192,9 +218,22 @@ server {
 }
 ```
 
+#### Apache 配置示例
+
+```apache
+<VirtualHost *:80>
+    ServerName your-domain.com
+    DocumentRoot /path/to/trblog-php/public
+    <Directory /path/to/trblog-php/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
 ---
 
-## 数据库配置
+## 🗄️ 数据库配置
 
 ### 支持的数据库
 
@@ -241,15 +280,15 @@ DB_DATABASE=/path/to/database.sqlite
 ### 外部数据库配置
 
 对于外部数据库，您需要：
-1. 确保数据库服务已启动
-2. 创建应用数据库
-3. 配置正确的连接信息
-4. 确保网络连接正常（开放相应端口）
-5. 检查用户权限
+1. ✅ 确保数据库服务已启动
+2. ✅ 创建应用数据库
+3. ✅ 配置正确的连接信息
+4. ✅ 确保网络连接正常（开放相应端口）
+5. ✅ 检查用户权限
 
 ---
 
-## 环境变量
+## ⚙️ 环境变量
 
 ### Docker 版本
 
@@ -309,7 +348,7 @@ SESSION_LIFETIME=120
 
 ---
 
-## 常见问题
+## ❓ 常见问题
 
 ### Docker 相关
 
@@ -366,19 +405,38 @@ chmod 777 .
 ### 性能优化
 
 **生产环境建议：**
-1. 启用 OPcache
-2. 配置 Redis 缓存
-3. 使用 CDN 加速静态资源
-4. 配置 HTTPS
-5. 设置合适的日志级别
+1. ✅ 启用 OPcache
+2. ✅ 配置 Redis 缓存
+3. ✅ 使用 CDN 加速静态资源
+4. ✅ 配置 HTTPS
+5. ✅ 设置合适的日志级别
+6. ✅ 启用 Gzip 压缩
+7. ✅ 配置适当的服务器资源限制
 
 ---
 
-## 下一步
+## 📚 下一步
 
 部署成功后，请查看：
 - [开发文档](DEVELOPMENT.md) - 了解如何开发和扩展功能
 - [部署检查清单](DEPLOYMENT_CHECKLIST.md) - 确保生产环境配置正确
+- [主题与插件开发指南](docs/THEME_PLUGIN_GUIDE.md) - 开发自定义主题和插件
 - [README](README.md) - 项目总览
 
+### 🎯 部署成功后的操作
+
+1. **创建管理员账户** - 访问 `/register` 页面注册第一个账户
+2. **配置基本设置** - 进入后台管理页面设置博客信息
+3. **发布第一篇文章** - 开始创建您的内容
+4. **设置主题** - 选择或自定义博客主题
+5. **安装插件** - 根据需要扩展功能
+
 如有问题，请通过 [GitHub Issues](https://github.com/gascs/TrBlog/issues) 联系我们。
+
+---
+
+<div align="center">
+  <p>🎉 祝您部署成功！</p>
+  <p>Made with ❤️ by TrBlog Team</p>
+  <p>Last updated: 2026-04-19</p>
+</div>

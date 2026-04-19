@@ -6,7 +6,6 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { 
   Calendar, 
-  User, 
   MessageSquare, 
   ArrowLeft, 
   Tag, 
@@ -22,7 +21,6 @@ import {
   Check,
   Hash,
   BookMarked,
-  ThumbsUp,
   MessageCircle,
   Zap
 } from 'lucide-react';
@@ -90,7 +88,7 @@ const PostDetailPage: React.FC = () => {
     queryKey: ['post', id],
     queryFn: async () => {
       if (!id) throw new Error('Post ID is required');
-      const response = await api.get(`/posts/${id}`);
+      const response = await api.get(`/posts/${id}`) as any;
       return response.data;
     },
   });
@@ -122,17 +120,7 @@ const PostDetailPage: React.FC = () => {
     }
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: post?.title || '',
-        text: post?.excerpt || '',
-        url: currentUrl
-      });
-    } else {
-      handleCopyLink();
-    }
-  };
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -333,7 +321,7 @@ const PostDetailPage: React.FC = () => {
         {children}
       </a>
     ),
-    img: ({ src, alt, ...props }: any) => (
+    img: ({ src, alt }: any) => (
       <figure className="my-8">
         <OptimizedImage 
           src={src} 
@@ -526,7 +514,7 @@ const PostDetailPage: React.FC = () => {
                           className="overflow-hidden"
                         >
                           <nav className="space-y-1">
-                            {headings.map((heading, index) => (
+                            {headings.map((heading) => (
                               <button
                                 key={heading.id}
                                 onClick={() => scrollToHeading(heading.id)}

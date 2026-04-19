@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, FileText, Calendar, Database, X, CheckCircle, Server } from 'lucide-react';
+import { Shield, FileText, Calendar, Database, X, CheckCircle, Server } from 'lucide-react';
 
 const PrivacyPolicyPage: React.FC = () => {
   return (

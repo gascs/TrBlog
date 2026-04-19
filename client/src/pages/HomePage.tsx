@@ -180,14 +180,14 @@ const HomePage: React.FC = () => {
     }
   }, [navigate]);
 
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['posts', page, limit],
     queryFn: async () => {
       console.log('📚 开始获取文章...');
       try {
         const response = await api.get('/posts', {
           params: { page, limit },
-        });
+        }) as any;
         console.log('✅ 获取文章成功:', response.data);
         return response.data;
       } catch (err) {

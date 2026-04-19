@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Shield, FileText, Calendar, Info, Package, User, BookOpen, Mail } from 'lucide-react';
+import { AlertTriangle, Calendar, Info, Package, User, BookOpen, Mail } from 'lucide-react';
 
 const DisclaimerPage: React.FC = () => {
   return (

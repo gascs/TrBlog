@@ -17,7 +17,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
   const { data: comments } = useQuery({
     queryKey: ['comments', postId],
     queryFn: async () => {
-      const response = await api.get(`/comments/post/${postId}`);
+      const response = await api.get(`/comments/post/${postId}`) as any;
       return response.data;
     },
     enabled: !!postId,
@@ -25,7 +25,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
 
   const createCommentMutation = useMutation({
     mutationFn: async (data: { content: string; postId: string; parentId?: string }) => {
-      const response = await api.post('/comments', data);
+      const response = await api.post('/comments', data) as any;
       return response.data;
     },
     onSuccess: () => {
