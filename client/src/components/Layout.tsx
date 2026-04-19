@@ -56,12 +56,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Floating sidebar toggle button - Desktop */}
         <motion.button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 -translate-y-1/2 right-4 z-20 hidden md:flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-          whileHover={{ scale: 1.1, rotate: 90 }}
+          className="fixed top-1/2 -translate-y-1/2 right-6 z-20 hidden md:flex items-center justify-center w-14 h-14 bg-white dark:bg-dark-card border-2 border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded-full shadow-xl hover:shadow-2xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+          whileHover={{ scale: 1.1, y: -5 }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, type: "spring", stiffness: 300 }}
         >
           <Menu className="w-6 h-6" />
         </motion.button>
