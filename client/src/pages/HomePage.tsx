@@ -1,15 +1,14 @@
-import React, { useState, memo, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight, MessageSquare, Eye } from 'lucide-react';
+import { Calendar, User, Eye, MessageSquare, ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
-import { Post, User as UserType } from '../types';
+import { Post } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
 import OptimizedImage from '../components/OptimizedImage';
+import { siteConfig } from '../config/site';
 
-// 备用模拟数据
 const fallbackPosts: Post[] = [
   {
     id: '1',
@@ -85,64 +84,53 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
-  <motion.article
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-100px' }}
-    transition={{ duration: 0.6, delay: index * 0.1 }}
-    className="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden mb-8 border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-900"
-  >
-    <Link to={`/posts/${post.id}`} className="block group-hover:no-underline">
-      <div className="grid grid-cols-1 md:grid-cols-12">
+const PostItem: React.FC<{ post: Post }> = ({ post }) => (
+  <article className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors overflow-hidden">
+    <Link to={`/posts/${post.id}`} className="block">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {post.coverImage && (
-          <motion.div 
-            className="md:col-span-4 relative aspect-[4/3] overflow-hidden"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.4 }}
-          >
+          <div className="md:col-span-4 aspect-video overflow-hidden">
             <OptimizedImage
               src={post.coverImage}
               alt={post.title}
-              className="w-full h-full transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-full object-cover"
               loading="lazy"
-              objectFit="cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </motion.div>
+          </div>
         )}
-        <div className={`p-6 md:p-8 ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
-          <div className="flex items-center gap-3 mb-4">
+        <div className={`p-6 ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
+          <div className="flex items-center gap-3 mb-3">
             {post.category && (
-              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors">
+              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
                 {post.category.name}
               </span>
             )}
-            <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
-            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{formatDate(post.createdAt)}</span>
-            </div>
+              {formatDate(post.createdAt)}
+            </span>
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             {post.title}
           </h2>
           {post.excerpt && (
-            <p className="text-gray-600 dark:text-gray-300 text-base mb-6 line-clamp-2">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
               {post.excerpt}
             </p>
           )}
-          <div className="flex flex-wrap items-center gap-4 text-sm">
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              <User className="w-4 h-4" />
-              <span>{post.author.username}</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                {post.author.username.charAt(0).toUpperCase()}
+              </div>
+              <span className="text-sm">{post.author.username}</span>
             </div>
-            <div className="flex items-center gap-6 text-gray-400 dark:text-gray-500">
-              <div className="flex items-center gap-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
                 <span>{post.views}</span>
               </div>
-              <div className="flex items-center gap-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <div className="flex items-center gap-1">
                 <MessageSquare className="w-4 h-4" />
                 <span>{post.comments?.length || 0}</span>
               </div>
@@ -151,64 +139,19 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
         </div>
       </div>
     </Link>
-  </motion.article>
-));
-
-PostItem.displayName = 'PostItem';
+  </article>
+);
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [user, setUser] = useState<UserType | null>(null);
   const limit = 10;
-  
-  // 获取hero设置（放在最前面，确保在使用前已经定义）
-  const { data: heroSettings } = useQuery({
-    queryKey: ['heroSettings'],
-    queryFn: async () => {
-      try {
-        const response = await api.get('/settings') as any;
-        return response.data;
-      } catch (err) {
-        console.error('❌ 获取hero设置失败，使用默认值:', err);
-        // 返回默认值
-        return {
-          heroTitle: '分享知识，连接思想',
-          heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
-          heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
-          heroDecor: true
-        };
-      }
-    },
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-  
-  // 使用useMemo缓存计算结果
-  const { siteTitle, siteDescription } = useMemo(() => {
-    const title = `TrBlog - ${heroSettings?.heroTitle || '分享知识，连接思想'}`;
-    const description = heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
-    return { siteTitle: title, siteDescription: description };
-  }, [heroSettings]);
 
   useEffect(() => {
-    // 检查是否首次访问
     const hasVisited = localStorage.getItem('hasVisited');
     if (!hasVisited) {
-      // 标记为已访问
       localStorage.setItem('hasVisited', 'true');
-      // 重定向到设置页面
       navigate('/setup');
-      return;
-    }
-
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error('解析用户数据失败:', error);
-      }
     }
   }, [navigate]);
 
@@ -221,8 +164,6 @@ const HomePage: React.FC = () => {
         }) as any;
         return response.data;
       } catch (err) {
-        console.error('❌ 获取文章失败，使用备用数据:', err);
-        // 返回备用数据
         return {
           posts: fallbackPosts,
           pagination: {
@@ -235,38 +176,21 @@ const HomePage: React.FC = () => {
       }
     },
     staleTime: 5 * 60 * 1000,
-    retry: 1, // 减少重试次数
+    retry: 1,
   });
 
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
   };
 
-  // 缓存结构化数据
-  const structuredData = useMemo(() => {
-    if (!data?.posts || data.posts.length === 0) return null;
-    
-    return {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "最新文章",
-      "itemListElement": data.posts.map((post: Post, index: number) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "url": `/posts/${post.id}`,
-        "name": post.title,
-        "image": post.coverImage,
-        "description": post.excerpt
-      }))
-    };
-  }, [data?.posts]);
-
   if (isLoading) {
     return (
-      <div className="space-y-8">
-        {[1, 2, 3].map((i) => (
-          <SkeletonPostCard key={i} />
-        ))}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {[1, 2, 3].map((i) => (
+            <SkeletonPostCard key={i} />
+          ))}
+        </div>
       </div>
     );
   }
@@ -274,137 +198,67 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{siteTitle}</title>
-        <meta name="description" content={siteDescription} />
-        <meta name="keywords" content="博客,技术,文章,知识分享,TrBlog" />
-        <meta property="og:title" content={siteTitle} />
-        <meta property="og:description" content={siteDescription} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={siteTitle} />
-        <meta name="twitter:description" content={siteDescription} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "TrBlog",
-            "url": "/",
-            "description": siteDescription,
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          })}
-        </script>
-        {/* 文章列表结构化数据 */}
-        {structuredData && (
-          <script type="application/ld+json">
-            {JSON.stringify(structuredData)}
-          </script>
-        )}
+        <title>{siteConfig.title} - 分享知识，连接思想</title>
+        <meta name="description" content={siteConfig.description} />
+        <meta name="keywords" content={siteConfig.keywords.join(',')} />
       </Helmet>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8"
-      >
-        {/* 装饰元素 */}
-        {heroSettings?.heroDecor !== false && (
-          <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-              <path fill="#3b82f6" d="M47.5,-79.1C61.3,-72.2,73.3,-58.3,79.8,-42.5C86.3,-26.7,87.2,-9.1,84.1,7.1C81,23.3,73.9,38.3,64,51.4C54,64.5,41.2,75.6,26.9,82.1C12.7,88.6,-3,88.5,-18.1,85.8C-33.1,83.1,-48.1,77.7,-59.8,68.4C-71.5,59,-79.9,45.8,-83.5,31.4C-87.2,17,-86,1.6,-82.4,-12.7C-78.8,-27,-72.8,-40.6,-64.2,-51.9C-55.7,-63.3,-44.5,-72.3,-32.1,-78.1C-19.8,-83.9,-6.3,-86.6,6.8,-86.3C19.8,-86.1,31.5,-82.9,47.5,-79.1Z" transform="translate(100 100)" />
-            </svg>
-          </div>
-        )}
-        
-        <div className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-3xl"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              <motion.span 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
-              >
-                {heroSettings?.heroTitle || '分享知识，连接思想'}
-              </motion.span>
+
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/10 dark:to-purple-900/10 border-b border-gray-200 dark:border-gray-800 py-12 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              分享知识，连接思想
             </h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="text-lg md:text-2xl text-gray-600 leading-relaxed mb-12 max-w-2xl"
-            >
-              {heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。'}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Link 
-                to="/categories" 
-                className="px-8 py-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8">
+              一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/categories"
+                className="px-6 py-3 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-medium"
               >
                 浏览分类
               </Link>
-              <Link 
-                to="/tags" 
-                className="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 font-medium transition-all hover:shadow-md"
+              <Link
+                to="/tags"
+                className="px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all font-medium"
               >
                 查看标签
               </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      <div className="py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex items-center justify-between mb-12"
-        >
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">最新文章</h2>
-            <p className="text-gray-500 mt-2">探索精彩内容</p>
+            </div>
           </div>
-        </motion.div>
-
-        <div className="space-y-1">
-          {data?.posts.map((post: Post, index: number) => (
-            <PostItem key={post.id} post={post} index={index} />
-          ))}
         </div>
+      </div>
 
-        {data?.pagination.total > page * limit && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-16 text-center"
-          >
-            <button
-              onClick={handleLoadMore}
-              className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-2xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
-            >
-              加载更多文章
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </button>
-          </motion.div>
-        )}
+      {/* Posts Section */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            最新文章
+          </h2>
+
+          <div className="space-y-6">
+            {data?.posts.map((post: Post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
+          </div>
+
+          {data?.pagination.total > page * limit && (
+            <div className="mt-12 text-center">
+              <button
+                onClick={handleLoadMore}
+                className="px-6 py-3 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-medium inline-flex items-center gap-2"
+              >
+                加载更多文章
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
 };
 
-export default memo(HomePage);
+export default HomePage;

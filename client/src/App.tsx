@@ -1,12 +1,9 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from './components/Layout';
-import AdminLayout from './components/AdminLayout';
-import RouteTransition from './components/RouteTransition';
 
-// 页面懒加载
 const HomePage = lazy(() => import('./pages/HomePage'));
 const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
@@ -21,230 +18,38 @@ const CategoryDetailPage = lazy(() => import('./pages/CategoryDetailPage'));
 const TagsPage = lazy(() => import('./pages/TagsPage'));
 const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
-const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
-const EditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
-const AdminCategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
-const AdminTagsPage = lazy(() => import('./pages/admin/TagsPage'));
-const UsersPage = lazy(() => import('./pages/admin/UsersPage'));
-const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
-const MigrationPage = lazy(() => import('./pages/admin/MigrationPage'));
 
-// 加载状态组件
 const Loading = () => (
-  <div className="flex items-center justify-center min-h-screen bg-gray-50">
-    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+    <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
   </div>
 );
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
-  const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
-    // 每次都从 localStorage 读取最新的用户信息
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    if (!user || user.role !== 'ADMIN') {
-      return <Navigate to="/" replace />;
-    }
-    return children;
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/login" element={<RouteTransition><LoginPage /></RouteTransition>} />
-            <Route path="/register" element={<RouteTransition><RegisterPage /></RouteTransition>} />
-            <Route path="/setup" element={<RouteTransition><SetupPage /></RouteTransition>} />
-            <Route path="/privacy" element={<RouteTransition><PrivacyPolicyPage /></RouteTransition>} />
-            <Route path="/open-source" element={<RouteTransition><OpenSourcePage /></RouteTransition>} />
-            <Route path="/disclaimer" element={<RouteTransition><DisclaimerPage /></RouteTransition>} />
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <HomePage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/search"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <SearchPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/posts/:id"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <PostDetailPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/categories"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <CategoriesPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/categories/:id"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <CategoryDetailPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tags"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <TagsPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/tags/:id"
-              element={
-                <Layout>
-                  <RouteTransition>
-                    <TagDetailPage />
-                  </RouteTransition>
-                </Layout>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <AdminDashboard />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/posts"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <PostsPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/posts/create"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <EditPostPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/posts/edit/:id"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <EditPostPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/categories"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <AdminCategoriesPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/tags"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <AdminTagsPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <UsersPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/settings"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <SiteSettingsPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/migration"
-              element={
-                <RequireAdmin>
-                  <AdminLayout>
-                    <RouteTransition>
-                      <MigrationPage />
-                    </RouteTransition>
-                  </AdminLayout>
-                </RequireAdmin>
-              }
-            />
-            <Route path="*" element={
-              <Layout>
-                <RouteTransition>
-                  <NotFoundPage />
-                </RouteTransition>
-              </Layout>
-            } />
+            {/* Pages without Layout */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/setup" element={<SetupPage />} />
+
+            {/* Pages with Layout */}
+            <Route path="/" element={<Layout><HomePage /></Layout>} />
+            <Route path="/posts/:id" element={<Layout><PostDetailPage /></Layout>} />
+            <Route path="/search" element={<Layout><SearchPage /></Layout>} />
+            <Route path="/categories" element={<Layout><CategoriesPage /></Layout>} />
+            <Route path="/categories/:id" element={<Layout><CategoryDetailPage /></Layout>} />
+            <Route path="/tags" element={<Layout><TagsPage /></Layout>} />
+            <Route path="/tags/:id" element={<Layout><TagDetailPage /></Layout>} />
+            <Route path="/privacy" element={<Layout><PrivacyPolicyPage /></Layout>} />
+            <Route path="/open-source" element={<Layout><OpenSourcePage /></Layout>} />
+            <Route path="/disclaimer" element={<Layout><DisclaimerPage /></Layout>} />
+            <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>
         </Suspense>
       </Router>
