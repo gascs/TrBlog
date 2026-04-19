@@ -21,6 +21,13 @@ const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminPostsPage = lazy(() => import('./pages/admin/PostsPage'));
+const AdminEditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
+const AdminCategoriesPage = lazy(() => import('./pages/admin/CategoriesPage'));
+const AdminTagsPage = lazy(() => import('./pages/admin/TagsPage'));
+const AdminUsersPage = lazy(() => import('./pages/admin/UsersPage'));
+const AdminSiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
+const AdminMigrationPage = lazy(() => import('./pages/admin/MigrationPage'));
 
 const Loading = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
@@ -56,6 +63,14 @@ const App: React.FC = () => {
             
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+            <Route path="/admin/posts" element={<AdminLayout><AdminPostsPage /></AdminLayout>} />
+            <Route path="/admin/posts/new" element={<AdminLayout><AdminEditPostPage /></AdminLayout>} />
+            <Route path="/admin/posts/edit/:id" element={<AdminLayout><AdminEditPostPage /></AdminLayout>} />
+            <Route path="/admin/categories" element={<AdminLayout><AdminCategoriesPage /></AdminLayout>} />
+            <Route path="/admin/tags" element={<AdminLayout><AdminTagsPage /></AdminLayout>} />
+            <Route path="/admin/users" element={<AdminLayout><AdminUsersPage /></AdminLayout>} />
+            <Route path="/admin/settings" element={<AdminLayout><AdminSiteSettingsPage /></AdminLayout>} />
+            <Route path="/admin/migration" element={<AdminLayout><AdminMigrationPage /></AdminLayout>} />
             
             <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>

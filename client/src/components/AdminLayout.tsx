@@ -43,8 +43,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex">
       {/* 侧边栏 - 大屏幕版本 */}
-      <aside className="hidden lg:block w-72 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg">
-        <div className="h-20 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800">
+      <aside className="hidden lg:flex flex-col w-72 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg">
+        <div className="h-20 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
               <Palette className="w-6 h-6 text-white" />
@@ -58,7 +58,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
 
-        <nav className="p-6 space-y-2">
+        <nav className="p-6 space-y-2 overflow-y-auto flex-1">
           {navItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             return (
@@ -87,7 +87,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2">
+        <div className="p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2 shrink-0">
           <Link
             to="/"
             className="flex items-center gap-4 px-5 py-3.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-300 group"
@@ -125,9 +125,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 left-0 z-50 w-72 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 shadow-2xl"
+              className="fixed inset-y-0 left-0 z-50 w-72 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 shadow-2xl flex flex-col"
             >
-              <div className="h-20 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800">
+              <div className="h-20 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800 shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
                     <Palette className="w-6 h-6 text-white" />
@@ -147,7 +147,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </button>
               </div>
 
-              <nav className="p-6 space-y-2">
+              <nav className="p-6 space-y-2 overflow-y-auto flex-1">
                 {navItems.map((item, index) => {
                   const isActive = location.pathname === item.path;
                   return (
@@ -177,7 +177,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 })}
               </nav>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2">
+              <div className="p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2 shrink-0">
                 <Link
                   to="/"
                   onClick={() => setSidebarOpen(false)}
