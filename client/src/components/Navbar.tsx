@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
             </Link>
             <nav className="hidden md:flex items-center ml-16 space-x-8">
               <button
-                className="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all"
+                className="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                 onClick={() => onToggleSidebar?.()}
               >
                 <MenuIcon className="w-5 h-5 mr-2" />
@@ -87,17 +87,17 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                 >
                   <Link
                     to={item.path}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all relative group"
+                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all relative group px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
                     {item.name}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left" />
                   </Link>
                 </motion.div>
               ))}
             </nav>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
             <SearchBar />
             <ThemeToggle />
             {user ? (
@@ -105,7 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                 <AdminLink user={user} to="/admin" variant="nav" icon={<Settings className="w-4 h-4" />}>
                   管理后台
                 </AdminLink>
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-full">
+                <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer">
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
@@ -177,25 +177,25 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
               <div className="flex justify-end mb-4">
                 <ThemeToggle />
               </div>
-              <nav className="flex flex-col space-y-3">
+              <nav className="flex flex-col space-y-2">
                 <Link
                   to="/"
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                 >
                   首页
                 </Link>
                 <Link
                   to="/categories"
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                 >
                   分类
                 </Link>
                 <Link
                   to="/tags"
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                 >
                   标签
                 </Link>
@@ -219,7 +219,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                     </div>
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-2 text-lg text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-2 px-4 w-full rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                      className="flex items-center gap-2 text-lg text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-3 px-4 w-full rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                     >
                       <LogOut className="w-5 h-5" />
                       退出登录
@@ -230,7 +230,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
                     <Link
                       to="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                      className="block text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                     >
                       登录
                     </Link>
