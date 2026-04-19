@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, FileText, Calendar } from 'lucide-react';
+import { Shield, Lock, FileText, Calendar, Database, X, CheckCircle, Server } from 'lucide-react';
 
 const PrivacyPolicyPage: React.FC = () => {
   return (
@@ -8,13 +8,12 @@ const PrivacyPolicyPage: React.FC = () => {
         <div className="flex items-center gap-3 mb-6">
           <Shield className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">隐私政策</h1>
-            <p className="text-gray-600">保护您的隐私是我们的责任</p>
+            <h1 className="text-3xl font-bold text-gray-900">隐私声明</h1>
+            <p className="text-gray-600">纯本地部署版本的隐私保护说明</p>
           </div>
         </div>
         <p className="text-gray-600 mb-4">
-          本隐私政策描述了 TrBlog 如何收集、使用、存储和保护您的个人信息。
-          我们致力于保护您的隐私，并确保您的个人信息安全。
+          本隐私声明适用于 TrBlog 博客系统的纯本地部署版本，确保您了解我们如何处理您的数据。
         </p>
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <Calendar className="w-4 h-4" />
@@ -25,18 +24,114 @@ const PrivacyPolicyPage: React.FC = () => {
       <div className="space-y-6">
         <section className="card">
           <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Lock className="w-6 h-6 text-blue-600" />
-            收集的信息
+            <Database className="w-6 h-6 text-blue-600" />
+            本地存储的数据
+          </h2>
+          <div className="space-y-4 text-gray-700">
+            <p>
+              所有数据仅存储在您的本地环境中：
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">文章内容</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">您创建的所有文章内容仅存储在本地数据库中</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">用户信息</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">您的用户名和密码（加密存储）仅存储在本地</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">配置信息</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">站点设置和个性化配置仅存储在本地</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">媒体文件</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">上传的图片等媒体文件仅存储在本地</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="card">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <X className="w-6 h-6 text-blue-600" />
+            不收集的数据
           </h2>
           <div className="space-y-3 text-gray-700">
             <p>
-              我们可能收集以下类型的信息：
+              我们不会收集以下类型的信息：
             </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>个人识别信息（如姓名、电子邮件地址、电话号码）</li>
-              <li>使用数据（如访问时间、IP地址、浏览器类型）</li>
-              <li>cookies 和类似技术数据</li>
-              <li>您提供的内容（如评论、文章）</li>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                <X className="w-5 h-5 text-red-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">个人身份信息</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">不会收集任何可识别个人身份的信息</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                <X className="w-5 h-5 text-red-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">浏览历史</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">不会收集您的浏览历史或使用数据</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                <X className="w-5 h-5 text-red-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">设备信息</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">不会收集设备信息或位置数据</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                <X className="w-5 h-5 text-red-500 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">第三方数据</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">不会向任何第三方发送数据</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="card">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <Server className="w-6 h-6 text-blue-600" />
+            数据安全
+          </h2>
+          <div className="space-y-4 text-gray-700">
+            <p>
+              我们采取以下措施保护您的本地数据：
+            </p>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <span>所有本地存储的数据均采用加密方式存储</span>
+              </li>
+              <li className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <span>您对本地数据拥有完全的控制权</span>
+              </li>
+              <li className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <span>您可以随时备份、导出或删除本地数据</span>
+              </li>
+              <li className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <span>数据传输仅在本地网络内进行</span>
+              </li>
             </ul>
           </div>
         </section>
@@ -44,92 +139,59 @@ const PrivacyPolicyPage: React.FC = () => {
         <section className="card">
           <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <FileText className="w-6 h-6 text-blue-600" />
-            信息使用方式
+            数据使用
           </h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              我们收集的信息用于以下目的：
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>提供、维护和改进我们的服务</li>
-              <li>回应您的请求和询问</li>
-              <li>发送重要通知（如安全更新）</li>
-              <li>分析使用趋势，提高用户体验</li>
-              <li>防止欺诈和滥用</li>
-            </ul>
+          <div className="space-y-4 text-gray-700">
+            <div className="space-y-3">
+              <p>
+                数据仅用于以下目的：
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>在本地显示和管理您的博客内容</span>
+                </li>
+                <li className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>提供本地管理功能和用户认证</span>
+                </li>
+                <li className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                  <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <span>生成本地统计数据和分析</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border-l-4 border-yellow-500">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">重要提示</h3>
+              <p className="text-gray-700 dark:text-gray-300">
+                数据不会用于任何分析或广告目的，也不会被分享给任何第三方。
+              </p>
+            </div>
           </div>
         </section>
 
         <section className="card">
           <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Lock className="w-6 h-6 text-blue-600" />
-            信息保护
+            <Shield className="w-6 h-6 text-blue-600" />
+            责任声明
           </h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              我们采取以下措施保护您的信息：
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>使用加密技术保护数据传输</li>
-              <li>实施访问控制措施</li>
-              <li>定期安全审计和更新</li>
-              <li>限制员工对个人信息的访问</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="card">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText className="w-6 h-6 text-blue-600" />
-            第三方服务
-          </h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              我们可能使用第三方服务来帮助提供我们的服务，这些服务可能会收集您的信息。我们要求这些第三方遵守隐私保护要求。
-            </p>
-            <p>
-              第三方服务可能包括：
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>分析工具（如 Google Analytics）</li>
-              <li>支付处理服务</li>
-              <li>云存储服务</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="card">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText className="w-6 h-6 text-blue-600" />
-            您的权利
-          </h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              根据适用的隐私法规，您可能有权：
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>访问您的个人信息</li>
-              <li>更正不准确的信息</li>
-              <li>删除您的个人信息</li>
-              <li>限制处理您的信息</li>
-              <li>数据可携带权</li>
-              <li>反对处理您的信息</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="card">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText className="w-6 h-6 text-blue-600" />
-            隐私政策变更
-          </h2>
-          <div className="space-y-3 text-gray-700">
-            <p>
-              我们可能会不时更新本隐私政策。当我们进行重大变更时，我们会在网站上发布更新后的政策，并在必要时通知您。
-            </p>
-            <p>
-              继续使用我们的服务即表示您同意修订后的隐私政策。
-            </p>
+          <div className="space-y-4 text-gray-700">
+            <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500">
+              <p>
+                由于本项目为纯本地部署，您对本地数据的安全和备份负有全部责任。我们建议您定期备份数据库文件。
+              </p>
+            </div>
+            
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">备份建议</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>定期导出数据库文件</li>
+                <li>使用版本控制工具管理配置文件</li>
+                <li>将备份存储在多个位置</li>
+                <li>测试备份恢复流程</li>
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -140,12 +202,8 @@ const PrivacyPolicyPage: React.FC = () => {
           </h2>
           <div className="space-y-3 text-gray-700">
             <p>
-              如果您对本隐私政策有任何问题或疑虑，请通过以下方式联系我们：
+              如果您对本隐私声明有任何疑问，请在项目仓库中提交 Issue。
             </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>电子邮件：gascs@qq.com</li>
-              <li>地址：浙江省温州市</li>
-            </ul>
           </div>
         </section>
       </div>
