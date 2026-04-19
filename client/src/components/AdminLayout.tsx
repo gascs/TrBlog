@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -14,13 +14,22 @@ import {
   Eye,
   Settings,
   Database,
-  Palette
+  Palette,
+  ArrowRight
 } from 'lucide-react';
 import BackToTop from './BackToTop';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
 
   const navItems = [
     { path: '/admin', icon: LayoutDashboard, label: '仪表板', color: 'text-blue-600', bgColor: 'bg-blue-50' },
@@ -79,16 +88,25 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           })}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50">
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2">
           <Link
             to="/"
             className="flex items-center gap-4 px-5 py-3.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-300 group"
           >
             <div className="p-2 rounded-lg group-hover:bg-white/50 dark:group-hover:bg-slate-600/50 transition-colors">
-              <LogOut className="w-5 h-5 group-hover:text-red-500 transition-colors" />
+              <ArrowRight className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
             </div>
             <span className="font-medium">返回前台</span>
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-4 px-5 py-3.5 w-full text-slate-600 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-all duration-300 group"
+          >
+            <div className="p-2 rounded-lg group-hover:bg-white/50 dark:group-hover:bg-slate-600/50 transition-colors">
+              <LogOut className="w-5 h-5 group-hover:text-red-500 transition-colors" />
+            </div>
+            <span className="font-medium">退出登录</span>
+          </button>
         </div>
       </aside>
 
@@ -160,16 +178,29 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 })}
               </nav>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50">
+              <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200/50 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/50 space-y-2">
                 <Link
                   to="/"
+                  onClick={() => setSidebarOpen(false)}
                   className="flex items-center gap-4 px-5 py-3.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-300 group"
+                >
+                  <div className="p-2 rounded-lg group-hover:bg-white/50 dark:group-hover:bg-slate-600/50 transition-colors">
+                    <ArrowRight className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
+                  </div>
+                  <span className="font-medium">返回前台</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setSidebarOpen(false);
+                  }}
+                  className="flex items-center gap-4 px-5 py-3.5 w-full text-slate-600 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-all duration-300 group"
                 >
                   <div className="p-2 rounded-lg group-hover:bg-white/50 dark:group-hover:bg-slate-600/50 transition-colors">
                     <LogOut className="w-5 h-5 group-hover:text-red-500 transition-colors" />
                   </div>
-                  <span className="font-medium">返回前台</span>
-                </Link>
+                  <span className="font-medium">退出登录</span>
+                </button>
               </div>
             </motion.aside>
           </>
