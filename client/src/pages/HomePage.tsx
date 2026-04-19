@@ -214,20 +214,16 @@ const HomePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto py-20">
-          <div className="space-y-8">
-            {[1, 2, 3].map((i) => (
-              <SkeletonPostCard key={i} />
-            ))}
-          </div>
-        </div>
+      <div className="space-y-8">
+        {[1, 2, 3].map((i) => (
+          <SkeletonPostCard key={i} />
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <Helmet>
         <title>{siteTitle}</title>
         <meta name="description" content={siteDescription} />
@@ -275,7 +271,7 @@ const HomePage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-br from-blue-50 to-gray-50 border-b border-gray-100 relative overflow-hidden"
+        className="bg-gradient-to-br from-blue-50 to-gray-50 border-b border-gray-100 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8"
       >
         {/* 装饰元素 */}
         <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
@@ -284,7 +280,7 @@ const HomePage: React.FC = () => {
           </svg>
         </div>
         
-        <div className="container mx-auto py-20 md:py-32 relative z-10">
+        <div className="px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -376,7 +372,7 @@ const HomePage: React.FC = () => {
         </div>
       </motion.div>
 
-      <div className="container mx-auto py-16">
+      <div className="py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -412,7 +408,7 @@ const HomePage: React.FC = () => {
           </motion.div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
