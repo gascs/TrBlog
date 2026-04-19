@@ -4,6 +4,35 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 console.log('🔧 环境配置:', { API_URL });
 console.log('🚀 切换到模拟模式以访问后台');
 
+// TypeScript类型定义
+export interface ApiResponse {
+  data: any;
+  status: number;
+  statusText: string;
+}
+
+export interface ApiConfig {
+  params?: Record<string, any>;
+}
+
+export interface MockApi {
+  get(url: string, config?: ApiConfig): Promise<ApiResponse>;
+  post(url: string, data?: any, config?: ApiConfig): Promise<ApiResponse>;
+  put(url: string, data?: any, config?: ApiConfig): Promise<ApiResponse>;
+  delete(url: string, config?: ApiConfig): Promise<ApiResponse>;
+  patch(url: string, data?: any, config?: ApiConfig): Promise<ApiResponse>;
+  interceptors: {
+    request: {
+      use: (fn: any) => void;
+      eject: (fn: any) => void;
+    };
+    response: {
+      use: (fn: any) => void;
+      eject: (fn: any) => void;
+    };
+  };
+}
+
 // 模拟数据
 const mockData = {
   settings: {
@@ -117,7 +146,7 @@ const mockData = {
 };
 
 // 模拟 API 实现（完全模拟 axios 接口）
-const mockApi = {
+const mockApi: MockApi = {
   get: function(url, config) {
     console.log('📡 模拟请求 GET:', url, config);
     return new Promise(function(resolve) {
