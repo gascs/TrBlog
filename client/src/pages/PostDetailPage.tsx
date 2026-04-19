@@ -17,6 +17,7 @@ const PostDetailPage: React.FC = () => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const { data: post, isLoading, isError, error } = useQuery({
     queryKey: ['post', id],
@@ -27,7 +28,50 @@ const PostDetailPage: React.FC = () => {
     },
   });
 
+  const pageTitle = post ? `${post.title} - TrBlog` : 'TrBlog';
+  const pageDescription = post?.excerpt || (post?.content && post.content.slice(0, 150)) || '阅读精彩文章';
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '/';
 
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: post?.title || '',
+        text: post?.excerpt || '',
+        url: currentUrl
+      });
+    } else {
+      navigator.clipboard.writeText(currentUrl);
+      alert('链接已复制到剪贴板！');
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+      
+      // 计算阅读进度
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (isLoading) {
     return (
@@ -55,61 +99,6 @@ const PostDetailPage: React.FC = () => {
       </div>
     );
   }
-
-  const pageTitle = post ? `${post.title} - TrBlog` : 'TrBlog';
-  const pageDescription = post?.excerpt || post?.content.slice(0, 150) || '阅读精彩文章';
-  const currentUrl = window.location.href;
-
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: post?.title || '',
-        text: post?.excerpt || '',
-        url: currentUrl
-      });
-    } else {
-      navigator.clipboard.writeText(currentUrl);
-      alert('链接已复制到剪贴板！');
-    }
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  // 阅读进度条状态
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-      
-      // 计算阅读进度
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-background">
