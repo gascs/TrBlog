@@ -16,6 +16,7 @@ import {
   Database,
   Palette
 } from 'lucide-react';
+import BackToTop from './BackToTop';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -224,6 +225,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {children}
           </motion.div>
         </main>
+        <BackToTop />
       </div>
     </div>
   );
