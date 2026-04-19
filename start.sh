@@ -460,8 +460,9 @@ EOF
     # 启动PHP服务器
     echo "正在启动 PHP 服务器..."
     cd trblog-php
-    if [ -f start.sh ]; then
-        ./start.sh
+    if [ -f start-local.sh ]; then
+        chmod +x start-local.sh
+        ./start-local.sh
     else
         echo "错误: PHP 启动脚本未找到"
         exit 1
