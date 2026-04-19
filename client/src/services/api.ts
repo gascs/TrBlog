@@ -137,6 +137,7 @@ const mockApi = {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (url.includes('/auth/login')) {
+          console.log('🔑 模拟登录成功，使用管理员账号');
           resolve({ 
             data: {
               access_token: 'mock-token-123',
