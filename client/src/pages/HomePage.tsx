@@ -293,7 +293,7 @@ const HomePage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className={`bg-${heroSettings?.heroBackground || 'gradient-to-br from-blue-50 to-indigo-50'} border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8`}
+        className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8"
       >
         {/* 装饰元素 */}
         {heroSettings?.heroDecor !== false && (

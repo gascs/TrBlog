@@ -1,5 +1,4 @@
 
-
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 console.log('🔧 环境配置:', { API_URL });
@@ -67,7 +66,7 @@ const mockData = {
       id: '2',
       title: 'TypeScript 入门指南',
       slug: 'typescript-getting-started',
-      content: '# TypeScript 入门指南\n\nTypeScript 是 JavaScript 的超集，添加了类型系统。\n\n## 基本类型\n\n- number\n- string\n- boolean\n- array\n- object\n- null\n- undefined\n\n## 接口\n\n```typescript\ninterface User {\n  id: string;\n  name: string;\n  age: number;\n}\n```\n\n## 泛型\n\n```typescript\nfunction identity<T>(arg: T): T {\n  return arg;\n}\n```',
+      content: '# TypeScript 入门指南\n\nTypeScript 是 JavaScript 的超集，添加了类型系统。\n\n## 基本类型\n\n- number\n- string\n- boolean\n- array\n- object\n- null\n- undefined\n\n## 接口\n\n```typescript\ninterface User {\n  id: string;\n  name: string;\n  age: number;\n}\n```\n\n## 泛型\n\n```typescript\nfunction identity(arg) {\n  return arg;\n}\n```',
       excerpt: 'TypeScript 是 JavaScript 的超集，添加了类型系统，使代码更加健壮。',
       coverImage: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=typescript%20code%20on%20dark%20background&image_size=landscape_16_9',
       published: true,
@@ -119,26 +118,26 @@ const mockData = {
 
 // 模拟 API 实现（完全模拟 axios 接口）
 const mockApi = {
-  get: (url: string, config?: any) => {
+  get: function(url, config) {
     console.log('📡 模拟请求 GET:', url, config);
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    return new Promise(function(resolve) {
+      setTimeout(function() {
         if (url.includes('/posts')) {
           if (url.includes('/posts/')) {
-            const id = url.split('/').pop();
-            const post = mockData.posts.find(p => p.id === id);
+            var id = url.split('/').pop();
+            var post = mockData.posts.find(function(p) { return p.id === id; });
             resolve({ data: post, status: 200, statusText: 'OK' });
           } else {
-            let filteredPosts = [...mockData.posts];
+            var filteredPosts = [].concat(mockData.posts);
             // 支持按分类筛选
-            if (config?.params?.categoryId) {
-              filteredPosts = filteredPosts.filter(p => p.categoryId === config.params.categoryId);
+            if (config && config.params && config.params.categoryId) {
+              filteredPosts = filteredPosts.filter(function(p) { return p.categoryId === config.params.categoryId; });
             }
             // 支持按标签筛选
-            if (config?.params?.tagId) {
-              filteredPosts = filteredPosts.filter(p => 
-                p.tags.some((tag: any) => tag.id === config.params.tagId)
-              );
+            if (config && config.params && config.params.tagId) {
+              filteredPosts = filteredPosts.filter(function(p) { 
+                return p.tags.some(function(tag) { return tag.id === config.params.tagId; });
+              });
             }
             resolve({ 
               data: {
@@ -156,28 +155,26 @@ const mockApi = {
           }
         } else if (url.includes('/categories')) {
           if (url.includes('/categories/')) {
-            const id = url.split('/').pop();
-            const category = mockData.categories.find(c => c.id === id);
+            var id = url.split('/').pop();
+            var category = mockData.categories.find(function(c) { return c.id === id; });
             // 添加该分类下的文章
-            const categoryWithPosts = {
-              ...category,
-              posts: mockData.posts.filter(p => p.categoryId === id)
-            };
+            var categoryWithPosts = Object.assign({}, category, {
+              posts: mockData.posts.filter(function(p) { return p.categoryId === id; })
+            });
             resolve({ data: categoryWithPosts, status: 200, statusText: 'OK' });
           } else {
             resolve({ data: mockData.categories, status: 200, statusText: 'OK' });
           }
         } else if (url.includes('/tags')) {
           if (url.includes('/tags/')) {
-            const id = url.split('/').pop();
-            const tag = mockData.tags.find(t => t.id === id);
+            var id = url.split('/').pop();
+            var tag = mockData.tags.find(function(t) { return t.id === id; });
             // 添加该标签下的文章
-            const tagWithPosts = {
-              ...tag,
-              posts: mockData.posts.filter(p => 
-                p.tags.some((pt: any) => pt.id === id)
-              )
-            };
+            var tagWithPosts = Object.assign({}, tag, {
+              posts: mockData.posts.filter(function(p) { 
+                return p.tags.some(function(pt) { return pt.id === id; });
+              })
+            });
             resolve({ data: tagWithPosts, status: 200, statusText: 'OK' });
           } else {
             resolve({ data: mockData.tags, status: 200, statusText: 'OK' });
@@ -192,10 +189,10 @@ const mockApi = {
       }, 300);
     });
   },
-  post: (url: string, data?: any, config?: any) => {
+  post: function(url, data, config) {
     console.log('📡 模拟请求 POST:', url, data, config);
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    return new Promise(function(resolve) {
+      setTimeout(function() {
         if (url.includes('/auth/login')) {
           console.log('🔑 模拟登录成功，使用管理员账号');
           resolve({ 
@@ -208,7 +205,7 @@ const mockApi = {
           });
         } else if (url.includes('/posts')) {
           console.log('📝 模拟创建文章');
-          const newPost = {
+          var newPost = {
             id: Date.now().toString(),
             ...data,
             authorId: '1',
@@ -238,30 +235,25 @@ const mockApi = {
       }, 300);
     });
   },
-  put: (url: string, data?: any, config?: any) => {
+  put: function(url, data, config) {
     console.log('📡 模拟请求 PUT:', url, data, config);
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    return new Promise(function(resolve) {
+      setTimeout(function() {
         if (url.includes('/posts/')) {
           console.log('📝 模拟更新文章');
-          const id = url.split('/').pop();
-          const index = mockData.posts.findIndex(post => post.id === id);
+          var id = url.split('/').pop();
+          var index = mockData.posts.findIndex(function(post) { return post.id === id; });
           if (index !== -1) {
-            mockData.posts[index] = {
-              ...mockData.posts[index],
-              ...data,
+            mockData.posts[index] = Object.assign({}, mockData.posts[index], data, {
               updatedAt: new Date().toISOString()
-            };
+            });
             resolve({ data: mockData.posts[index], status: 200, statusText: 'OK' });
           } else {
             resolve({ data: null, status: 404, statusText: 'Not Found' });
           }
         } else if (url.includes('/settings')) {
           console.log('⚙️ 模拟更新网站设置');
-          mockData.settings = {
-            ...mockData.settings,
-            ...data
-          };
+          mockData.settings = Object.assign({}, mockData.settings, data);
           resolve({ data: mockData.settings, status: 200, statusText: 'OK' });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
@@ -269,14 +261,14 @@ const mockApi = {
       }, 300);
     });
   },
-  delete: (url: string, config?: any) => {
+  delete: function(url, config) {
     console.log('📡 模拟请求 DELETE:', url, config);
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    return new Promise(function(resolve) {
+      setTimeout(function() {
         if (url.includes('/posts/')) {
           console.log('🗑️ 模拟删除文章');
-          const id = url.split('/').pop();
-          const index = mockData.posts.findIndex(post => post.id === id);
+          var id = url.split('/').pop();
+          var index = mockData.posts.findIndex(function(post) { return post.id === id; });
           if (index !== -1) {
             mockData.posts.splice(index, 1);
           }
@@ -285,11 +277,11 @@ const mockApi = {
       }, 300);
     });
   },
-  patch: () => Promise.resolve({ data: null, status: 200, statusText: 'OK' }),
+  patch: function() { return Promise.resolve({ data: null, status: 200, statusText: 'OK' }); },
   // 拦截器占位符（不需要实际功能）
   interceptors: {
-    request: { use: () => {}, eject: () => {} },
-    response: { use: () => {}, eject: () => {} }
+    request: { use: function() {}, eject: function() {} },
+    response: { use: function() {}, eject: function() {} }
   }
 };
 

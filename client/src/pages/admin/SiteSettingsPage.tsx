@@ -85,7 +85,9 @@ const SiteSettingsPage: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+    const target = e.target as any;
+    const { name, value, type } = target;
+    const checked = target.checked;
     
     // 处理嵌套字段
     if (name.startsWith('socialLinks.')) {
