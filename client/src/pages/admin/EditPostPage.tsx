@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Save, X, Calendar, Clock, Folder, Tag as TagIcon, Image, Eye } from 'lucide-react';
+import { Save, X, Calendar, Clock, Folder, Tag as TagIcon, Image, Eye, Bold, Italic, Heading1, Heading2, Heading3, List, ListOrdered, Link, Image as ImageIcon, Code, Quote } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
 import { Post, Category, Tag } from '../../types';
 
@@ -96,6 +97,40 @@ const EditPostPage: React.FC = () => {
     }
   };
 
+  // Markdown格式化功能
+  const insertMarkdown = (before: string, after: string = before) => {
+    const textarea = document.getElementById('content') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const newText = textarea.value.substring(0, start) + before + selectedText + after + textarea.value.substring(end);
+
+    setFormData(prev => ({
+      ...prev,
+      content: newText
+    }));
+
+    // 聚焦回textarea并设置光标位置
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, start + before.length + selectedText.length);
+    }, 0);
+  };
+
+  const formatBold = () => insertMarkdown('**', '**');
+  const formatItalic = () => insertMarkdown('*', '*');
+  const formatHeading1 = () => insertMarkdown('# ');
+  const formatHeading2 = () => insertMarkdown('## ');
+  const formatHeading3 = () => insertMarkdown('### ');
+  const formatBulletList = () => insertMarkdown('- ');
+  const formatOrderedList = () => insertMarkdown('1. ');
+  const formatLink = () => insertMarkdown('[链接文本](https://example.com)');
+  const formatImage = () => insertMarkdown('![图片描述](https://example.com/image.jpg)');
+  const formatCode = () => insertMarkdown('```\n', '\n```');
+  const formatQuote = () => insertMarkdown('> ');
+
   if (postLoading && id) {
     return (
       <div className="flex items-center justify-center min-h-96">
@@ -151,13 +186,57 @@ const EditPostPage: React.FC = () => {
             {/* 内容 */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">内容 <span className="text-red-500">*</span></label>
+              
+              {/* Markdown工具栏 */}
+              <div className="flex flex-wrap items-center gap-2 mb-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <button type="button" onClick={formatBold} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="粗体">
+                  <Bold className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatItalic} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="斜体">
+                  <Italic className="w-4 h-4" />
+                </button>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <button type="button" onClick={formatHeading1} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="标题 1">
+                  <Heading1 className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatHeading2} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="标题 2">
+                  <Heading2 className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatHeading3} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="标题 3">
+                  <Heading3 className="w-4 h-4" />
+                </button>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <button type="button" onClick={formatBulletList} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="无序列表">
+                  <List className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatOrderedList} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="有序列表">
+                  <ListOrdered className="w-4 h-4" />
+                </button>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <button type="button" onClick={formatLink} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="链接">
+                  <Link className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatImage} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="图片">
+                  <ImageIcon className="w-4 h-4" />
+                </button>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <button type="button" onClick={formatCode} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="代码块">
+                  <Code className="w-4 h-4" />
+                </button>
+                <button type="button" onClick={formatQuote} className="p-2 text-gray-600 hover:bg-gray-200 rounded" title="引用">
+                  <Quote className="w-4 h-4" />
+                </button>
+              </div>
+              
               <textarea
+                id="content"
                 required
                 value={formData.content}
                 onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                className="w-full px-4 py-3 h-96 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
+                className="w-full px-4 py-3 h-96 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none font-mono text-sm"
                 placeholder="输入文章内容（支持 Markdown）"
               />
+              <p className="mt-2 text-xs text-gray-500">提示：可以使用工具栏或直接输入 Markdown 语法进行格式化</p>
             </div>
 
             {/* 摘要 */}
@@ -311,7 +390,7 @@ const EditPostPage: React.FC = () => {
                 <h1>{formData.title || '无标题'}</h1>
                 {formData.excerpt && <p className="text-gray-600">{formData.excerpt}</p>}
                 {formData.content ? (
-                  <div dangerouslySetInnerHTML={{ __html: formData.content.replace(/\n/g, '<br>') }} />
+                  <ReactMarkdown>{formData.content}</ReactMarkdown>
                 ) : (
                   <p className="text-gray-400">无内容</p>
                 )}
