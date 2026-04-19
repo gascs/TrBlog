@@ -91,9 +91,9 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-100px' }}
     transition={{ duration: 0.6, delay: index * 0.1 }}
-    className="group bg-white dark:bg-dark-card rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden mb-6"
+    className="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden mb-8 border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-900"
   >
-    <Link to={`/posts/${post.id}`} className="block">
+    <Link to={`/posts/${post.id}`} className="block group-hover:no-underline">
       <div className="grid grid-cols-1 md:grid-cols-12">
         {post.coverImage && (
           <motion.div 
@@ -104,15 +104,16 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
             <OptimizedImage
               src={post.coverImage}
               alt={post.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
         )}
-        <div className={`p-6 ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
-          <div className="flex items-center gap-3 mb-3">
+        <div className={`p-6 md:p-8 ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
+          <div className="flex items-center gap-3 mb-4">
             {post.category && (
-              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
+              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors">
                 {post.category.name}
               </span>
             )}
@@ -122,25 +123,25 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
               <span>{formatDate(post.createdAt)}</span>
             </div>
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
             {post.title}
           </h2>
           {post.excerpt && (
-            <p className="text-gray-600 dark:text-gray-300 text-base mb-4 line-clamp-2">
+            <p className="text-gray-600 dark:text-gray-300 text-base mb-6 line-clamp-2">
               {post.excerpt}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-4 text-sm">
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               <User className="w-4 h-4" />
               <span>{post.author.username}</span>
             </div>
-            <div className="flex items-center gap-4 text-gray-400 dark:text-gray-500">
-              <div className="flex items-center gap-1">
+            <div className="flex items-center gap-6 text-gray-400 dark:text-gray-500">
+              <div className="flex items-center gap-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 <Eye className="w-4 h-4" />
                 <span>{post.views}</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 <MessageSquare className="w-4 h-4" />
                 <span>{post.comments?.length || 0}</span>
               </div>
@@ -308,18 +309,19 @@ const HomePage: React.FC = () => {
           </div>
         )}
         
-        <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
+        <div className="px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="max-w-3xl"
           >
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               <motion.span 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
+                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
               >
                 {heroSettings?.heroTitle || '分享知识，连接思想'}
               </motion.span>
@@ -328,10 +330,29 @@ const HomePage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl"
+              className="text-lg md:text-2xl text-gray-600 leading-relaxed mb-12 max-w-2xl"
             >
               {heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。'}
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="flex flex-wrap gap-4"
+            >
+              <Link 
+                to="/categories" 
+                className="px-8 py-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                浏览分类
+              </Link>
+              <Link 
+                to="/tags" 
+                className="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 font-medium transition-all hover:shadow-md"
+              >
+                查看标签
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>
@@ -364,10 +385,10 @@ const HomePage: React.FC = () => {
           >
             <button
               onClick={handleLoadMore}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all hover:scale-105"
+              className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-2xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
             >
               加载更多文章
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </button>
           </motion.div>
         )}
