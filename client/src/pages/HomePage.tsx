@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Eye, MessageSquare, ArrowRight, Search, Clock, Heart, Star } from 'lucide-react';
+import { Calendar, Eye, MessageSquare, ArrowRight, Clock, Heart, Star, Play, Pause } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Post } from '../types';
 import { SkeletonPostCard } from '../components/Skeleton';
 import OptimizedImage from '../components/OptimizedImage';
+import Typewriter from '../components/Typewriter';
 import { siteConfig } from '../config/site';
 
 const fallbackPosts: Post[] = [
@@ -161,6 +162,7 @@ const PostItem: React.FC<{ post: Post; index: number }> = ({ post, index }) => (
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [typewriterEnabled, setTypewriterEnabled] = useState(true);
   const limit = 10;
 
   useEffect(() => {
@@ -228,47 +230,53 @@ const HomePage: React.FC = () => {
       >
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <motion.h1 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight"
+              className="mb-6"
             >
-              {siteConfig.title}
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"
-            >
-              {siteConfig.description}
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="max-w-md mx-auto"
-            >
-              <form 
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const searchTerm = e.target[0].value;
-                  if (searchTerm) {
-                    window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
-                  }
-                }}
-                className="relative"
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                {typewriterEnabled ? (
+                  <Typewriter 
+                    text={siteConfig.title} 
+                    speed={150} 
+                    className="inline-block"
+                  />
+                ) : (
+                  <span>{siteConfig.title}</span>
+                )}
+              </h1>
+              
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-4 max-w-2xl mx-auto leading-relaxed">
+                {typewriterEnabled ? (
+                  <Typewriter 
+                    text={siteConfig.description} 
+                    speed={80} 
+                    delay={1000} 
+                    className="inline-block"
+                  />
+                ) : (
+                  <span>{siteConfig.description}</span>
+                )}
+              </p>
+              
+              <button
+                onClick={() => setTypewriterEnabled(!typewriterEnabled)}
+                className="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 text-sm font-medium inline-flex items-center gap-2"
               >
-                <input 
-                  type="text" 
-                  placeholder="搜索文章..." 
-                  className="w-full px-6 py-3 pl-12 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:ring-indigo-400 dark:focus:border-indigo-400 transition-all duration-300"
-                />
-                <Search className="absolute left-4 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" />
-              </form>
+                {typewriterEnabled ? (
+                  <>
+                    <Pause className="w-4 h-4" />
+                    关闭打字机效果
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" />
+                    开启打字机效果
+                  </>
+                )}
+              </button>
             </motion.div>
           </div>
         </div>
