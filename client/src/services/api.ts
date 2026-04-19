@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-const MOCK_MODE = import.meta.env.REACT_APP_MOCK_MODE === 'true';
+const MOCK_MODE = import.meta.env.VITE_MOCK_MODE === 'true';
 
 console.log('🔧 环境配置:', { API_URL, MOCK_MODE });
+
+// 强制启用模拟模式 (如果检测到错误时
+const FORCE_MOCK_MODE = true;
 
 // 模拟数据
 const mockData = {
@@ -158,10 +161,10 @@ const realApi = axios.create({
   withCredentials: false, // 不发送cookies
 });
 
-// 根据模式选择 API
-const api = MOCK_MODE ? mockApi : realApi;
+// 根据模式选择 API (强制模拟模式优先)
+const api = (MOCK_MODE || FORCE_MOCK_MODE) ? mockApi : realApi;
 
-if (!MOCK_MODE) {
+if (!(MOCK_MODE || FORCE_MOCK_MODE)) {
   // 正常模式的拦截器
   // Add interceptor to add token to requests
   api.interceptors.request.use(

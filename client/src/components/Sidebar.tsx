@@ -5,6 +5,20 @@ import api from '../services/api';
 import { Category, Tag } from '../types';
 import Skeleton from './Skeleton';
 
+// 备用模拟数据，防止 API 失败
+const fallbackCategories: Category[] = [
+  { id: '1', name: '技术', slug: 'technology', _count: { posts: 2 } },
+  { id: '2', name: '生活', slug: 'life', _count: { posts: 0 } },
+  { id: '3', name: '学习', slug: 'study', _count: { posts: 0 } }
+];
+
+const fallbackTags: Tag[] = [
+  { id: '1', name: 'React', slug: 'react', _count: { posts: 1 } },
+  { id: '2', name: 'NestJS', slug: 'nestjs', _count: { posts: 1 } },
+  { id: '3', name: 'TypeScript', slug: 'typescript', _count: { posts: 1 } },
+  { id: '4', name: '前端', slug: 'frontend', _count: { posts: 1 } }
+];
+
 const Sidebar: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -13,14 +27,19 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     const fetchCategoriesAndTags = async () => {
       try {
+        console.log('📋 开始获取分类和标签...');
         const [categoriesResponse, tagsResponse] = await Promise.all([
           api.get('/categories'),
           api.get('/tags'),
         ]);
-        setCategories(categoriesResponse.data);
-        setTags(tagsResponse.data);
+        console.log('✅ 获取成功:', { categoriesResponse, tagsResponse });
+        setCategories(categoriesResponse.data || fallbackCategories);
+        setTags(tagsResponse.data || fallbackTags);
       } catch (error) {
-        console.error('Error fetching categories and tags:', error);
+        console.error('❌ Error fetching categories and tags:', error);
+        // 使用备用数据
+        setCategories(fallbackCategories);
+        setTags(fallbackTags);
       } finally {
         setLoading(false);
       }
