@@ -1,8 +1,8 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight, MessageSquare, Eye, PenTool, Home, Settings } from 'lucide-react';
+import { Calendar, User, ArrowRight, MessageSquare, Eye } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { Post, User as UserType } from '../types';
@@ -104,8 +104,9 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
             <OptimizedImage
               src={post.coverImage}
               alt={post.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-full transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
+              objectFit="cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
@@ -183,8 +184,12 @@ const HomePage: React.FC = () => {
     retry: 1,
   });
   
-  const siteTitle = `TrBlog - ${heroSettings?.heroTitle || '分享知识，连接思想'}`;
-  const siteDescription = heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
+  // 使用useMemo缓存计算结果
+  const { siteTitle, siteDescription } = useMemo(() => {
+    const title = `TrBlog - ${heroSettings?.heroTitle || '分享知识，连接思想'}`;
+    const description = heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
+    return { siteTitle: title, siteDescription: description };
+  }, [heroSettings]);
 
   useEffect(() => {
     // 检查是否首次访问
@@ -210,12 +215,10 @@ const HomePage: React.FC = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', page, limit],
     queryFn: async () => {
-      console.log('📚 开始获取文章...');
       try {
         const response = await api.get('/posts', {
           params: { page, limit },
         }) as any;
-        console.log('✅ 获取文章成功:', response.data);
         return response.data;
       } catch (err) {
         console.error('❌ 获取文章失败，使用备用数据:', err);
@@ -238,6 +241,25 @@ const HomePage: React.FC = () => {
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
   };
+
+  // 缓存结构化数据
+  const structuredData = useMemo(() => {
+    if (!data?.posts || data.posts.length === 0) return null;
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "最新文章",
+      "itemListElement": data.posts.map((post: Post, index: number) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `/posts/${post.id}`,
+        "name": post.title,
+        "image": post.coverImage,
+        "description": post.excerpt
+      }))
+    };
+  }, [data?.posts]);
 
   if (isLoading) {
     return (
@@ -276,21 +298,9 @@ const HomePage: React.FC = () => {
           })}
         </script>
         {/* 文章列表结构化数据 */}
-        {data?.posts && data.posts.length > 0 && (
+        {structuredData && (
           <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "name": "最新文章",
-              "itemListElement": data.posts.map((post: Post, index: number) => ({
-                "@type": "ListItem",
-                "position": index + 1,
-                "url": `/posts/${post.id}`,
-                "name": post.title,
-                "image": post.coverImage,
-                "description": post.excerpt
-              }))
-            })}
+            {JSON.stringify(structuredData)}
           </script>
         )}
       </Helmet>

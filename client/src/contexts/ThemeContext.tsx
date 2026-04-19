@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
 type Theme = 'light' | 'dark' | 'system' | 'colorful';
 
@@ -10,34 +10,44 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// 初始化主题的工具函数
+const initializeTheme = (): Theme => {
+  const saved = localStorage.getItem('theme');
+  if (saved && ['light', 'dark', 'system', 'colorful'].includes(saved)) {
+    return saved as Theme;
+  }
+  return 'system';
+};
+
+// 初始化是否为暗色模式的工具函数
+const initializeIsDark = (): boolean => {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') return true;
+  if (saved === 'light' || saved === 'colorful') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+};
+
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved && ['light', 'dark', 'system', 'colorful'].includes(saved)) {
-      return saved as Theme;
-    }
-    return 'system';
-  });
+  // 初始化状态
+  const [theme, setThemeState] = useState<Theme>(initializeTheme);
+  const [isDark, setIsDark] = useState<boolean>(initializeIsDark);
 
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') return true;
-    if (saved === 'light' || saved === 'colorful') return false;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  // 优化setTheme函数
+  const setTheme = useMemo(() => {
+    return (newTheme: Theme) => {
+      setThemeState(newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      if (newTheme === 'system') {
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDark(systemPrefersDark);
+      } else {
+        setIsDark(newTheme === 'dark');
+      }
+    };
+  }, []);
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('theme', newTheme);
-    
-    if (newTheme === 'system') {
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(systemPrefersDark);
-    } else {
-      setIsDark(newTheme === 'dark');
-    }
-  };
-
+  // 监听系统主题变化
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
@@ -51,6 +61,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
   }, [theme]);
 
+  // 更新根元素类名
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark', 'colorful');
@@ -64,8 +75,13 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   }, [theme, isDark]);
 
+  // 优化context value
+  const contextValue = useMemo(() => {
+    return { theme, setTheme, isDark };
+  }, [theme, setTheme, isDark]);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, isDark }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
