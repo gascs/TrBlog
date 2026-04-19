@@ -280,7 +280,7 @@ const HomePage: React.FC = () => {
           </svg>
         </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
+        <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -313,53 +313,6 @@ const HomePage: React.FC = () => {
             >
               一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
             </motion.p>
-            <div className="flex flex-wrap gap-4">
-              <motion.div
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)' }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-              >
-                <Link
-                  to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin/posts' : '/login'}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all font-semibold"
-                >
-                  <PenTool className="w-4 h-4" />
-                  开始写作
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
-              >
-                <Link
-                  to="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-semibold"
-                >
-                  <Home className="w-4 h-4" />
-                  浏览文章
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.5)' }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.0 }}
-              >
-                <Link
-                  to={user && ['ADMIN', 'EDITOR'].includes(user.role) ? '/admin' : '/login'}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-semibold"
-                >
-                  <Settings className="w-4 h-4" />
-                  管理后台
-                </Link>
-              </motion.div>
-            </div>
           </motion.div>
         </div>
       </motion.div>
