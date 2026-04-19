@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Save, X, Calendar, Clock, Folder, Tag, Image, Eye } from 'lucide-react';
+import { Save, X, Calendar, Clock, Folder, Tag as TagIcon, Image, Eye } from 'lucide-react';
 import api from '../../services/api';
 import { Post, Category, Tag } from '../../types';
 
