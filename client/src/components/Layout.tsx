@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const sidebarWidth = 260;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-dark-background">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
       <Navbar onToggleSidebar={() => setIsSidebarOpen(true)} />
       <div className="flex flex-1 relative">
         {/* Sidebar - Desktop */}
@@ -28,21 +28,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {isSidebarOpen && (
             <div className="hidden md:block">
               <div 
-                className="fixed inset-0 bg-black/20 z-30" 
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30" 
                 onClick={() => setIsSidebarOpen(false)}
               />
               <motion.div
                 initial={{ x: -sidebarWidth, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -sidebarWidth, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-background shadow-2xl z-40"
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl z-40 border-r border-gray-200 dark:border-gray-800"
               >
-                <div className="h-20 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
+                <div className="h-20 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">菜单</h2>
                   <button
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Floating sidebar toggle button - Desktop */}
         <motion.button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 -translate-y-1/2 right-6 z-20 hidden md:flex items-center justify-center w-14 h-14 bg-white dark:bg-dark-card border-2 border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded-full shadow-xl hover:shadow-2xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+          className="fixed top-1/2 -translate-y-1/2 right-8 z-20 hidden md:flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
           whileHover={{ scale: 1.1, y: -5 }}
           whileTap={{ scale: 0.95 }}
           initial={{ opacity: 0, y: 50 }}
@@ -71,7 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {isSidebarOpen && (
             <div className="md:hidden fixed inset-0 z-40">
               <div 
-                className="fixed inset-0 bg-black/50" 
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm" 
                 onClick={() => setIsSidebarOpen(false)}
               />
               <motion.div
@@ -79,13 +79,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 animate={{ x: 0 }}
                 exit={{ x: '-100%' }}
                 transition={{ type: 'tween', duration: 0.3 }}
-                className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-background shadow-2xl z-50"
+                className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl z-50 border-r border-gray-200 dark:border-gray-800"
               >
-                <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-dark-border">
+                <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800">
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">菜单</h2>
                   <button
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                   >
                     <X className="w-5 h-5" />
                   </button>
