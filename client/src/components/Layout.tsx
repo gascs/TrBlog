@@ -54,12 +54,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </AnimatePresence>
         
         {/* Floating sidebar toggle button - Desktop */}
-        <button
+        <motion.button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 -translate-y-1/2 left-4 z-20 hidden md:flex items-center justify-center w-10 h-10 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-full shadow-md hover:bg-gray-50 dark:hover:bg-dark-muted transition-all"
+          className="fixed top-1/2 -translate-y-1/2 left-4 z-20 hidden md:flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+          whileHover={{ scale: 1.1, rotate: 90 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-        </button>
+          <Menu className="w-6 h-6" />
+        </motion.button>
         
         {/* Sidebar - Mobile */}
         <AnimatePresence>
