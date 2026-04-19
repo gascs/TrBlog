@@ -51,8 +51,8 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { name: '首页', path: '/' },
-    { name: '分类', path: '/categories' },
-    { name: '标签', path: '/tags' }
+    { name: '分类与标签', path: '/categories' },
+    { name: '关于我', path: '/about' }
   ];
 
   return (

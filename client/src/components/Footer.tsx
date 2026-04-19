@@ -17,11 +17,33 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-6 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-6">
             <p className="text-gray-500 dark:text-gray-400 text-sm">
               © 2026 TrBlog. 保留所有权利。
             </p>
+            <div className="flex items-center gap-6">
+              <Link 
+                to="/about" 
+                className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
+              >
+                关于我
+              </Link>
+              <Link 
+                to="/disclaimer" 
+                className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
+              >
+                免责声明
+              </Link>
+              <Link 
+                to="/privacy" 
+                className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
+              >
+                隐私政策
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row items-center gap-6">
             <AdminLink
               user={user}
               to="/admin"
@@ -30,24 +52,24 @@ const Footer: React.FC = () => {
             >
               管理后台
             </AdminLink>
-          </div>
-          <div className="flex items-center gap-6">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
-            >
-              京ICP备12345678号-1
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
-            >
-              京公网安备 123456789012345号
-            </a>
+            <div className="flex items-center gap-6">
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
+              >
+                京ICP备12345678号-1
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
+              >
+                京公网安备 123456789012345号
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ const CategoryDetailPage = lazy(() => import('./pages/CategoryDetailPage'));
 const TagsPage = lazy(() => import('./pages/TagsPage'));
 const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 
 const Loading = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
@@ -49,6 +50,7 @@ const App: React.FC = () => {
             <Route path="/privacy" element={<Layout><PrivacyPolicyPage /></Layout>} />
             <Route path="/open-source" element={<Layout><OpenSourcePage /></Layout>} />
             <Route path="/disclaimer" element={<Layout><DisclaimerPage /></Layout>} />
+            <Route path="/about" element={<Layout><AboutPage /></Layout>} />
             <Route path="*" element={<Layout><NotFoundPage /></Layout>} />
           </Routes>
         </Suspense>
