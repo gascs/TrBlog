@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class TagController extends Controller
 {
     public function index()
     {
         $tags = Tag::all();
+
         return view('admin.tags.index', compact('tags'));
     }
 
@@ -40,8 +41,8 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         $request->validate([
-            'name' => 'required|unique:tags,name,' . $tag->id . '|max:255',
-            'slug' => 'required|unique:tags,slug,' . $tag->id . '|max:255',
+            'name' => 'required|unique:tags,name,'.$tag->id.'|max:255',
+            'slug' => 'required|unique:tags,slug,'.$tag->id.'|max:255',
         ]);
 
         $tag->update($request->all());

@@ -46,16 +46,16 @@ class SetupController extends Controller
         $envContent = file_get_contents($envFile);
 
         // Update database configuration
-        $envContent = preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=' . $data['db_connection'], $envContent);
-        $envContent = preg_replace('/DB_HOST=.*/', 'DB_HOST=' . $data['db_host'], $envContent);
-        $envContent = preg_replace('/DB_PORT=.*/', 'DB_PORT=' . $data['db_port'], $envContent);
-        $envContent = preg_replace('/DB_DATABASE=.*/', 'DB_DATABASE=' . $data['db_database'], $envContent);
-        $envContent = preg_replace('/DB_USERNAME=.*/', 'DB_USERNAME=' . $data['db_username'], $envContent);
-        $envContent = preg_replace('/DB_PASSWORD=.*/', 'DB_PASSWORD=' . $data['db_password'], $envContent);
+        $envContent = preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION='.$data['db_connection'], $envContent);
+        $envContent = preg_replace('/DB_HOST=.*/', 'DB_HOST='.$data['db_host'], $envContent);
+        $envContent = preg_replace('/DB_PORT=.*/', 'DB_PORT='.$data['db_port'], $envContent);
+        $envContent = preg_replace('/DB_DATABASE=.*/', 'DB_DATABASE='.$data['db_database'], $envContent);
+        $envContent = preg_replace('/DB_USERNAME=.*/', 'DB_USERNAME='.$data['db_username'], $envContent);
+        $envContent = preg_replace('/DB_PASSWORD=.*/', 'DB_PASSWORD='.$data['db_password'], $envContent);
 
         // Update app configuration
-        $envContent = preg_replace('/APP_NAME=.*/', 'APP_NAME=' . $data['app_name'], $envContent);
-        $envContent = preg_replace('/APP_URL=.*/', 'APP_URL=' . $data['app_url'], $envContent);
+        $envContent = preg_replace('/APP_NAME=.*/', 'APP_NAME='.$data['app_name'], $envContent);
+        $envContent = preg_replace('/APP_URL=.*/', 'APP_URL='.$data['app_url'], $envContent);
 
         file_put_contents($envFile, $envContent);
     }

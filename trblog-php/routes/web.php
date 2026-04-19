@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SecurityController;
 use App\Http\Controllers\SetupController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-| 
+|
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
@@ -58,4 +59,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('tags', TagController::class);
     Route::resource('users', UserController::class);
+    Route::get('/security', [SecurityController::class, 'index'])->name('admin.security');
+    Route::get('/security/settings', [SecurityController::class, 'settings'])->name('admin.security.settings');
 });

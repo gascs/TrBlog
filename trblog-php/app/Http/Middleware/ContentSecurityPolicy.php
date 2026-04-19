@@ -11,7 +11,7 @@ class ContentSecurityPolicy
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -27,7 +27,7 @@ class ContentSecurityPolicy
         $csp .= "object-src 'none'; ";
         $csp .= "base-uri 'self'; ";
         $csp .= "form-action 'self'; ";
-        $csp .= "upgrade-insecure-requests;";
+        $csp .= 'upgrade-insecure-requests;';
 
         $response->headers->set('Content-Security-Policy', $csp);
 

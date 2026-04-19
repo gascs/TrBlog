@@ -3,13 +3,14 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated as Middleware;
+use Illuminate\Http\Request;
 
 class RedirectIfAuthenticated extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  mixed  $guard
      * @return string|null
      */

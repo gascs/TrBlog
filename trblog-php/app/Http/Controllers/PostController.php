@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -63,9 +63,9 @@ class PostController extends Controller
 
         $posts = Post::where('status', 'published')
             ->where(function ($q) use ($query) {
-                $q->where('title', 'like', '%' . $query . '%')
-                  ->orWhere('content', 'like', '%' . $query . '%')
-                  ->orWhere('excerpt', 'like', '%' . $query . '%');
+                $q->where('title', 'like', '%'.$query.'%')
+                    ->orWhere('content', 'like', '%'.$query.'%')
+                    ->orWhere('excerpt', 'like', '%'.$query.'%');
             })
             ->with('user', 'category', 'tags')
             ->latest('published_at')

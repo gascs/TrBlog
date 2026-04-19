@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -42,7 +43,7 @@ class PostController extends Controller
         ];
 
         // 如果状态为已发布，设置发布时间
-        if ($data['status'] === 'published' && !isset($data['published_at'])) {
+        if ($data['status'] === 'published' && ! isset($data['published_at'])) {
             $data['published_at'] = now();
         }
 
@@ -74,7 +75,7 @@ class PostController extends Controller
         $data = $request->validated();
 
         // 如果状态从草稿变为已发布，设置发布时间
-        if ($data['status'] === 'published' && $post->status !== 'published' && !isset($data['published_at'])) {
+        if ($data['status'] === 'published' && $post->status !== 'published' && ! isset($data['published_at'])) {
             $data['published_at'] = now();
         }
 

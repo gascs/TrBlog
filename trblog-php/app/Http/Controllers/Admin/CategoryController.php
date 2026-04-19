@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -40,8 +41,8 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id . '|max:255',
-            'slug' => 'required|unique:categories,slug,' . $category->id . '|max:255',
+            'name' => 'required|unique:categories,name,'.$category->id.'|max:255',
+            'slug' => 'required|unique:categories,slug,'.$category->id.'|max:255',
         ]);
 
         $category->update($request->all());

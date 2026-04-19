@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -48,7 +49,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id . '|max:255',
+            'email' => 'required|email|unique:users,email,'.$user->id.'|max:255',
             'role' => 'required|in:admin,editor,user',
         ]);
 
