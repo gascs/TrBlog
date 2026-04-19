@@ -162,7 +162,7 @@ const PostItem: React.FC<{ post: Post; index: number }> = ({ post, index }) => (
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [typewriterEnabled, setTypewriterEnabled] = useState(true);
+  const [typewriterEnabled, setTypewriterEnabled] = useState(false); // 默认关闭
   const limit = 10;
 
   useEffect(() => {
@@ -261,22 +261,7 @@ const HomePage: React.FC = () => {
                 )}
               </p>
               
-              <button
-                onClick={() => setTypewriterEnabled(!typewriterEnabled)}
-                className="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 text-sm font-medium inline-flex items-center gap-2"
-              >
-                {typewriterEnabled ? (
-                  <>
-                    <Pause className="w-4 h-4" />
-                    关闭打字机效果
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4" />
-                    开启打字机效果
-                  </>
-                )}
-              </button>
+
             </motion.div>
           </div>
         </div>
