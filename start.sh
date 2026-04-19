@@ -284,6 +284,7 @@ else
                 read -p "请输入数据库用户名: " DB_USER
                 read -s -p "请输入数据库密码: " DB_PASSWORD
                 echo
+
                 read -p "请输入数据库名称: " DB_NAME
                 ;;
             *)
@@ -295,6 +296,122 @@ else
     
     echo "使用 $DB_TYPE $DB_ENGINE 数据库模式"
     if [ "$DB_ENGINE" == "mysql" ]; then
+        if [ "$DB_TYPE" == "local" ]; then
+            # 检查MySQL是否安装
+            if ! command -v mysql > /dev/null 2>&1; then
+                echo "警告: MySQL 未安装"
+                echo ""
+                
+                if [ -t 0 ]; then
+                    echo "可选操作:"
+                    echo "1. 尝试安装 MySQL（需要 sudo 权限）"
+                    echo "2. 切换到 Docker 模式"
+                    echo "3. 切换到 SQLite 数据库"
+                    echo "4. 退出"
+                    read -p "请选择操作 (1-4): " -n 1 -r
+                    echo
+
+                    case $REPLY in
+                        1)
+                            echo "尝试安装 MySQL..."
+                            if [ -f /etc/debian_version ]; then
+                                # Debian/Ubuntu
+                                $SUDO apt update
+                                $SUDO apt install -y mysql-server
+                                
+                                # 启动MySQL服务
+                                $SUDO systemctl start mysql
+                                $SUDO systemctl enable mysql
+                                
+                                # 设置默认密码
+                                echo "正在设置 MySQL 密码..."
+                                $SUDO mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+                                
+                                # 创建数据库和用户
+                                echo "正在创建数据库和用户..."
+                                $SUDO mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+                                $SUDO mysql -u root -proot -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+                                $SUDO mysql -u root -proot -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+                                $SUDO mysql -u root -proot -e "FLUSH PRIVILEGES;"
+                                
+                                echo "MySQL 安装和配置成功！"
+                            elif [ -f /etc/redhat-release ]; then
+                                # RHEL/CentOS
+                                $SUDO yum install -y mysql-server
+                                
+                                # 启动MySQL服务
+                                $SUDO systemctl start mysqld
+                                $SUDO systemctl enable mysqld
+                                
+                                # 获取临时密码
+                                TEMP_PASS=$(grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}')
+                                
+                                # 设置密码
+                                echo "正在设置 MySQL 密码..."
+                                $SUDO mysql_secure_installation <<EOF
+$TEMP_PASS
+Y
+$DB_PASSWORD
+$DB_PASSWORD
+Y
+Y
+Y
+Y
+EOF
+                                
+                                # 创建数据库和用户
+                                echo "正在创建数据库和用户..."
+                                $SUDO mysql -u root -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+                                $SUDO mysql -u root -p$DB_PASSWORD -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+                                $SUDO mysql -u root -p$DB_PASSWORD -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+                                $SUDO mysql -u root -p$DB_PASSWORD -e "FLUSH PRIVILEGES;"
+                                
+                                echo "MySQL 安装和配置成功！"
+                            else
+                                echo "错误: 不支持的操作系统，无法自动安装 MySQL"
+                                exit 1
+                            fi
+                            ;;
+                        2)
+                            echo "切换到 Docker 模式..."
+                            export DEPLOY_MODE=docker
+                            exec ./start.sh
+                            ;;
+                        3)
+                            echo "切换到 SQLite 数据库..."
+                            export DB_ENGINE=sqlite
+                            export DB_PORT=0
+                            ;;
+                        4)
+                            echo "退出脚本"
+                            exit 1
+                            ;;
+                        *)
+                            echo "无效选择，退出"
+                            exit 1
+                            ;;
+                    esac
+                else
+                    echo "非交互式环境，MySQL 未安装，退出"
+                    exit 1
+                fi
+            else
+                echo "MySQL 已安装"
+            fi
+            
+            # 检查MySQL服务是否运行
+            if ! systemctl is-active --quiet mysql && ! systemctl is-active --quiet mysqld; then
+                echo "警告: MySQL 服务未运行"
+                echo "正在启动 MySQL 服务..."
+                if $SUDO systemctl start mysql || $SUDO systemctl start mysqld; then
+                    echo "MySQL 服务启动成功！"
+                else
+                    echo "错误: 无法启动 MySQL 服务"
+                    exit 1
+                fi
+            fi
+        fi
+        
         echo "数据库连接信息: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
         
         # 检查数据库连接
