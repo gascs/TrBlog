@@ -63,6 +63,19 @@ if [ ! -f .env ] || ! grep -q "APP_KEY" .env; then
     echo "✅ 应用密钥生成成功"
 fi
 
+# 清除缓存
+echo "清除缓存..."
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+echo "✅ 缓存清除成功"
+
+# 生成配置缓存
+echo "生成配置缓存..."
+php artisan config:cache
+echo "✅ 配置缓存生成成功"
+
 # 设置目录权限
 chmod -R 755 storage
 chmod -R 755 bootstrap/cache
@@ -80,4 +93,5 @@ echo ""
 echo "按 Ctrl+C 停止服务"
 echo ""
 
-php artisan serve --host=0.0.0.0 --port=8000
+# 使用PHP内置服务器直接指向public目录
+php -S 0.0.0.0:8000 -t public

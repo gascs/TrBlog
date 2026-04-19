@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -17,7 +19,15 @@ class HomeController extends Controller
             ->latest('published_at')
             ->paginate(10);
 
-        return view('home', compact('posts'));
+        $categories = Category::withCount('posts')->get();
+        $tags = Tag::withCount('posts')->get();
+        $latestPosts = Post::where('status', 'published')
+            ->with('user', 'category')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        return view('home', compact('posts', 'categories', 'tags', 'latestPosts'));
     }
 
     /**

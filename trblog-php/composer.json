@@ -13,7 +13,9 @@
         "predis/predis": "^2.2",
         "intervention/image": "^2.7",
         "league/flysystem-aws-s3-v3": "^3.29",
-        "guzzlehttp/guzzle": "^7.8"
+        "guzzlehttp/guzzle": "^7.8",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -144,6 +144,40 @@ if [ "$DEPLOY_MODE" == "docker" ]; then
                 2)
                     echo "切换到 PHP 模式..."
                     export DEPLOY_MODE=php
+                    # 直接执行PHP模式的逻辑
+                    echo "\n=== PHP 部署模式 ==="
+                    
+                    # 选择数据库引擎
+                    export DB_ENGINE=mysql
+                    export DB_PORT=3306
+                    
+                    # 非交互式环境，使用默认值
+                    export DB_TYPE=local
+                    export DB_HOST=localhost
+                    export DB_USER=root
+                    export DB_PASSWORD=root
+                    export DB_NAME=TrBlog
+                    echo "使用 $DB_TYPE $DB_ENGINE 数据库模式"
+                    echo "数据库连接信息: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
+                    
+                    # 启动PHP服务器
+                    echo "正在启动 PHP 服务器..."
+                    cd trblog-php || {
+                        echo "错误: 无法进入 trblog-php 目录"
+                        exit 1
+                    }
+                    echo "当前目录: $(pwd)"
+                    echo "目录内容:"
+                    ls -la
+                    if [ -f start-local.sh ]; then
+                        echo "找到 start-local.sh 脚本"
+                        chmod +x start-local.sh
+                        ./start-local.sh
+                    else
+                        echo "错误: PHP 启动脚本未找到"
+                        exit 1
+                    fi
+                    exit 0
                     ;;
                 3)
                     echo "进入模拟模式..."
@@ -177,9 +211,42 @@ if [ "$DEPLOY_MODE" == "docker" ]; then
                     ;;
             esac
         else
-            # 非交互式环境，切换到PHP模式
+            # 非交互式环境，直接执行PHP模式
             echo "非交互式环境，Docker 未运行，切换到 PHP 模式..."
-            export DEPLOY_MODE=php
+            
+            echo "\n=== PHP 部署模式 ==="
+            
+            # 选择数据库引擎
+            export DB_ENGINE=mysql
+            export DB_PORT=3306
+            
+            # 非交互式环境，使用默认值
+            export DB_TYPE=local
+            export DB_HOST=localhost
+            export DB_USER=root
+            export DB_PASSWORD=root
+            export DB_NAME=TrBlog
+            echo "使用 $DB_TYPE $DB_ENGINE 数据库模式"
+            echo "数据库连接信息: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
+            
+            # 启动PHP服务器
+            echo "正在启动 PHP 服务器..."
+            cd trblog-php || {
+                echo "错误: 无法进入 trblog-php 目录"
+                exit 1
+            }
+            echo "当前目录: $(pwd)"
+            echo "目录内容:"
+            ls -la
+            if [ -f start-local.sh ]; then
+                echo "找到 start-local.sh 脚本"
+                chmod +x start-local.sh
+                ./start-local.sh
+            else
+                echo "错误: PHP 启动脚本未找到"
+                exit 1
+            fi
+            exit 0
         fi
     fi
     
@@ -292,6 +359,15 @@ else
                 export DB_TYPE=local
                 ;;
         esac
+    else
+        # 非交互式环境，使用默认值
+        export DB_TYPE=local
+        export DB_HOST=localhost
+        export DB_PORT=3306
+        export DB_USER=root
+        export DB_PASSWORD=root
+        export DB_NAME=TrBlog
+        echo "非交互式环境，使用默认数据库配置: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
     fi
     
     echo "使用 $DB_TYPE $DB_ENGINE 数据库模式"
@@ -453,8 +529,15 @@ EOF
     
     # 启动PHP服务器
     echo "正在启动 PHP 服务器..."
-    cd trblog-php
+    cd trblog-php || {
+        echo "错误: 无法进入 trblog-php 目录"
+        exit 1
+    }
+    echo "当前目录: $(pwd)"
+    echo "目录内容:"
+    ls -la
     if [ -f start-local.sh ]; then
+        echo "找到 start-local.sh 脚本"
         chmod +x start-local.sh
         ./start-local.sh
     else
