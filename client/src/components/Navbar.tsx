@@ -59,8 +59,8 @@ const Navbar: React.FC = () => {
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md border-b border-gray-200 dark:border-gray-800'
-        : 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800'
+        ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg border-b border-gray-200/50 dark:border-gray-800/50'
+        : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
             to="/"
             className="text-xl font-bold flex items-center gap-2 transition-all duration-300 hover:opacity-90"
           >
-            <span className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shadow-md transition-transform duration-300 hover:scale-105">
+            <span className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg transition-transform duration-300 hover:scale-105">
               {siteConfig.logo}
             </span>
             <span className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -85,8 +85,8 @@ const Navbar: React.FC = () => {
                 to={item.path}
                 className={`text-sm font-medium px-4 py-2.5 rounded-lg transition-all duration-300 ${
                   isActive(item.path)
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
+                    ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 shadow-md'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
               >
                 {item.name}
@@ -103,15 +103,15 @@ const Navbar: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="搜索..."
-                className="w-56 pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-300"
+                className="w-64 pl-10 pr-4 py-2.5 text-sm bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all duration-300 shadow-sm"
               />
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 dark:text-gray-500" />
+              <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400 dark:text-gray-500" />
             </form>
 
             {/* Theme Toggle */}
             <button
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              className="p-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
               aria-label="切换主题"
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -122,7 +122,7 @@ const Navbar: React.FC = () => {
               href="https://github.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="p-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
@@ -136,21 +136,21 @@ const Navbar: React.FC = () => {
                   to="/admin"
                   variant="nav"
                   icon={<Settings className="w-4 h-4" />}
-                  className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   管理
                 </AdminLink>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
                     {user.username}
                   </span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2.5 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="p-2.5 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   <LogOut className="w-5 h-5" />
                 </button>
@@ -159,13 +159,13 @@ const Navbar: React.FC = () => {
               <div className="flex items-center gap-3">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 shadow-sm hover:shadow-md"
                 >
                   登录
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-300"
+                  className="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-xl shadow-md hover:shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
                 >
                   注册
                 </Link>
