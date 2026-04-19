@@ -160,8 +160,8 @@ const HomePage: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const limit = 10;
   
-  const siteTitle = 'TrBlog - 分享知识，连接思想';
-  const siteDescription = '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
+  const siteTitle = `TrBlog - ${heroSettings?.heroTitle || '分享知识，连接思想'}`;
+  const siteDescription = heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
 
   useEffect(() => {
     // 检查是否首次访问
@@ -206,6 +206,28 @@ const HomePage: React.FC = () => {
     },
     staleTime: 5 * 60 * 1000,
     retry: 1, // 减少重试次数
+  });
+
+  // 获取hero设置
+  const { data: heroSettings } = useQuery({
+    queryKey: ['heroSettings'],
+    queryFn: async () => {
+      try {
+        const response = await api.get('/settings') as any;
+        return response.data;
+      } catch (err) {
+        console.error('❌ 获取hero设置失败，使用默认值:', err);
+        // 返回默认值
+        return {
+          heroTitle: '分享知识，连接思想',
+          heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
+          heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
+          heroDecor: true
+        };
+      }
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
   });
 
   const handleLoadMore = () => {
@@ -271,14 +293,16 @@ const HomePage: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8"
+        className={`bg-${heroSettings?.heroBackground || 'gradient-to-br from-blue-50 to-indigo-50'} border-b border-gray-200 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8`}
       >
         {/* 装饰元素 */}
-        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path fill="#3b82f6" d="M47.5,-79.1C61.3,-72.2,73.3,-58.3,79.8,-42.5C86.3,-26.7,87.2,-9.1,84.1,7.1C81,23.3,73.9,38.3,64,51.4C54,64.5,41.2,75.6,26.9,82.1C12.7,88.6,-3,88.5,-18.1,85.8C-33.1,83.1,-48.1,77.7,-59.8,68.4C-71.5,59,-79.9,45.8,-83.5,31.4C-87.2,17,-86,1.6,-82.4,-12.7C-78.8,-27,-72.8,-40.6,-64.2,-51.9C-55.7,-63.3,-44.5,-72.3,-32.1,-78.1C-19.8,-83.9,-6.3,-86.6,6.8,-86.3C19.8,-86.1,31.5,-82.9,47.5,-79.1Z" transform="translate(100 100)" />
-          </svg>
-        </div>
+        {heroSettings?.heroDecor !== false && (
+          <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <path fill="#3b82f6" d="M47.5,-79.1C61.3,-72.2,73.3,-58.3,79.8,-42.5C86.3,-26.7,87.2,-9.1,84.1,7.1C81,23.3,73.9,38.3,64,51.4C54,64.5,41.2,75.6,26.9,82.1C12.7,88.6,-3,88.5,-18.1,85.8C-33.1,83.1,-48.1,77.7,-59.8,68.4C-71.5,59,-79.9,45.8,-83.5,31.4C-87.2,17,-86,1.6,-82.4,-12.7C-78.8,-27,-72.8,-40.6,-64.2,-51.9C-55.7,-63.3,-44.5,-72.3,-32.1,-78.1C-19.8,-83.9,-6.3,-86.6,6.8,-86.3C19.8,-86.1,31.5,-82.9,47.5,-79.1Z" transform="translate(100 100)" />
+            </svg>
+          </div>
+        )}
         
         <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
           <motion.div
@@ -293,16 +317,7 @@ const HomePage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                分享知识，
-              </motion.span>
-              <br />
-              <motion.span 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-blue-600"
-              >
-                连接思想
+                {heroSettings?.heroTitle || '分享知识，连接思想'}
               </motion.span>
             </h1>
             <motion.p 
@@ -311,7 +326,7 @@ const HomePage: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl"
             >
-              一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。
+              {heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。'}
             </motion.p>
           </motion.div>
         </div>

@@ -24,7 +24,11 @@ const mockData = {
     footerText: '© 2026 TrBlog. All rights reserved.',
     analyticsCode: '',
     metaKeywords: '博客,技术,React,NestJS',
-    metaDescription: '一个基于 React + NestJS 的现代化博客系统'
+    metaDescription: '一个基于 React + NestJS 的现代化博客系统',
+    heroTitle: '分享知识，连接思想',
+    heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
+    heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
+    heroDecor: true
   },
   posts: [
     {
