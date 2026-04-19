@@ -88,14 +88,28 @@ trblog-php/
 
 ## 快速开始
 
-### 1. 克隆仓库
+### 🔥 傻瓜式一键启动（推荐）
+
+#### Windows用户
+
+1. 双击运行 `start.bat` 即可启动
+2. 双击运行 `stop.bat` 即可停止
+
+#### Linux/Mac用户
+
+1. 运行 `./start.sh` 即可启动
+2. 运行 `./stop.sh` 即可停止
+
+### 手动部署
+
+#### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/gascs/TrBlog.git trblog-php
 cd trblog-php
 ```
 
-### 2. 环境配置
+#### 2. 环境配置
 
 复制环境变量示例文件并修改：
 
@@ -103,13 +117,13 @@ cd trblog-php
 cp .env.example .env
 ```
 
-### 3. Docker部署
+#### 3. Docker部署
 
 ```bash
 docker-compose up -d
 ```
 
-### 4. 传统部署
+#### 4. 传统部署
 
 ```bash
 # 安装依赖
@@ -137,15 +151,54 @@ php artisan serve
 
 ## 部署方式
 
-### Docker部署
+### 📦 脚本说明
 
-使用 Docker Compose 快速部署：
+我们提供了傻瓜式一键启动脚本，让您无需复杂配置：
+
+| 脚本文件 | 系统 | 说明 |
+|---------|------|------|
+| `start.sh` | Linux/Mac | Docker快速启动 |
+| `stop.sh` | Linux/Mac | 停止和清理服务 |
+| `start-local.sh` | Linux/Mac | 传统部署启动（需要PHP和Composer） |
+| `start.bat` | Windows | Docker快速启动 |
+| `stop.bat` | Windows | 停止和清理服务 |
+
+### 🐳 Docker部署（推荐）
+
+#### 使用脚本启动
+
+Windows：双击 `start.bat`
+
+Linux/Mac：运行 `./start.sh`
+
+脚本会自动完成：
+- ✅ 检查Docker环境
+- ✅ 配置环境变量
+- ✅ 启动服务
+- ✅ 检查服务状态
+- ✅ 显示访问地址
+
+#### 手动Docker部署
 
 ```bash
 docker-compose up -d
 ```
 
-### 传统部署
+### 💻 传统部署
+
+#### 使用脚本启动
+
+Linux/Mac：运行 `./start-local.sh`
+
+脚本会自动完成：
+- ✅ 检查PHP和Composer环境
+- ✅ 配置环境变量
+- ✅ 安装依赖
+- ✅ 生成应用密钥
+- ✅ 设置目录权限
+- ✅ 启动开发服务器
+
+#### 手动传统部署
 
 1. 上传代码到服务器
 2. 配置 web 服务器（Apache 或 Nginx）
