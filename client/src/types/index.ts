@@ -36,6 +36,8 @@ export interface Post {
   coverImage?: string;
   published: boolean;
   views: number;
+  likeCount?: number;
+  readTime?: number;
   authorId: string;
   categoryId?: string;
   author: User;
