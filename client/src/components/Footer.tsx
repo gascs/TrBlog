@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              {siteConfig.footer.copyright}
+              © 2026 TrBlog. 保留所有权利。
             </p>
             <AdminLink
               user={user}
@@ -33,20 +33,20 @@ const Footer: React.FC = () => {
           </div>
           <div className="flex items-center gap-6">
             <a
-              href={siteConfig.footer.icpLink}
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
             >
-              {siteConfig.footer.icp}
+              京ICP备12345678号-1
             </a>
             <a
-              href={siteConfig.footer.policeLink}
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors"
             >
-              {siteConfig.footer.police}
+              京公网安备 123456789012345号
             </a>
           </div>
         </div>
