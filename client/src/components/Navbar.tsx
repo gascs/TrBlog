@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, User, LogOut, Settings, Menu as MenuIcon } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Menu as MenuIcon, ChevronDown } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import AdminLink from './AdminLink';
 import { User as UserType } from '../types';
+import { siteConfig } from '../config/site';
 
 interface NavbarProps {
   onToggleSidebar?: () => void;
@@ -15,6 +16,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onCloseSidebar }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<UserType | null>(null);
@@ -34,6 +36,11 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsUserMenuOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -43,14 +50,16 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
     navigate('/');
   };
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`sticky top-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-800' 
+          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-800/50' 
           : 'bg-transparent'
       }`}
     >
@@ -59,14 +68,19 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
           <div className="flex items-center gap-4">
             <Link
               to="/"
-              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors flex items-center gap-2"
+              className="group text-2xl md:text-3xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-all flex items-center gap-2"
             >
-              <span className="inline-block w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-semibold">
-                T
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                className="inline-block w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold shadow-lg"
+              >
+                {siteConfig.logo}
+              </motion.div>
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {siteConfig.title}
               </span>
-              TrBlog
             </Link>
-            <nav className="hidden md:flex items-center ml-16 space-x-8">
+            <nav className="hidden md:flex items-center ml-16 space-x-2">
               {[
                 { name: '首页', path: '/' },
                 { name: '分类', path: '/categories' },
@@ -76,58 +90,68 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                   key={item.path}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link
                     to={item.path}
-                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all relative group px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className={`relative px-4 py-3 rounded-xl font-medium transition-all duration-300 group ${
+                      isActive(item.path)
+                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
                   >
-                    {item.name}
-                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left" />
+                    <span className="relative z-10">{item.name}</span>
+                    {isActive(item.path) && (
+                      <motion.span
+                        layoutId="active-nav"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl"
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
                   </Link>
                 </motion.div>
               ))}
             </nav>
           </div>
 
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2">
             <SearchBar />
             <ThemeToggle />
             {user ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 ml-2">
                 <AdminLink 
                   user={user} 
                   to="/admin" 
                   variant="nav" 
                   icon={<Settings className="w-4 h-4" />}
-                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+                  className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-all duration-300 hover:shadow-md"
                 >
                   管理后台
                 </AdminLink>
-                <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all cursor-pointer shadow-sm">
-                  <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                <div className="flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl hover:shadow-md transition-all cursor-pointer border border-gray-200/50 dark:border-gray-700/50">
+                  <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-gray-700 dark:text-gray-300 font-medium hidden sm:inline">{user.username}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-3 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all shadow-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 hover:shadow-md"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">退出</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 ml-2">
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   <Link
                     to="/login"
-                    className="px-5 py-3 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all hover:shadow-md"
+                    className="px-5 py-2.5 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all duration-300 hover:shadow-md"
                   >
                     登录
                   </Link>
@@ -135,11 +159,11 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
                 >
                   <Link
                     to="/register"
-                    className="px-5 py-3 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium transition-all hover:shadow-lg transform hover:-translate-y-0.5"
+                    className="px-5 py-2.5 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5"
                   >
                     注册
                   </Link>
@@ -148,129 +172,62 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
             )}
           </div>
 
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
             <button
-              className="p-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all shadow-sm"
+              className="p-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "关闭菜单" : "打开菜单"}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
-            <div className="relative">
-              <button
-                className="p-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all shadow-sm"
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                aria-label="用户菜单"
-              >
-                <User className="w-6 h-6" />
-              </button>
-              <AnimatePresence>
-                {isUserMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 z-50"
-                  >
-                    <div className="py-2">
-                      {user ? (
-                        <>
-                          <AdminLink 
-                            user={user} 
-                            to="/admin" 
-                            variant="nav" 
-                            icon={<Settings className="w-4 h-4" />}
-                            onClick={() => setIsUserMenuOpen(false)}
-                          >
-                            管理后台
-                          </AdminLink>
-                          <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-800">
-                            <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
-                                {user.username.charAt(0).toUpperCase()}
-                              </div>
-                              <span className="text-sm font-medium">{user.username}</span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={handleLogout}
-                            className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-2 px-4 w-full text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                          >
-                            <LogOut className="w-4 h-4" />
-                            退出登录
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <Link
-                            to="/login"
-                            onClick={() => setIsUserMenuOpen(false)}
-                            className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                          >
-                            登录
-                          </Link>
-                          <Link
-                            to="/register"
-                            onClick={() => setIsUserMenuOpen(false)}
-                            className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-2 px-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                          >
-                            注册
-                          </Link>
-                        </>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </div>
         </div>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800"
+            initial={{ opacity: 0, height: 0, scale: 0.95 }}
+            animate={{ opacity: 1, height: 'auto', scale: 1 }}
+            exit={{ opacity: 0, height: 0, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 overflow-hidden"
           >
             <div className="container mx-auto px-4 py-6 space-y-4">
-              <div className="mb-6">
+              <div className="mb-4">
                 <SearchBar />
               </div>
-              <div className="flex justify-end mb-4">
-                <ThemeToggle />
-              </div>
               <nav className="flex flex-col space-y-2">
-                <Link
-                  to="/"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                >
-                  首页
-                </Link>
-                <Link
-                  to="/categories"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                >
-                  分类
-                </Link>
-                <Link
-                  to="/tags"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                >
-                  标签
-                </Link>
+                {[
+                  { name: '首页', path: '/' },
+                  { name: '分类', path: '/categories' },
+                  { name: '标签', path: '/tags' }
+                ].map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`text-lg font-medium py-3 px-4 rounded-xl transition-all duration-300 ${
+                      isActive(item.path)
+                        ? 'text-blue-600 dark:text-blue-400 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </nav>
 
-              <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-3">
+              <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-2">
                 {user ? (
                   <>
+                    <div className="flex items-center gap-3 py-3 px-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md">
+                        {user.username.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium">{user.username}</span>
+                    </div>
                     <AdminLink 
                       user={user} 
                       to="/admin" 
@@ -280,13 +237,9 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                     >
                       管理后台
                     </AdminLink>
-                    <div className="flex items-center gap-3 py-2 px-4">
-                      <User className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                      <span className="text-gray-700 dark:text-gray-300">{user.username}</span>
-                    </div>
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-2 text-lg text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-3 px-4 w-full rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                      className="flex items-center gap-2 text-lg text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium py-3 px-4 w-full rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300"
                     >
                       <LogOut className="w-5 h-5" />
                       退出登录
@@ -297,14 +250,14 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen, onClose
                     <Link
                       to="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block text-lg text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                      className="block text-lg text-center px-6 py-3 bg-transparent border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all duration-300"
                     >
                       登录
                     </Link>
                     <Link
                       to="/register"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block text-lg text-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all"
+                      className="block text-lg text-center px-6 py-3 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all duration-300 hover:shadow-lg"
                     >
                       注册
                     </Link>

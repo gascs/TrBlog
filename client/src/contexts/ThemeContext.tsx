@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
-type Theme = 'light' | 'dark' | 'system' | 'colorful';
+type Theme = 'light' | 'dark' | 'system' | 'colorful' | 'ocean' | 'forest' | 'sunset';
 
 interface ThemeContextType {
   theme: Theme;
@@ -10,10 +10,32 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const themeColors = {
+  light: {},
+  dark: {},
+  system: {},
+  colorful: {
+    primary: '#8B5CF6',
+    secondary: '#EC4899'
+  },
+  ocean: {
+    primary: '#0EA5E9',
+    secondary: '#06B6D4'
+  },
+  forest: {
+    primary: '#10B981',
+    secondary: '#34D399'
+  },
+  sunset: {
+    primary: '#F59E0B',
+    secondary: '#EF4444'
+  }
+};
+
 // 初始化主题的工具函数
 const initializeTheme = (): Theme => {
   const saved = localStorage.getItem('theme');
-  if (saved && ['light', 'dark', 'system', 'colorful'].includes(saved)) {
+  if (saved && ['light', 'dark', 'system', 'colorful', 'ocean', 'forest', 'sunset'].includes(saved)) {
     return saved as Theme;
   }
   return 'system';
@@ -23,7 +45,7 @@ const initializeTheme = (): Theme => {
 const initializeIsDark = (): boolean => {
   const saved = localStorage.getItem('theme');
   if (saved === 'dark') return true;
-  if (saved === 'light' || saved === 'colorful') return false;
+  if (saved === 'light' || saved === 'colorful' || saved === 'ocean' || saved === 'forest' || saved === 'sunset') return false;
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
@@ -47,7 +69,6 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
   }, []);
 
-  // 监听系统主题变化
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
@@ -61,13 +82,18 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
   }, [theme]);
 
-  // 更新根元素类名
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('light', 'dark', 'colorful');
+    root.classList.remove('light', 'dark', 'colorful', 'ocean', 'forest', 'sunset');
     
     if (theme === 'colorful') {
       root.classList.add('colorful');
+    } else if (theme === 'ocean') {
+      root.classList.add('ocean');
+    } else if (theme === 'forest') {
+      root.classList.add('forest');
+    } else if (theme === 'sunset') {
+      root.classList.add('sunset');
     } else if (isDark) {
       root.classList.add('dark');
     } else {

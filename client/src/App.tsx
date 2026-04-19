@@ -20,6 +20,7 @@ const CategoriesPage = lazy(() => import('./pages/CategoriesPage'));
 const CategoryDetailPage = lazy(() => import('./pages/CategoryDetailPage'));
 const TagsPage = lazy(() => import('./pages/TagsPage'));
 const TagDetailPage = lazy(() => import('./pages/TagDetailPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const PostsPage = lazy(() => import('./pages/admin/PostsPage'));
 const EditPostPage = lazy(() => import('./pages/admin/EditPostPage'));
@@ -237,7 +238,13 @@ const App: React.FC = () => {
                 </RequireAdmin>
               }
             />
-            <Route path="*" element={<RouteTransition><Navigate to="/" replace /></RouteTransition>} />
+            <Route path="*" element={
+              <Layout>
+                <RouteTransition>
+                  <NotFoundPage />
+                </RouteTransition>
+              </Layout>
+            } />
           </Routes>
         </Suspense>
       </Router>
