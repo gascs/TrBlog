@@ -160,6 +160,28 @@ const HomePage: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const limit = 10;
   
+  // 获取hero设置（放在最前面，确保在使用前已经定义）
+  const { data: heroSettings } = useQuery({
+    queryKey: ['heroSettings'],
+    queryFn: async () => {
+      try {
+        const response = await api.get('/settings') as any;
+        return response.data;
+      } catch (err) {
+        console.error('❌ 获取hero设置失败，使用默认值:', err);
+        // 返回默认值
+        return {
+          heroTitle: '分享知识，连接思想',
+          heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
+          heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
+          heroDecor: true
+        };
+      }
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+  
   const siteTitle = `TrBlog - ${heroSettings?.heroTitle || '分享知识，连接思想'}`;
   const siteDescription = heroSettings?.heroSubtitle || '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。';
 
@@ -206,28 +228,6 @@ const HomePage: React.FC = () => {
     },
     staleTime: 5 * 60 * 1000,
     retry: 1, // 减少重试次数
-  });
-
-  // 获取hero设置
-  const { data: heroSettings } = useQuery({
-    queryKey: ['heroSettings'],
-    queryFn: async () => {
-      try {
-        const response = await api.get('/settings') as any;
-        return response.data;
-      } catch (err) {
-        console.error('❌ 获取hero设置失败，使用默认值:', err);
-        // 返回默认值
-        return {
-          heroTitle: '分享知识，连接思想',
-          heroSubtitle: '一个基于 React + NestJS 的现代化博客系统，为您提供优雅的写作和阅读体验。',
-          heroBackground: 'gradient-to-br from-blue-50 to-indigo-50',
-          heroDecor: true
-        };
-      }
-    },
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
   });
 
   const handleLoadMore = () => {
