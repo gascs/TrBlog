@@ -64,109 +64,106 @@ const TagDetailPage: React.FC = () => {
   const posts = postsData?.posts || [];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="py-8"
+    >
+      <div className="mb-8">
+        <Link
+          to="/tags"
+          className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors mb-6"
         >
-          <div className="mb-8">
-            <Link
-              to="/tags"
-              className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors mb-6"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>返回标签列表</span>
-            </Link>
+          <ArrowLeft className="w-4 h-4" />
+          <span>返回标签列表</span>
+        </Link>
 
-            {tag && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 mb-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-                    <Tag className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{tag.name}</h1>
-                    {tag.description && (
-                      <p className="text-gray-600 dark:text-gray-400 mt-2">{tag.description}</p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4" />
-                    <span>{tag._count?.posts || 0} 篇文章</span>
-                  </div>
-                  <div className="text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                    /{tag.slug}
-                  </div>
-                </div>
+        {tag && (
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                <Tag className="w-7 h-7 text-white" />
               </div>
-            )}
-
-            {posts.length > 0 ? (
-              <div className="space-y-4">
-                {posts.map((post: Post, index: number) => (
-                  <motion.div
-                    key={post.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    whileHover={{ y: -2 }}
-                  >
-                    <Link
-                      to={`/posts/${post.id}`}
-                      className="block bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-lg transition-all duration-300"
-                    >
-                      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                        {post.title}
-                      </h2>
-                      {post.excerpt && (
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                      )}
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4" />
-                          <span>{post.author?.username || '匿名'}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>{formatDate(post.createdAt)}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Eye className="w-4 h-4" />
-                          <span>{post.views || 0} 阅读</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <MessageSquare className="w-4 h-4" />
-                          <span>{post.comments?.length || 0} 评论</span>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{tag.name}</h1>
+                {tag.description && (
+                  <p className="text-gray-600 dark:text-gray-400 mt-2">{tag.description}</p>
+                )}
               </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center"
-              >
-                <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Tag className="w-10 h-10 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">该标签下暂无文章</h3>
-                <p className="text-gray-600 dark:text-gray-400">还没有任何文章使用这个标签</p>
-              </motion.div>
-            )}
+            </div>
+            <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <Tag className="w-4 h-4" />
+                <span>{tag._count?.posts || 0} 篇文章</span>
+              </div>
+              <div className="text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                /{tag.slug}
+              </div>
+            </div>
           </div>
-        </motion.div>
+        )}
+
+        {posts.length > 0 ? (
+          <div className="space-y-4">
+            {posts.map((post: Post, index: number) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -2 }}
+              >
+                <Link
+                  to={`/posts/${post.id}`}
+                  className="block bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-lg transition-all duration-300"
+                >
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                    {post.title}
+                  </h2>
+                  {post.excerpt && (
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      <span>{post.author?.username || '匿名'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(post.createdAt)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-4 h-4" />
+                      <span>{post.views || 0} 阅读</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4" />
+                      <span>{post.comments?.length || 0} 评论</span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center"
+          >
+            <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Tag className="w-10 h-10 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">该标签下暂无文章</h3>
+            <p className="text-gray-600 dark:text-gray-400">还没有任何文章使用这个标签</p>
+          </motion.div>
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
