@@ -3,6 +3,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 console.log('🔧 环境配置:', { API_URL });
+console.log('🚀 切换到模拟模式以访问后台');
 
 // 模拟数据
 const mockData = {
@@ -123,6 +124,8 @@ const mockApi = {
           resolve({ data: mockData.categories, status: 200, statusText: 'OK' });
         } else if (url.includes('/tags')) {
           resolve({ data: mockData.tags, status: 200, statusText: 'OK' });
+        } else if (url.includes('/users')) {
+          resolve({ data: [mockData.user], status: 200, statusText: 'OK' });
         } else {
           resolve({ data: null, status: 200, statusText: 'OK' });
         }
@@ -159,70 +162,5 @@ const mockApi = {
   }
 };
 
-// 创建真实的 axios 实例
-const realApi = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-  },
-  timeout: 10000, // 10秒超时
-  withCredentials: false, // 不发送cookies
-});
-
-// 正常模式的拦截器
-// Add interceptor to add token to requests
-realApi.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    // 添加防CSRF令牌（如果需要）
-    // const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    // if (csrfToken) {
-    //   config.headers['X-CSRF-Token'] = csrfToken;
-    // }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Add interceptor to handle 401 errors
-realApi.interceptors.response.use(
-  (response) => {
-    // 验证响应数据格式
-    if (response.data && typeof response.data === 'object') {
-      return response;
-    }
-    return Promise.reject(new Error('Invalid response format'));
-  },
-  (error) => {
-    if (error.response) {
-      // 处理401错误
-      if (error.response.status === 401) {
-        // 清除本地存储的认证信息
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        // 跳转到登录页面
-        window.location.href = '/login';
-      }
-      // 处理其他错误
-      return Promise.reject({
-        status: error.response.status,
-        message: error.response.data?.message || 'Request failed',
-        data: error.response.data,
-      });
-    } else if (error.request) {
-      // 请求已发出但没有收到响应
-      return Promise.reject(new Error('No response received from server'));
-    } else {
-      // 请求配置出错
-      return Promise.reject(new Error('Request configuration error'));
-    }
-  }
-);
-
-export default realApi;
+// 直接导出模拟 API
+export default mockApi;
