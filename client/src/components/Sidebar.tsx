@@ -75,22 +75,22 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <aside className="w-64 border-r border-gray-200 dark:border-dark-border bg-white dark:bg-dark-background p-6">
+    <aside className="w-56 md:w-64 border-r border-gray-200 dark:border-dark-border bg-white dark:bg-dark-background p-4 md:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* 搜索框 */}
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="relative">
             <input
               type="text"
               placeholder="搜索文章..."
-              className="w-full px-4 py-2 pl-10 bg-gray-50 dark:bg-dark-muted border border-gray-200 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+              className="w-full px-3 py-1.5 pl-8 bg-gray-50 dark:bg-dark-muted border border-gray-200 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm"
             />
             <svg
-              className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+              className="absolute left-2.5 top-2 w-4 h-4 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -107,10 +107,10 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* 分类 */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+        <div className="mb-6">
+          <h2 className="text-md md:text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
             <svg
-              className="w-5 h-5 mr-2 text-primary"
+              className="w-4 h-4 mr-2 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -125,7 +125,7 @@ const Sidebar: React.FC = () => {
             </svg>
             分类
           </h2>
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {categories.map((category, index) => (
               <motion.li
                 key={category.id}
@@ -135,7 +135,7 @@ const Sidebar: React.FC = () => {
               >
                 <Link
                   to={`/categories/${category.id}`}
-                  className="flex items-center justify-between text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-muted transition-all group"
+                  className="flex items-center justify-between text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-muted transition-all group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform">{category.name}</span>
                   <span className="text-xs font-medium bg-gray-100 dark:bg-dark-border text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
@@ -149,9 +149,9 @@ const Sidebar: React.FC = () => {
 
         {/* 标签 */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+          <h2 className="text-md md:text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
             <svg
-              className="w-5 h-5 mr-2 text-primary"
+              className="w-4 h-4 mr-2 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -166,7 +166,7 @@ const Sidebar: React.FC = () => {
             </svg>
             标签
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {tags.map((tag, index) => (
               <motion.div
                 key={tag.id}
@@ -176,7 +176,7 @@ const Sidebar: React.FC = () => {
               >
                 <Link
                   to={`/tags/${tag.id}`}
-                  className="px-3 py-1.5 bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-primary hover:text-white dark:hover:bg-primary-dark transition-all"
+                  className="px-2.5 py-1 bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium hover:bg-primary hover:text-white dark:hover:bg-primary-dark transition-all"
                 >
                   {tag.name} <span className="opacity-75">({tag._count?.posts || 0})</span>
                 </Link>

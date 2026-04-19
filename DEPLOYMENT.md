@@ -181,5 +181,6 @@ PHP 部署会自动创建 `.env` 文件，主要配置项包括：
 ## 联系方式
 
 如有问题或建议，请通过以下方式联系：
-- 项目地址：https://github.com/yourusername/trblog
-- 电子邮件：your.email@example.com
+- 项目地址：https://github.com/Trae/trblog
+- 开发者：Trae & gascs
+- 电子邮件：contact@trae.dev

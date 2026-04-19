@@ -91,58 +91,58 @@ const PostItem = memo(({ post, index }: { post: Post; index: number }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-100px' }}
     transition={{ duration: 0.6, delay: index * 0.1 }}
-    className="group"
+    className="group bg-white dark:bg-dark-card rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden mb-6"
   >
     <Link to={`/posts/${post.id}`} className="block">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-8 border-b border-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-12">
         {post.coverImage && (
           <motion.div 
-            className="md:col-span-4 relative aspect-[4/3] overflow-hidden rounded-xl"
-            whileHover={{ scale: 1.02 }}
+            className="md:col-span-4 relative aspect-[4/3] overflow-hidden"
+            whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.4 }}
           >
             <OptimizedImage
               src={post.coverImage}
               alt={post.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
             />
           </motion.div>
         )}
-        <div className={`flex flex-col justify-center ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
+        <div className={`p-6 ${post.coverImage ? 'md:col-span-8' : 'md:col-span-12'}`}>
           <div className="flex items-center gap-3 mb-3">
             {post.category && (
-              <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
                 {post.category.name}
               </span>
             )}
-            <span className="w-1 h-1 rounded-full bg-gray-300" />
-            <div className="flex items-center gap-1 text-sm text-gray-500">
+            <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
               <Calendar className="w-4 h-4" />
               <span>{formatDate(post.createdAt)}</span>
             </div>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
             {post.title}
           </h2>
           {post.excerpt && (
-            <p className="text-gray-600 text-lg mb-4 line-clamp-2">
+            <p className="text-gray-600 dark:text-gray-300 text-base mb-4 line-clamp-2">
               {post.excerpt}
             </p>
           )}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-gray-500">
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
               <User className="w-4 h-4" />
-              <span className="text-sm">{post.author.username}</span>
+              <span>{post.author.username}</span>
             </div>
-            <div className="flex items-center gap-4 text-gray-400">
+            <div className="flex items-center gap-4 text-gray-400 dark:text-gray-500">
               <div className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
-                <span className="text-sm">{post.views}</span>
+                <span>{post.views}</span>
               </div>
               <div className="flex items-center gap-1">
                 <MessageSquare className="w-4 h-4" />
-                <span className="text-sm">{post.comments?.length || 0}</span>
+                <span>{post.comments?.length || 0}</span>
               </div>
             </div>
           </div>

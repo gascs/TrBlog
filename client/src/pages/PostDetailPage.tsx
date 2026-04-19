@@ -94,8 +94,28 @@ const PostDetailPage: React.FC = () => {
     });
   };
 
+  // 阅读进度条状态
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+      
+      // 计算阅读进度
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-background">
+      {/* 阅读进度条 */}
+      <div className="fixed top-0 left-0 h-1 bg-blue-600 z-50" style={{ width: `${scrollProgress}%` }} />
+      
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
@@ -173,179 +193,180 @@ const PostDetailPage: React.FC = () => {
           })}
         </script>
       </Helmet>
+      
       <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            返回
-          </button>
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-dark-card rounded-xl shadow-sm p-8 md:p-12">
+            <button
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              返回
+            </button>
 
-          <div className="mb-8">
-            {post.category && (
+            <div className="mb-8">
+              {post.category && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <Link
+                    to={`/categories/${post.category.id}`}
+                    className="inline-block px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold mb-4 hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
+                  >
+                    {post.category.name}
+                  </Link>
+                </motion.div>
+              )}
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
+              >
+                {post.title}
+              </motion.h1>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="flex flex-wrap items-center gap-4 md:gap-6 text-gray-500 dark:text-gray-400 mb-6"
               >
-                <Link
-                  to={`/categories/${post.category.id}`}
-                  className="inline-block px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold mb-4 hover:bg-blue-100 dark:hover:bg-blue-800/30 transition-colors"
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span className="text-sm">{post.author.username}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="text-sm">{new Date(post.createdAt).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  <span className="text-sm">{post.comments?.length || 0} 评论</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  <span className="text-sm">{post.views} 浏览</span>
+                </div>
+              </motion.div>
+              
+              {/* 互动按钮 */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="flex flex-wrap items-center gap-3"
+              >
+                <motion.button
+                  onClick={handleLike}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${liked ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {post.category.name}
-                </Link>
+                  <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
+                  <span className="text-sm">{likeCount}</span>
+                </motion.button>
+                <motion.button
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span className="text-sm">分享</span>
+                </motion.button>
+                <motion.button
+                  className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span className="text-sm">收藏</span>
+                </motion.button>
+              </motion.div>
+            </div>
+
+            {post.coverImage && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mb-12 rounded-xl overflow-hidden shadow-lg"
+              >
+                <OptimizedImage
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="w-full h-64 md:h-80 lg:h-96 object-cover"
+                />
               </motion.div>
             )}
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight"
-            >
-              {post.title}
-            </motion.h1>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 mb-6"
-            >
-              <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <span>{post.author.username}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span>{new Date(post.createdAt).toLocaleDateString('zh-CN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5" />
-                <span>{post.comments?.length || 0} 评论</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Eye className="w-5 h-5" />
-                <span>{post.views} 浏览</span>
-              </div>
-            </motion.div>
-            
-            {/* 互动按钮 */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center gap-4"
-            >
-              <motion.button
-                onClick={handleLike}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${liked ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
-                <span>{likeCount}</span>
-              </motion.button>
-              <motion.button
-                onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Share2 className="w-5 h-5" />
-                <span>分享</span>
-              </motion.button>
-              <motion.button
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <BookOpen className="w-5 h-5" />
-                <span>收藏</span>
-              </motion.button>
-            </motion.div>
-          </div>
 
-          {post.coverImage && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-12 rounded-2xl overflow-hidden shadow-xl"
-            >
-              <OptimizedImage
-                src={post.coverImage}
-                alt={post.title}
-                className="w-full h-64 md:h-80 lg:h-96 object-cover"
-              />
-            </motion.div>
-          )}
+            <div className="prose prose-lg max-w-none mb-12 dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-a:text-blue-600 dark:prose-a:text-blue-400">
+              <ReactMarkdown>{post.content}</ReactMarkdown>
+            </div>
 
-          <div className="prose prose-lg max-w-none mb-12 prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
-          </div>
-
-          <div className="mb-12 pt-8 border-t border-gray-200">
-            <div className="flex flex-wrap items-center gap-2">
-              <Tag className="w-5 h-5 text-gray-400 mr-2 shrink-0" />
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag: { id: string; name: string }) => (
-                  <Link
-                    key={tag.id}
-                    to={`/tags/${tag.id}`}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
-                  >
-                    {tag.name}
-                  </Link>
-                ))}
+            <div className="mb-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-wrap items-center gap-2">
+                <Tag className="w-5 h-5 text-gray-400 dark:text-gray-500 mr-2 shrink-0" />
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag: { id: string; name: string }) => (
+                    <Link
+                      key={tag.id}
+                      to={`/tags/${tag.id}`}
+                      className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      {tag.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <Suspense fallback={<div className="bg-white rounded-2xl border border-gray-200 p-8">
-            <div className="animate-pulse">
-              <div className="h-8 w-32 bg-gray-200 rounded mb-6"></div>
-              <div className="h-40 bg-gray-200 rounded mb-6"></div>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-40 bg-gray-200 rounded"></div>
-                ))}
+            <Suspense fallback={<div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8">
+              <div className="animate-pulse">
+                <div className="h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
+                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
+                <div className="space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>}>
-            {id && <CommentSection postId={id} />}
-          </Suspense>
+            </div>}>
+              {id && <CommentSection postId={id} />}
+            </Suspense>
+          </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
 
-    {/* 滚动到顶部按钮 */}
-    <AnimatePresence>
-      {showScrollTop && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors z-50"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-          </svg>
-        </motion.button>
-      )}
-    </AnimatePresence>
+      {/* 滚动到顶部按钮 */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors z-50"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
