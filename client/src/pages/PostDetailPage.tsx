@@ -207,7 +207,7 @@ const PostDetailPage: React.FC = () => {
             <ArrowLeft className="w-5 h-5" />
             返回上一页
           </button>
-        </div>
+        </motion.div>
       </div>
     );
   }
